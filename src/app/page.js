@@ -261,7 +261,23 @@ function PortfolioSection() {
   const currentIndexRef = useRef(currentIndex);
   currentIndexRef.current = currentIndex;
 
+  const [isDesktop, setIsDesktop] = useState(false);
+  const trackRef = useRef(null);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [wasDragged, setWasDragged] = useState(false);
+  const dragStartRef = useRef(0);
+  const isDraggingRef = useRef(false);
+
   const movementTimeoutRef = useRef(null);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(min-width: 1280px)');
+    setIsDesktop(mediaQuery.matches);
+    const handler = (e) => setIsDesktop(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
 
   const handleTransitionEnd = (e) => {
     if (e && e.target !== e.currentTarget) return;
@@ -307,6 +323,43 @@ function PortfolioSection() {
     startMovement(currentIndex - 1);
   };
 
+  const handleDragStart = (e) => {
+    if (e.type === 'mousedown' && e.button !== 0) return;
+    setIsDragging(true);
+    isDraggingRef.current = true;
+    dragStartRef.current = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+    setDragOffset(0);
+    setWasDragged(false);
+  };
+
+  const handleDragMove = (e) => {
+    if (!isDraggingRef.current) return;
+    const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+    const offset = clientX - dragStartRef.current;
+    setDragOffset(offset);
+    if (Math.abs(offset) > 5) {
+      setWasDragged(true);
+    }
+  };
+
+  const handleDragEnd = () => {
+    if (!isDraggingRef.current) return;
+    isDraggingRef.current = false;
+    setIsDragging(false);
+
+    const trackWidth = trackRef.current ? trackRef.current.offsetWidth : 1200;
+    const slideWidth = isDesktop ? (trackWidth / 5) : (trackWidth / 3);
+    const indexChange = Math.round(-dragOffset / slideWidth);
+
+    setDragOffset(0);
+
+    if (indexChange !== 0) {
+      startMovement(currentIndex + indexChange);
+    } else {
+      startMovement(currentIndex);
+    }
+  };
+
   useEffect(() => {
     if (!isTransitioning) {
       const track = document.getElementById('portfolio-track');
@@ -323,6 +376,14 @@ function PortfolioSection() {
 
   const extendedItems = [...portfolioItems, ...portfolioItems, ...portfolioItems];
 
+  const baseTranslatePercent = isDesktop
+    ? -(currentIndex - 2) * 20
+    : -(currentIndex - 1) * (100 / 3);
+  
+  const currentTrackWidth = trackRef.current ? trackRef.current.offsetWidth : 1200;
+  const dragPercent = (dragOffset / currentTrackWidth) * 100;
+  const translatePercent = baseTranslatePercent + dragPercent;
+
   return (
     <section className="bg-background z-10 isolate min-h-screen flex items-center overflow-hidden py-10 md:py-20 snap-start">
       <div className="container relative flex flex-col-reverse xl:flex-row">
@@ -335,11 +396,18 @@ function PortfolioSection() {
               <div className="overflow-hidden">
                 <div
                   id="portfolio-track"
+                  ref={trackRef}
                   onTransitionEnd={handleTransitionEnd}
-                  className={`flex -ml-4 ${isTransitioning ? 'transition-transform duration-500 ease-in' : ''} [transform:translateX(var(--translate-mobile))] xl:[transform:translateX(var(--translate-desktop))]`}
+                  onMouseDown={handleDragStart}
+                  onMouseMove={handleDragMove}
+                  onMouseUp={handleDragEnd}
+                  onMouseLeave={handleDragEnd}
+                  onTouchStart={handleDragStart}
+                  onTouchMove={handleDragMove}
+                  onTouchEnd={handleDragEnd}
+                  className={`flex -ml-4 ${isTransitioning && !isDragging ? 'transition-transform duration-500 [transition-timing-function:cubic-bezier(0.25,1,0.5,1)]' : ''} select-none cursor-grab active:cursor-grabbing`}
                   style={{
-                    '--translate-mobile': `-${(currentIndex - 1) * (100 / 3)}%`,
-                    '--translate-desktop': `-${(currentIndex - 2) * (100 / 5)}%`
+                    transform: `translateX(${translatePercent}%)`
                   }}
                 >
                   {extendedItems.map((item, i) => {
@@ -350,6 +418,7 @@ function PortfolioSection() {
                       <div
                         key={i}
                         onClick={() => {
+                          if (wasDragged) return;
                           if (!isMoving && isTransitioning) {
                             startMovement(i);
                           }
@@ -370,7 +439,8 @@ function PortfolioSection() {
                               alt={item.title}
                               loading="lazy"
                               decoding="async"
-                              className="select-none touch-none border border-white rounded-lg object-cover w-full h-full absolute top-0 left-0"
+                              draggable="false"
+                              className="select-none touch-none border border-white rounded-lg object-cover w-full h-full absolute top-0 left-0 pointer-events-none"
                             />
                           </div>
                           {distFromCurrent === 0 && (
