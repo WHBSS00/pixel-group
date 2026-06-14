@@ -466,11 +466,11 @@ function AboutSection() {
 function ClientsSection() {
   return (
     <section className="flex flex-col py-[158px] snap-start">
-      <div className="w-full overflow-hidden">
+      <div className="order-1 w-full overflow-hidden">
         <MarqueeRow images={clientLogosRow1} duration="40s" reverse />
       </div>
 
-      <div className="container my-24 flex flex-col items-center justify-between gap-y-8 text-center md:my-[128px] md:flex-row md:gap-x-[100px] md:text-left xl:my-40 xl:items-end xl:gap-x-[198px]">
+      <div className="container order-2 my-24 flex flex-col items-center justify-between gap-y-8 text-center md:my-[128px] md:flex-row md:gap-x-[100px] md:text-left xl:my-40 xl:items-end xl:gap-x-[198px]">
         <h2 className="text-[48px] leading-[1.1] md:text-[62px] xl:text-[90px] font-helvetica">
           <span className="text-primary italic">Our</span>{' '}
           <span>Clients</span>
@@ -491,7 +491,7 @@ function ClientsSection() {
         </p>
       </div>
 
-      <div className="w-full overflow-hidden">
+      <div className="order-3 w-full overflow-hidden">
         <MarqueeRow images={clientLogosRow2} duration="35s" />
       </div>
     </section>
