@@ -1,11 +1,11 @@
 export const metadata = {
   title: 'About',
   description:
-    'Learn about Pixel Group — Indonesia\'s trusted OOH media management and production partner since 2003, amplifying business impact through visual connections.',
+    'Pelajari tentang PT. IDEA KREASI MEDIA — Pelopor Iklan Tiang Nama Jalan dan penyedia solusi periklanan luar ruang komprehensif di Indonesia sejak 1995.',
   openGraph: {
-    title: 'About - Pixel Group',
+    title: 'About - PT. IDEA KREASI MEDIA',
     description:
-      'Learn about Pixel Group — Indonesia\'s trusted OOH media management and production partner since 2003.',
+      'Pelajari tentang PT. IDEA KREASI MEDIA — Pelopor Iklan Tiang Nama Jalan dan penyedia solusi periklanan luar ruang komprehensif di Indonesia.',
   },
 };
 

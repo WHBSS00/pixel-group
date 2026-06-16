@@ -2,24 +2,28 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useLanguage } from '@/context/LanguageContext';
 import PixelLogo from './PixelLogo';
 
 const navItems = [
-  { label: 'Home', href: '/' },
-  { label: 'About', href: '/about' },
-  { label: 'Services', href: '/services' },
-  { label: 'Our Works', href: '/our-works' },
-  { label: 'Contact Us', href: '/contact-us' },
+  { key: 'home', href: '/' },
+  { key: 'about', href: '/about' },
+  { key: 'services', href: '/services' },
+  { key: 'ourWorks', href: '/our-works' },
+  { key: 'contactUs', href: '/contact-us' },
 ];
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [lang, setLang] = useState('EN');
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
+  
+  const { lang, setLang, t } = useLanguage();
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
@@ -28,19 +32,23 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className={`navbar fixed inset-x-0 top-0 z-[999] h-[88px] max-w-[100dvw] md:h-24 landscape:h-[60px] transition-all duration-1000 ease-in-out ${scrolled ? 'bg-black/20 backdrop-blur-sm' : 'bg-transparent'}`}>
+    <header className={`navbar fixed inset-x-0 top-0 z-[999] h-[88px] max-w-[100dvw] md:h-24 landscape:h-[60px] transition-all duration-1000 ease-in-out ${
+      scrolled ? 'bg-[#1E40AF]/90 backdrop-blur-md shadow-lg shadow-blue-900/30' : 'bg-transparent'
+    } ${
+      mounted ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 -translate-y-[20px] blur-[5px]'
+    }`}>
       <div className="container flex h-full items-center justify-between">
         <nav className="hidden md:block">
           <ul className="flex items-center gap-x-6 lg:gap-x-10">
             {navItems.map((item) => (
               <li key={item.href}>
                 <Link
-                  className={`nav-link inline-flex h-6 items-center font-semibold text-base leading-5 transition-colors hover:text-primary ${
+                  className={`nav-link inline-flex h-6 items-center font-semibold text-base leading-5 transition-colors ${
                     pathname === item.href ? 'active' : ''
                   }`}
                   href={item.href}
                 >
-                  {item.label}
+                  {t(`navbar.${item.key}`)}
                 </Link>
               </li>
             ))}
@@ -48,7 +56,7 @@ export default function Navbar() {
         </nav>
 
         <button
-          className="-m-2 z-50 p-2 hover:bg-neutral-800/20 md:hidden"
+          className="-m-2 z-50 p-2 hover:bg-white/10 rounded-lg md:hidden"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
@@ -74,7 +82,7 @@ export default function Navbar() {
           <div className="relative">
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="hidden md:flex items-center border-b-2 border-white px-0 py-2 font-lato font-semibold text-lg hover:border-primary transition-colors cursor-pointer bg-transparent border-t-0 border-x-0 rounded-none focus:outline-none"
+              className="hidden md:flex items-center border-b-2 border-white/60 px-0 py-2 font-lato font-semibold text-lg hover:border-white transition-colors cursor-pointer bg-transparent border-t-0 border-x-0 rounded-none focus:outline-none text-white"
             >
               <span className="mr-2">{lang}</span>
               <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className={`size-4 transition-transform duration-300 ${dropdownOpen ? 'rotate-180' : ''}`}>
@@ -82,16 +90,16 @@ export default function Navbar() {
               </svg>
             </button>
             {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-20 bg-[#0F172A] border border-neutral-700 rounded shadow-lg overflow-hidden z-[1000] text-center">
+              <div className="absolute right-0 mt-2 w-20 bg-[#1E40AF] border border-white/20 rounded-lg shadow-xl overflow-hidden z-[1000] text-center">
                 <button
                   onClick={() => { setLang('EN'); setDropdownOpen(false); }}
-                  className="block w-full px-4 py-2 text-sm font-semibold text-white hover:bg-neutral-800 transition-colors w-full border-0 rounded-none bg-transparent"
+                  className="block w-full px-4 py-2 text-sm font-semibold text-white hover:bg-[#2563EB] transition-colors border-0 rounded-none bg-transparent"
                 >
                   EN
                 </button>
                 <button
                   onClick={() => { setLang('ID'); setDropdownOpen(false); }}
-                  className="block w-full px-4 py-2 text-sm font-semibold text-white hover:bg-neutral-800 transition-colors w-full border-0 rounded-none bg-transparent"
+                  className="block w-full px-4 py-2 text-sm font-semibold text-white hover:bg-[#2563EB] transition-colors border-0 rounded-none bg-transparent"
                 >
                   ID
                 </button>
@@ -108,15 +116,30 @@ export default function Navbar() {
           {navItems.map((item) => (
             <Link
               key={item.href}
-              className={`nav-link text-2xl font-semibold transition-colors hover:text-primary ${
+              className={`nav-link text-2xl font-semibold transition-colors ${
                 pathname === item.href ? 'active' : ''
               }`}
               href={item.href}
               onClick={() => setMobileOpen(false)}
             >
-              {item.label}
+              {t(`navbar.${item.key}`)}
             </Link>
           ))}
+          {/* Mobile Language Switcher */}
+          <div className="flex gap-x-6 mt-4">
+            <button
+              onClick={() => { setLang('ID'); setMobileOpen(false); }}
+              className={`px-4 py-2 border-b-2 text-xl font-semibold cursor-pointer transition-colors bg-transparent border-t-0 border-x-0 ${lang === 'ID' ? 'border-[#93C5FD] text-[#93C5FD]' : 'border-transparent text-white/60 hover:text-white'}`}
+            >
+              ID
+            </button>
+            <button
+              onClick={() => { setLang('EN'); setMobileOpen(false); }}
+              className={`px-4 py-2 border-b-2 text-xl font-semibold cursor-pointer transition-colors bg-transparent border-t-0 border-x-0 ${lang === 'EN' ? 'border-[#93C5FD] text-[#93C5FD]' : 'border-transparent text-white/60 hover:text-white'}`}
+            >
+              EN
+            </button>
+          </div>
         </div>
       </div>
     </header>

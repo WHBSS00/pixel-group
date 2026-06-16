@@ -1,11 +1,11 @@
 export const metadata = {
   title: 'Services',
   description:
-    'Explore Pixel Group\'s comprehensive OOH services — from media management and billboard advertising to production house and transit advertising across Indonesia.',
+    'Eksplorasi layanan media OOH komprehensif PT. IDEA KREASI MEDIA — mulai dari papan reklame tradisional, DOOH, pemasaran eksperiensial hingga tiang nama jalan berestetika tinggi.',
   openGraph: {
-    title: 'Services - Pixel Group',
+    title: 'Services - PT. IDEA KREASI MEDIA',
     description:
-      'Comprehensive OOH advertising services including media management, billboard, airport, and transit advertising.',
+      'Layanan media periklanan luar ruang (OOH) terintegrasi, papan reklame, DOOH, dan tiang nama jalan di Indonesia.',
   },
 };
 

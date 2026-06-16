@@ -1,11 +1,11 @@
 export const metadata = {
   title: 'Our Works',
   description:
-    'Discover Pixel Group\'s portfolio of impactful OOH campaigns across Indonesia\'s premium locations — airports, transit, billboards, and landmarks.',
+    'Temukan portofolio proyek media luar ruang, tiang nama jalan, dan revitalisasi tata ruang kota PT. IDEA KREASI MEDIA di Jakarta, Cirebon, dan wilayah lainnya.',
   openGraph: {
-    title: 'Our Works - Pixel Group',
+    title: 'Our Works - PT. IDEA KREASI MEDIA',
     description:
-      'Portfolio of impactful OOH advertising campaigns across Indonesia\'s premium locations.',
+      'Portofolio proyek periklanan luar ruang, tiang nama jalan, dan revitalisasi perkotaan di Indonesia.',
   },
 };
 

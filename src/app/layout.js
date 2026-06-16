@@ -2,6 +2,7 @@ import { Inter, Lato, Playfair_Display } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { LanguageProvider } from '@/context/LanguageContext';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -24,22 +25,22 @@ const playfair = Playfair_Display({
 
 export const metadata = {
   title: {
-    default: 'Pixel Group',
-    template: '%s - Pixel Group',
+    default: 'PT. IDEA KREASI MEDIA',
+    template: '%s - PT. IDEA KREASI MEDIA',
   },
-  description: 'Leading integrated technology services company based in Indonesia.',
-  keywords: ['OOH', 'advertising', 'indonesia', 'billboard', 'digital printing'],
+  description: 'IDEA KREASI MEDIA adalah perusahaan Media Out Of Home yang menyajikan kampanye Iklan & Branding efektif untuk menjangkau Target Pasar Klien dan menghasilkan Konversi.',
+  keywords: ['OOH', 'advertising', 'indonesia', 'billboard', 'tiang nama jalan', 'idea kreasi media', 'digital printing'],
   openGraph: {
-    title: 'Pixel Group',
-    description: 'Leading integrated technology services company based in Indonesia.',
-    url: 'https://pixelgroup.id',
-    siteName: 'Pixel Group',
+    title: 'PT. IDEA KREASI MEDIA',
+    description: 'IDEA KREASI MEDIA adalah perusahaan Media Out Of Home yang menyajikan kampanye Iklan & Branding efektif untuk menjangkau Target Pasar Klien dan menghasilkan Konversi.',
+    url: 'https://ideakreasimedia.co.id',
+    siteName: 'PT. IDEA KREASI MEDIA',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Pixel Group',
-    description: 'Leading integrated technology services company based in Indonesia.',
+    title: 'PT. IDEA KREASI MEDIA',
+    description: 'IDEA KREASI MEDIA adalah perusahaan Media Out Of Home yang menyajikan kampanye Iklan & Branding efektif untuk menjangkau Target Pasar Klien dan menghasilkan Konversi.',
   },
   robots: { index: true, follow: true },
 };
@@ -48,14 +49,16 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${lato.variable} ${playfair.variable} dark flex min-h-screen flex-col`}
+        className={`${inter.variable} ${lato.variable} ${playfair.variable} flex min-h-screen flex-col`}
         suppressHydrationWarning
       >
-        <Navbar />
-        <main className="flex-1" id="page-scroll-container">
-          {children}
-        </main>
-        <Footer />
+        <LanguageProvider>
+          <Navbar />
+          <main className="flex-1" id="page-scroll-container">
+            {children}
+          </main>
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -1,11 +1,11 @@
 export const metadata = {
   title: 'Contact Us',
   description:
-    'Get in touch with Pixel Group for your OOH advertising needs. Contact us for billboard, airport, transit, and digital advertising solutions in Indonesia.',
+    'Hubungi tim profesional PT. IDEA KREASI MEDIA untuk konsultasi kampanye periklanan luar ruang, tiang nama jalan, dan solusi periklanan OOH kustom di Indonesia.',
   openGraph: {
-    title: 'Contact Us - Pixel Group',
+    title: 'Contact Us - PT. IDEA KREASI MEDIA',
     description:
-      'Contact Pixel Group for premium OOH advertising solutions across Indonesia.',
+      'Hubungi PT. IDEA KREASI MEDIA untuk solusi periklanan OOH premium di Indonesia.',
   },
 };
 
