@@ -8,7 +8,7 @@ export default function CTASection() {
   const { lang, t } = useLanguage();
 
   return (
-    <section className="relative z-10 flex h-auto min-h-screen py-16 md:py-0 md:h-svh md:min-h-[680px] flex-col items-stretch justify-center bg-gradient-to-br from-surface to-card md:overflow-hidden snap-start">
+    <section className="relative z-10 flex h-svh min-h-[580px] md:min-h-[680px] flex-col items-stretch justify-center bg-gradient-to-br from-surface to-card md:overflow-hidden snap-start">
       <div aria-hidden="true" className="absolute inset-0 overflow-hidden z-0">
         <div className="blue-dot-grid opacity-40">
           <div className="dot-layer dot-layer-1" />
@@ -21,19 +21,19 @@ export default function CTASection() {
         <div className="absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-background to-background/0" />
       </div>
       <div className="relative z-10 mx-auto w-full px-5 lg:max-w-[1122px] lg:px-4">
-        <div className="w-full flex flex-col items-center" ref={ref}>
+        <div className="w-full" ref={ref}>
           <h2
             className={`inline-block whitespace-pre-wrap break-words text-center text-foreground text-[42px] sm:text-[58px] leading-[1.2] md:leading-[165px] tracking-[-0.5px] font-helvetica transition-all duration-1000 ${
               isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[20px] blur-[10px]'
             } md:text-[76px] xl:text-[120px]`}
           >
             {lang === 'ID' ? (
-              <span className="inline-block whitespace-nowrap">Jawa<i className="font-ramillas italic">ban</i>nya</span>
+              <>Jawa<i className="font-ramillas italic">ban</i>nya</>
             ) : (
-              <span className="inline-block whitespace-nowrap">The An<i className="font-ramillas italic">swe</i>r</span>
+              <>The An<i className="font-ramillas italic">swe</i>r</>
             )}
           </h2>
-          <div className="flex flex-col items-center text-center gap-y-6 md:flex-row md:items-end md:justify-between md:text-left w-full mt-8 md:mt-0">
+          <div className="flex flex-wrap items-end justify-between">
             <p
               className={`text-[24px] sm:text-[32px] text-foreground/80 md:text-[40px] xl:text-[52px] font-helvetica whitespace-pre-line transition-all duration-1000 delay-200 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[20px]'
@@ -43,7 +43,7 @@ export default function CTASection() {
                 <>
                   <span>Untuk </span>
                   <i className="font-ramillas italic">Seluruh </i>
-                  <span className="inline-block whitespace-nowrap">Kam<i className="font-ramillas italic">panye</i></span>{' '}
+                  <span>Kam<i className="font-ramillas italic">panye</i> </span>
                   <br className="hidden md:block" />
                   <span className="font-bold text-accent">OOH Anda.</span>
                 </>
@@ -51,14 +51,14 @@ export default function CTASection() {
                 <>
                   <span>For </span>
                   <i className="font-ramillas italic">All </i>
-                  <span className="inline-block whitespace-nowrap">Y<i className="font-ramillas italic">ou</i>r</span>{' '}
+                  <span>Y<i className="font-ramillas italic">ou</i>r </span>
                   <br className="hidden md:block" />
                   <span className="font-bold text-accent">OOH Campaigns.</span>
                 </>
               )}
             </p>
             <div
-              className={`transition-all duration-1000 delay-500 ${
+              className={`mt-6 ml-auto md:mt-0 md:ml-0 transition-all duration-1000 delay-500 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[60px]'
               }`}
             >

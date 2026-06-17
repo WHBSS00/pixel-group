@@ -10,7 +10,7 @@ export default function Footer() {
 
   return (
     <footer>
-      <div className="relative isolate z-10 flex h-auto min-h-screen py-16 md:py-0 md:h-svh md:min-h-[626px] w-full items-end bg-surface pt-20 text-foreground xl:pt-32">
+      <div className="relative isolate z-10 flex h-svh min-h-[580px] md:min-h-[626px] w-full items-end bg-surface pt-20 text-foreground xl:pt-32">
         <div aria-hidden="true" className="absolute inset-0 z-0 overflow-hidden">
           <div className="blue-dot-grid opacity-15">
             <div className="dot-layer dot-layer-1" />
@@ -18,7 +18,7 @@ export default function Footer() {
           </div>
           <div className="absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-background to-surface" />
         </div>
-        <div ref={ref} className="container relative z-10 flex flex-col justify-between pb-8 xl:flex-row xl:pb-24 gap-y-12">
+        <div ref={ref} className="container relative z-10 flex flex-col justify-between pb-8 xl:flex-row xl:pb-24">
           <div className="flex flex-col justify-start">
             <div className="relative w-fit">
               <h2
@@ -55,11 +55,11 @@ export default function Footer() {
             </div>
           </div>
  
-          <div className="mt-6 md:mt-8 xl:mt-0 flex w-full flex-col items-end space-y-2 self-end text-right font-lato text-base md:text-lg xl:text-xl">
+          <div className="mt-14 flex w-full flex-col items-end space-y-2 self-end text-right font-lato text-base md:mt-8 md:text-lg xl:mt-0 xl:text-xl">
             <h2 className="font-bold font-helvetica text-[28px] leading-[1.1] md:text-[32px] xl:text-[40px] text-accent">{settings.name}</h2>
             {settings.address && (
               <a target="_blank" href={settings.mapsUrl || '#'} rel="noopener noreferrer">
-                <p className="!mt-6 md:!mt-10 text-foreground/70 hover:text-accent transition-colors">{settings.address}</p>
+                <p className="!mt-10 text-foreground/70 hover:text-accent transition-colors">{settings.address}</p>
               </a>
             )}
             {settings.phone && (
@@ -81,7 +81,7 @@ export default function Footer() {
                 </a>
               </p>
             )}
-            <div className="!mt-6 md:!mt-10 flex justify-end gap-3 text-foreground/70">
+            <div className="!mt-10 flex justify-end gap-3 text-foreground/70">
               {settings.whatsappUrl && (
                 <a target="_blank" href={settings.whatsappUrl} rel="noopener noreferrer" aria-label="WhatsApp" className="grid size-12 place-content-center hover:text-accent transition-colors">
                   <WhatsAppIcon size={24} />
