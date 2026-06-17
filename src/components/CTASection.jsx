@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 
 export default function CTASection() {
-  const [ref, isVisible] = useScrollAnimation();
+  const [ref, isVisible] = useScrollAnimation({ rootMargin: '0px 0px -20% 0px' });
   const { lang, t } = useLanguage();
 
   return (

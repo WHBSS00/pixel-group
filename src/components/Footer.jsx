@@ -4,7 +4,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { useCompany } from '@/context/CompanyContext';
 
 export default function Footer() {
-  const [ref, isVisible] = useScrollAnimation();
+  const [ref, isVisible] = useScrollAnimation({ rootMargin: '0px 0px -10% 0px' });
   const { lang, t } = useLanguage();
   const { settings } = useCompany();
 
