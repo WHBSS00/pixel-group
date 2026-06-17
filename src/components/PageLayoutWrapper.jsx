@@ -10,6 +10,7 @@ export default function PageLayoutWrapper({ children }) {
   const pathname = usePathname();
   // Check if current path is under /admin
   const isAdminPage = pathname?.startsWith('/admin');
+  const isHomePage = pathname === '/';
 
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -18,13 +19,18 @@ export default function PageLayoutWrapper({ children }) {
     setMounted(true);
     try {
       const hasLoaded = sessionStorage.getItem('hasLoaded');
-      if (hasLoaded === 'true') {
+      // If already loaded in session, OR if not on home page, skip preloader
+      if (hasLoaded === 'true' || !isHomePage) {
         setLoading(false);
+        sessionStorage.setItem('hasLoaded', 'true');
       }
     } catch (e) {
       console.warn('sessionStorage is not available:', e);
+      if (!isHomePage) {
+        setLoading(false);
+      }
     }
-  }, []);
+  }, [isHomePage]);
 
   const handlePreloaderComplete = () => {
     setLoading(false);
