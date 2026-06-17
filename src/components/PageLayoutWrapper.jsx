@@ -16,7 +16,24 @@ export default function PageLayoutWrapper({ children }) {
 
   useEffect(() => {
     setMounted(true);
+    try {
+      const hasLoaded = sessionStorage.getItem('hasLoaded');
+      if (hasLoaded === 'true') {
+        setLoading(false);
+      }
+    } catch (e) {
+      console.warn('sessionStorage is not available:', e);
+    }
   }, []);
+
+  const handlePreloaderComplete = () => {
+    setLoading(false);
+    try {
+      sessionStorage.setItem('hasLoaded', 'true');
+    } catch (e) {
+      console.warn('sessionStorage is not available:', e);
+    }
+  };
 
   useEffect(() => {
     if (isAdminPage || loading) return;
@@ -44,7 +61,7 @@ export default function PageLayoutWrapper({ children }) {
   return (
     <>
       {mounted && loading && !isAdminPage && (
-        <Preloader onComplete={() => setLoading(false)} />
+        <Preloader onComplete={handlePreloaderComplete} />
       )}
       {!isAdminPage && <Navbar />}
       <div 

@@ -5,15 +5,15 @@ export default function Preloader({ onComplete }) {
   const [exit, setExit] = useState(false);
 
   useEffect(() => {
-    // Start exit animation after 4.2 seconds
+    // Start exit animation after 5.2 seconds
     const exitTimeout = setTimeout(() => {
       setExit(true);
-    }, 4200);
+    }, 5200);
 
-    // Call onComplete after 5.0 seconds (allowing 800ms exit transition)
+    // Call onComplete after 6.0 seconds (allowing 800ms exit transition)
     const completeTimeout = setTimeout(() => {
       onComplete && onComplete();
-    }, 5000);
+    }, 6000);
 
     return () => {
       clearTimeout(exitTimeout);
@@ -161,7 +161,7 @@ export default function Preloader({ onComplete }) {
           margin-left: 2px;
           margin-bottom: 4px;
           transform: scale(0);
-          animation: dotReveal 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 1.2s;
+          animation: dotReveal 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 2.8s;
         }
         @media (min-width: 768px) {
           .dot {
@@ -184,7 +184,7 @@ export default function Preloader({ onComplete }) {
           color: var(--color-primary, #1e3447);
           opacity: 0;
           transform: translateY(10px);
-          animation: subtitleReveal 0.8s ease forwards 1.6s;
+          animation: subtitleReveal 0.8s ease forwards 3.2s;
           margin-top: 0.5rem;
         }
         @media (min-width: 768px) {
@@ -216,7 +216,7 @@ export default function Preloader({ onComplete }) {
                 return (
                   <span key={wordIndex} className="char-wrapper mr-3 last:mr-0">
                     {word.split('').map((char, charIndex) => {
-                      const delay = globalCharIndex * 0.04;
+                      const delay = 1.6 + globalCharIndex * 0.04;
                       globalCharIndex++;
                       const isLastChar = charIndex === word.length - 1;
                       return (

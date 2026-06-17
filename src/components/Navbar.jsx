@@ -54,7 +54,7 @@ export default function Navbar() {
               {navItems.map((item) => (
                 <li key={item.href}>
                   <Link
-                    className={`nav-link inline-flex h-6 items-center font-semibold text-base leading-5 transition-colors ${
+                    className={`nav-link inline-flex h-8 items-center font-bold text-lg lg:text-xl leading-6 transition-colors ${
                       pathname === item.href ? 'active' : ''
                     }`}
                     href={item.href}
