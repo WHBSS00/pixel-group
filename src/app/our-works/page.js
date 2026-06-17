@@ -201,9 +201,9 @@ function HeroSection() {
 
       <section ref={secRef} className="z-10 py-4 pb-20 md:py-20">
         <div className="container font-helvetica">
-          <div className="flex justify-end">
+          <div className="flex justify-center md:justify-end">
             <h3
-              className={`max-w-[664px] text-right text-[40px] leading-[120%] md:text-[50px] lg:text-[68px] transition-all duration-1000 ${
+              className={`max-w-[664px] text-center md:text-right text-[40px] leading-[120%] md:text-[50px] lg:text-[68px] transition-all duration-1000 ${
                 secVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'
               }`}
             >
@@ -221,7 +221,7 @@ function HeroSection() {
             </h3>
           </div>
           <p
-            className={`mt-4 max-w-[640px] text-[20px] leading-[130%] tracking-[0.15px] transition-all duration-1000 delay-200 ${
+            className={`mt-4 max-w-[640px] mx-auto md:mx-0 text-center md:text-left text-[20px] leading-[130%] tracking-[0.15px] transition-all duration-1000 delay-200 ${
               secVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'
             }`}
           >

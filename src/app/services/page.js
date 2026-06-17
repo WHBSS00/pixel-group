@@ -139,11 +139,11 @@ function Block2Section() {
   return (
     <section className="relative z-10 py-10 lg:py-16 bg-card/10" id="ooh-media-specialist">
       <div className="relative isolate z-10" ref={ref}>
-        <div className="container relative z-10 font-helvetica text-right flex flex-col items-end">
+        <div className="container relative z-10 font-helvetica text-left md:text-right flex flex-col items-start md:items-end">
           <h2 className={`mt-4 max-w-[600px] text-[40px] leading-[1.2] md:text-[50px] xl:text-[68px] transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
             <span className="text-accent">OOH</span> <span>M</span><span className="font-ramillas italic font-normal text-accent">edia</span> <span className="font-bold">Specialist</span>
           </h2>
-          <p className={`mt-4 max-w-[640px] text-base font-lato md:text-lg xl:text-xl transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px] text-right'}`}>
+          <p className={`mt-4 max-w-[640px] text-base font-lato md:text-lg xl:text-xl transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px] text-left md:text-right'}`}>
             {t('services.block2.desc')}
           </p>
         </div>
@@ -255,11 +255,11 @@ function Block4Section() {
   return (
     <section className="relative z-10 py-10 lg:py-16 bg-card/10" id="ooh-research">
       <div className="relative isolate z-10" ref={ref}>
-        <div className="container relative z-10 font-helvetica text-right flex flex-col items-end">
+        <div className="container relative z-10 font-helvetica text-left md:text-right flex flex-col items-start md:items-end">
           <h2 className={`mt-4 max-w-[600px] text-[40px] leading-[1.2] md:text-[50px] xl:text-[68px] transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
             <span className="text-accent">OOH</span> <span>Re</span><span className="font-ramillas italic font-normal text-accent">searc</span>h
           </h2>
-          <p className={`mt-4 max-w-[640px] text-base font-lato md:text-lg xl:text-xl transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px] text-right'}`}>
+          <p className={`mt-4 max-w-[640px] text-base font-lato md:text-lg xl:text-xl transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px] text-left md:text-right'}`}>
             {t('services.block4.desc')}
           </p>
         </div>

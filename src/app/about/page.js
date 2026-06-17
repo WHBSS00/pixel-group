@@ -99,11 +99,9 @@ function HeroSection() {
               <h2 className={`mt-4 text-[40px] leading-tight md:text-[50px] md:leading-[81.6px] lg:text-[68px] whitespace-pre-line transition-all duration-1000 delay-200 ${mounted ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
                 {lang === 'ID' ? (
                   <>
-                    <span className="text-accent inline-block">
-                      Meng
-                    </span>
-                    <span className="text-accent font-tt-ramillas italic inline-block">
-                      ubah
+                    <span className="inline-block whitespace-nowrap">
+                      <span className="text-accent">Meng</span>
+                      <span className="text-accent font-tt-ramillas italic">ubah</span>
                     </span>{' '}
                     <span className="text-accent inline-block">
                       Ruang
@@ -118,11 +116,9 @@ function HeroSection() {
                   </>
                 ) : (
                   <>
-                    <span className="text-accent inline-block">
-                      Am
-                    </span>
-                    <span className="text-accent font-tt-ramillas italic inline-block">
-                      plifying
+                    <span className="inline-block whitespace-nowrap">
+                      <span className="text-accent">Am</span>
+                      <span className="text-accent font-tt-ramillas italic">plifying</span>
                     </span>{' '}
                     <span className="text-accent inline-block">
                       Business
@@ -304,18 +300,22 @@ function VisionMissionSection() {
           </div>
 
           {/* Right Column: Heading & Overall Description (order-first lg:order-last) */}
-          <div className={`lg:col-span-4 order-first lg:order-last font-helvetica lg:self-center text-right transition-all duration-1000 delay-200 ${visVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
-            <div className="flex justify-end mb-6">
+          <div className={`lg:col-span-4 order-first lg:order-last font-helvetica lg:self-center text-center lg:text-right transition-all duration-1000 delay-200 ${visVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
+            <div className="flex justify-center lg:justify-end mb-6">
               <h3 className="text-[40px] md:text-[50px] lg:text-[60px] xl:text-[68px] leading-tight md:leading-[81.6px]">
                 {lang === 'ID' ? (
                   <>
-                    <span className="text-accent">V</span>
-                    <span className="text-accent font-tt-ramillas italic">isi</span> & Misi
+                    <span className="inline-block whitespace-nowrap">
+                      <span className="text-accent">V</span>
+                      <span className="text-accent font-tt-ramillas italic">isi</span>
+                    </span> & Misi
                   </>
                 ) : (
                   <>
-                    <span className="text-accent">V</span>
-                    <span className="text-accent font-tt-ramillas italic">ision</span> & Mission
+                    <span className="inline-block whitespace-nowrap">
+                      <span className="text-accent">V</span>
+                      <span className="text-accent font-tt-ramillas italic">ision</span>
+                    </span> & Mission
                   </>
                 )}
               </h3>
@@ -348,13 +348,19 @@ function WhyUsSection() {
           <h3 className={`lg:col-span-5 text-[40px] md:text-[50px] lg:text-[68px] leading-tight md:leading-[81.6px] whitespace-pre-line transition-all duration-1000 ${whyVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
             {lang === 'ID' ? (
               <>
-                <span className="text-accent">M</span>
-                <span className="text-accent font-tt-ramillas italic">engapa</span> Kami
+                <span className="inline-block whitespace-nowrap">
+                  <span className="text-accent">M</span>
+                  <span className="text-accent font-tt-ramillas italic">engapa</span>
+                </span>{' '}
+                Kami
               </>
             ) : (
               <>
-                <span className="text-accent">W</span>
-                <span className="text-accent font-tt-ramillas italic">hy</span> Us
+                <span className="inline-block whitespace-nowrap">
+                  <span className="text-accent">W</span>
+                  <span className="text-accent font-tt-ramillas italic">hy</span>
+                </span>{' '}
+                Us
               </>
             )}
           </h3>

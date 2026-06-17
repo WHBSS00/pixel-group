@@ -25,21 +25,26 @@ const playfair = Playfair_Display({
 
 export const metadata = {
   title: {
-    default: 'PT. IDEA KREASI MEDIA',
-    template: '%s - PT. IDEA KREASI MEDIA',
+    default: 'PT. Idea Kreasi Media | OOH Media Specialist & Production House',
+    template: '%s - PT. Idea Kreasi Media',
   },
   description: 'IDEA KREASI MEDIA adalah perusahaan Media Out Of Home yang menyajikan kampanye Iklan & Branding efektif untuk menjangkau Target Pasar Klien dan menghasilkan Konversi.',
   keywords: ['OOH', 'advertising', 'indonesia', 'billboard', 'tiang nama jalan', 'idea kreasi media', 'digital printing'],
+  icons: {
+    icon: '/logo-idea.png',
+    shortcut: '/logo-idea.png',
+    apple: '/logo-idea.png',
+  },
   openGraph: {
-    title: 'PT. IDEA KREASI MEDIA',
+    title: 'PT. Idea Kreasi Media | OOH Media Specialist & Production House',
     description: 'IDEA KREASI MEDIA adalah perusahaan Media Out Of Home yang menyajikan kampanye Iklan & Branding efektif untuk menjangkau Target Pasar Klien dan menghasilkan Konversi.',
     url: 'https://ideakreasimedia.co.id',
-    siteName: 'PT. IDEA KREASI MEDIA',
+    siteName: 'PT. Idea Kreasi Media',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'PT. IDEA KREASI MEDIA',
+    title: 'PT. Idea Kreasi Media | OOH Media Specialist & Production House',
     description: 'IDEA KREASI MEDIA adalah perusahaan Media Out Of Home yang menyajikan kampanye Iklan & Branding efektif untuk menjangkau Target Pasar Klien dan menghasilkan Konversi.',
   },
   robots: { index: true, follow: true },

@@ -177,7 +177,7 @@ function ContactSection({ formData, setFormData, handleSubmit, isSubmitting }) {
 
             {/* Right Side: Form Card */}
             <div className={`flex justify-center w-full transition-all duration-1000 delay-300 ${mounted ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
-              <div className="rounded-3xl p-8 border border-white/50 bg-white/75 backdrop-blur-md shadow-2xl shadow-primary/5 w-[350px] lg:w-[533px]">
+              <div className="rounded-3xl p-8 border border-white/50 bg-white/75 backdrop-blur-md shadow-2xl shadow-primary/5 w-full max-w-[350px] lg:max-w-[533px]">
                 <h3 className="mb-2 text-[32px] md:text-[40px] lg:text-[52px]">
                   <span className="text-accent"><strong className="font-bold">{t('contact.form.title')}</strong></span>
                   <span className="text-foreground"><strong className="font-bold">{t('contact.form.titleSuffix')}</strong></span>

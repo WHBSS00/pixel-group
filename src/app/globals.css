@@ -250,7 +250,7 @@
   height: 100%;
   background:
     radial-gradient(circle 2px, rgba(26, 83, 208, 0.1) 1px, transparent 1px),
-    radial-gradient(circle 1.5px, rgba(184, 156, 114, 0.08) 1px, transparent 1px);
+    radial-gradient(circle 1.5px, rgba(26, 83, 208, 0.06) 1px, transparent 1px);
   background-size: 30px 30px, 20px 20px;
   background-position: 0 0, 10px 10px;
   animation: dotWave 8s ease-in-out infinite;
@@ -334,6 +334,7 @@
   z-index: 40;
   transform: translateX(100%);
   transition: transform 0.3s ease;
+  overflow-y: auto;
 }
 
 .mobile-menu.open {
@@ -387,7 +388,7 @@
 
 .blue-dot-grid .dot-layer-1 {
   background:
-    radial-gradient(circle 2.5px, rgba(184, 156, 114, 0.08) 1px, transparent 1px),
+    radial-gradient(circle 2.5px, rgba(26, 83, 208, 0.08) 1px, transparent 1px),
     radial-gradient(circle 1.5px, rgba(26, 83, 208, 0.2) 1px, transparent 1px);
   background-size: 40px 40px, 25px 25px;
   background-position: 0 0, 12px 12px;
@@ -397,7 +398,7 @@
 .blue-dot-grid .dot-layer-2 {
   background:
     radial-gradient(circle 2px, rgba(26, 83, 208, 0.16) 1px, transparent 1px),
-    radial-gradient(circle 1px, rgba(184, 156, 114, 0.06) 1px, transparent 1px);
+    radial-gradient(circle 1px, rgba(26, 83, 208, 0.06) 1px, transparent 1px);
   background-size: 35px 35px, 22px 22px;
   background-position: 5px 5px, 15px 15px;
   animation: dotFloat2 15s ease-in-out infinite;
@@ -405,7 +406,7 @@
 
 .blue-dot-grid .dot-layer-3 {
   background:
-    radial-gradient(circle 3px, rgba(184, 156, 114, 0.06) 1px, transparent 1px);
+    radial-gradient(circle 3px, rgba(26, 83, 208, 0.06) 1px, transparent 1px);
   background-size: 50px 50px;
   background-position: 8px 8px;
   animation: dotFloat3 18s ease-in-out infinite;

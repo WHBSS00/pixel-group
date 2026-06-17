@@ -201,16 +201,15 @@ function HeroSection() {
           </picture>
         </div>
         <div className="absolute inset-0 bg-white/30 z-[1] pointer-events-none" />
-        <div className="absolute inset-0 preloader" />
       </div>
       <div className="shadow" />
       <div className="container relative z-10 h-screen">
-        <div className="flex flex-col justify-end md:items-end h-full overflow-hidden">
-          <div className="relative pb-10 text w-fit">
-            <h2 className={`font-helvetica text-foreground text-[58px] md:text-[76px] lg:text-[120px] leading-[1.2] text-right transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
+        <div className="flex flex-col justify-end items-center md:items-end h-full overflow-hidden pb-10 md:pb-0">
+          <div className="relative pb-10 text w-fit text-center md:text-right flex flex-col items-center md:items-end">
+            <h2 className={`font-helvetica text-foreground text-[58px] md:text-[76px] lg:text-[120px] leading-[1.2] text-center md:text-right transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
               {t('home.hero.part1')}<span className="font-helvetica-italic">{t('home.hero.part2')}</span>
             </h2>
-            <div className={`flex flex-col md:flex-row-reverse items-start md:items-center md:gap-x-8 lg:gap-x-20 mt-2 transition-all duration-1000 delay-200 ${mounted ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
+            <div className={`flex flex-col md:flex-row-reverse items-center md:items-center md:gap-x-8 lg:gap-x-20 mt-2 transition-all duration-1000 delay-200 ${mounted ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
               <h2 className="font-tt-ramillas text-accent text-[58px] md:text-[76px] lg:text-[120px] leading-[1.2]">
                 {t('home.hero.ooh')}
               </h2>
@@ -631,7 +630,7 @@ function PortfolioSection() {
           className={`overflow-visible xl:w-[800px] xl:h-screen relative flex xl:block justify-center pt-[2vh] md:pt-14 xl:pt-0 snap-start transition-all duration-1000 ${carouselVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[50px] blur-[5px]'}`}
         >
           {mounted && portfolioItems.length > 0 && (
-            <div className="flex justify-center px-5 w-[800px] md:w-[1200px] relative xl:h-full">
+            <div className="flex justify-center px-5 w-full max-w-[800px] md:max-w-[1200px] relative xl:h-full">
               <div className="relative h-full w-full xl:w-[150%] flex items-center">
                 <div className="overflow-hidden w-full" ref={emblaRef}>
                   <div className="flex -ml-4 select-none">
@@ -792,17 +791,21 @@ function AboutSection() {
           <h2 className={`text-[48px] md:text-[62px] xl:text-[90px] transition-all duration-1000 ${aboutVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
             {lang === 'ID' ? (
               <>
-                <span className="text-accent">
-                  Tent<span className="italic">an</span>g
+                <span className="inline-block whitespace-nowrap">
+                  <span className="text-accent">
+                    Tent<span className="italic">an</span>g
+                  </span>
                 </span>{' '}
-                Kami
+                <span className="inline-block">Kami</span>
               </>
             ) : (
               <>
-                <span className="text-accent">
-                  Ab<span className="italic">ou</span>t
+                <span className="inline-block whitespace-nowrap">
+                  <span className="text-accent">
+                    Ab<span className="italic">ou</span>t
+                  </span>
                 </span>{' '}
-                Us
+                <span className="inline-block">Us</span>
               </>
             )}
           </h2>
@@ -1016,7 +1019,7 @@ function ProjectsSection() {
                   {t('home.projects.desc')}
                 </p>
               </div>
-              <div className="flex justify-end mt-4 md:mt-6">
+              <div className="flex justify-center md:justify-end mt-4 md:mt-6">
                 <AnimatedButton text={t('home.projects.seeMore')} href="/our-works" />
               </div>
             </div>
