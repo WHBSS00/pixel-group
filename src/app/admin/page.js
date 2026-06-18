@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import { useCompany } from '@/context/CompanyContext';
 import { getDirectDriveLink } from '@/utils/drive';
@@ -184,75 +185,81 @@ export default function GeneralAdminPortal() {
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    // Check if session exists
-    const loggedInSession = sessionStorage.getItem('idea_admin_logged_in') === 'true';
-    setIsLoggedIn(loggedInSession);
+    const timer = setTimeout(() => {
+      setMounted(true);
+      // Check if session exists
+      const loggedInSession = sessionStorage.getItem('idea_admin_logged_in') === 'true';
+      setIsLoggedIn(loggedInSession);
 
-    // Sidebar collapse state
-    const collapsed = localStorage.getItem('admin_sidebar_collapsed') === 'true';
-    setSidebarCollapsed(collapsed);
+      // Sidebar collapse state
+      const collapsed = localStorage.getItem('admin_sidebar_collapsed') === 'true';
+      setSidebarCollapsed(collapsed);
 
-    // Retrieve works
-    const stored = localStorage.getItem('custom_portfolio_works');
-    let needsReset = false;
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        if (
-          !Array.isArray(parsed) ||
-          parsed.length !== 11 ||
-          parsed.some((item) => item.title === 'Monas Design Signage') ||
-          !parsed.every((item) => item.objectPosition)
-        ) {
+      // Retrieve works
+      const stored = localStorage.getItem('custom_portfolio_works');
+      let needsReset = false;
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          if (
+            !Array.isArray(parsed) ||
+            parsed.length !== 11 ||
+            parsed.some((item) => item.title === 'Monas Design Signage') ||
+            !parsed.every((item) => item.objectPosition)
+          ) {
+            needsReset = true;
+          }
+        } catch (e) {
           needsReset = true;
         }
-      } catch (e) {
+      } else {
         needsReset = true;
       }
-    } else {
-      needsReset = true;
-    }
 
-    if (needsReset) {
-      // Seed standard items in localStorage so they can be fully managed
-      const seedData = initialWorksData.map((item, idx) => ({
-        id: `seed-${idx}`,
-        title: item.title,
-        location: item.location,
-        image: item.image,
-        typeKey: item.typeKey,
-        customType: '',
-        size: item.size,
-        latitude: item.latitude || '',
-        longitude: item.longitude || '',
-        position: item.position || (idx + 1).toString(),
-        objectPosition: item.objectPosition || 'left',
-        isCustom: true
-      }));
-      localStorage.setItem('custom_portfolio_works', JSON.stringify(seedData));
-      setCustomWorks(seedData);
-    } else {
-      try {
-        const parsed = JSON.parse(stored);
-        setCustomWorks(parsed.sort((a, b) => (parseInt(a.position) || 999) - (parseInt(b.position) || 999)));
-      } catch (e) {
-        console.error(e);
+      if (needsReset) {
+        // Seed standard items in localStorage so they can be fully managed
+        const seedData = initialWorksData.map((item, idx) => ({
+          id: `seed-${idx}`,
+          title: item.title,
+          location: item.location,
+          image: item.image,
+          typeKey: item.typeKey,
+          customType: '',
+          size: item.size,
+          latitude: item.latitude || '',
+          longitude: item.longitude || '',
+          position: item.position || (idx + 1).toString(),
+          objectPosition: item.objectPosition || 'left',
+          isCustom: true
+        }));
+        localStorage.setItem('custom_portfolio_works', JSON.stringify(seedData));
+        setCustomWorks(seedData);
+      } else {
+        try {
+          const parsed = JSON.parse(stored);
+          setCustomWorks(parsed.sort((a, b) => (parseInt(a.position) || 999) - (parseInt(b.position) || 999)));
+        } catch (e) {
+          console.error(e);
+        }
       }
-    }
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
     if (settings) {
-      setCompName(settings.name || '');
-      setCompPhone(settings.phone || '');
-      setCompWhatsapp(settings.whatsapp || '');
-      setCompWhatsappUrl(settings.whatsappUrl || '');
-      setCompEmail(settings.email || '');
-      setCompAddress(settings.address || '');
-      setCompMapsUrl(settings.mapsUrl || '');
-      setCompInstagram(settings.instagram || '');
-      setCompLinkedin(settings.linkedin || '');
+      const timer = setTimeout(() => {
+        setCompName(settings.name || '');
+        setCompPhone(settings.phone || '');
+        setCompWhatsapp(settings.whatsapp || '');
+        setCompWhatsappUrl(settings.whatsappUrl || '');
+        setCompEmail(settings.email || '');
+        setCompAddress(settings.address || '');
+        setCompMapsUrl(settings.mapsUrl || '');
+        setCompInstagram(settings.instagram || '');
+        setCompLinkedin(settings.linkedin || '');
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, [settings]);
 
@@ -586,9 +593,9 @@ export default function GeneralAdminPortal() {
           </form>
 
           <div className="mt-8 text-center">
-            <a href="/" className="text-xs text-accent hover:underline font-semibold transition-all">
+            <Link href="/" className="text-xs text-accent hover:underline font-semibold transition-all">
               {lang === 'ID' ? 'Kembali ke Beranda' : 'Back to Home'}
-            </a>
+            </Link>
           </div>
         </div>
       </div>

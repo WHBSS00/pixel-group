@@ -21,15 +21,18 @@ export function CompanyProvider({ children }) {
 
   useEffect(() => {
     const stored = localStorage.getItem('idea_company_settings');
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        setSettings({ ...DEFAULT_COMPANY_SETTINGS, ...parsed });
-      } catch (e) {
-        console.error('Failed to parse company settings from localStorage', e);
+    const timer = setTimeout(() => {
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          setSettings({ ...DEFAULT_COMPANY_SETTINGS, ...parsed });
+        } catch (e) {
+          console.error('Failed to parse company settings from localStorage', e);
+        }
       }
-    }
-    setIsLoaded(true);
+      setIsLoaded(true);
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const updateSettings = (newSettings) => {

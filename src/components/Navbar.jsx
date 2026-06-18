@@ -25,14 +25,23 @@ export default function Navbar() {
   const { lang, setLang, t } = useLanguage();
 
   useEffect(() => {
-    setMounted(true);
+    const timer = setTimeout(() => {
+      setMounted(true);
+    }, 0);
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setScrolled(currentScrollY > 50);
     };
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
+
+  const handleLogoClick = () => {
+    window.dispatchEvent(new CustomEvent('trigger-preloader'));
+  };
 
   const isHome = pathname === '/';
   const headerTextColor = mobileOpen ? 'text-white' : 'text-foreground';
@@ -87,7 +96,7 @@ export default function Navbar() {
 
           {/* Right Side: Logo + Language Switcher (logo and switcher are visible on both mobile and desktop) */}
           <div className="flex items-center gap-x-4 md:gap-x-6">
-            <Link href="/" className="z-50">
+            <Link href="/" className="z-50" onClick={handleLogoClick}>
               <div>
                 <PixelLogo className="h-[38px] md:h-[50px]" />
               </div>

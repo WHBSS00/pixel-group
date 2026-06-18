@@ -369,13 +369,17 @@ function WhyUsSection() {
           </p>
         </div>
         <div className={`transition-all duration-1000 delay-400 ${whyVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[40px]'}`}>
-          <div className="flex flex-col lg:flex-row w-full h-auto lg:h-[500px] gap-4">
+          <div 
+            className="flex flex-col lg:flex-row w-full h-auto lg:h-[500px] gap-4"
+            onMouseLeave={() => setActiveItem(null)}
+          >
             {whyUsItems.map((card, i) => {
               const isActive = activeItem === i;
               return (
                 <div
                   key={i}
                   onClick={() => setActiveItem(isActive ? null : i)}
+                  onMouseEnter={() => setActiveItem(i)}
                   className={`relative rounded-2xl shadow-md overflow-hidden border border-border cursor-pointer transition-all duration-700 ease-in-out min-h-[250px] ${
                     isActive ? 'lg:flex-[3] flex-[1.5]' : 'lg:flex-[1] flex-[1]'
                   }`}

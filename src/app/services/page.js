@@ -69,7 +69,7 @@ export default function ServicesPage() {
 function Block1Section() {
   const [activeIndex, setActiveIndex] = useState(0);
   const resolvedActiveIndex = activeIndex === -1 ? 0 : activeIndex;
-  const [ref, isVisible] = useScrollAnimation({ threshold: 0.1 });
+  const [ref, isVisible] = useScrollAnimation({ threshold: 0.1, rootMargin: '0px 0px -5% 0px' });
   const { t } = useLanguage();
 
   const services = block1Images.map((img, i) => ({
@@ -79,8 +79,8 @@ function Block1Section() {
   }));
 
   return (
-    <section className="relative z-10 py-10 lg:py-16" id="ooh-production-house">
-      <div className="relative isolate z-10" ref={ref}>
+    <section className="relative z-10 py-10 lg:py-16" id="ooh-production-house" ref={ref}>
+      <div className="relative isolate z-10">
         <div className="container relative z-10 font-helvetica text-left">
           <h2 className={`mt-4 max-w-[600px] text-[40px] leading-[1.2] md:text-[50px] xl:text-[68px] transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
             <span className="text-accent">OOH</span> <span>Pro</span><span className="font-ramillas italic font-normal text-accent">ductio</span>n <span className="font-bold">House</span>
@@ -90,7 +90,7 @@ function Block1Section() {
           </p>
         </div>
       </div>
-      <div className="relative z-10 mt-10">
+      <div className={`relative z-10 mt-10 transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[5px]'}`}>
         <div className="container flex flex-col md:flex-row md:gap-x-8 xl:gap-x-20">
           <div className="w-full md:w-[40%] mb-6 md:mb-0">
             <div className="relative box-border w-full overflow-hidden rounded-2xl border border-border aspect-[4/3] md:aspect-[294/430] xl:aspect-[1/1]">
@@ -114,6 +114,7 @@ function Block1Section() {
                 image={service.image}
                 isOpen={activeIndex === i}
                 onToggle={() => setActiveIndex(activeIndex === i ? -1 : i)}
+                onMouseEnter={() => setActiveIndex(i)}
               />
             ))}
           </div>
@@ -137,8 +138,8 @@ function Block2Section() {
   }));
 
   return (
-    <section className="relative z-10 py-10 lg:py-16 bg-card/10" id="ooh-media-specialist">
-      <div className="relative isolate z-10" ref={ref}>
+    <section className="relative z-10 py-10 lg:py-16 bg-card/10" id="ooh-media-specialist" ref={ref}>
+      <div className="relative isolate z-10">
         <div className="container relative z-10 font-helvetica text-left md:text-right flex flex-col items-start md:items-end">
           <h2 className={`mt-4 max-w-[600px] text-[40px] leading-[1.2] md:text-[50px] xl:text-[68px] transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
             <span className="text-accent">OOH</span> <span>M</span><span className="font-ramillas italic font-normal text-accent">edia</span> <span className="font-bold">Specialist</span>
@@ -148,7 +149,7 @@ function Block2Section() {
           </p>
         </div>
       </div>
-      <div className="relative z-10 mt-10">
+      <div className={`relative z-10 mt-10 transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[5px]'}`}>
         <div className="container flex flex-col md:flex-row-reverse md:gap-x-8 xl:gap-x-20">
           <div className="w-full md:w-[40%] mb-6 md:mb-0">
             <div className="relative box-border w-full overflow-hidden rounded-2xl border border-border aspect-[4/3] md:aspect-[294/430] xl:aspect-[1/1]">
@@ -172,6 +173,7 @@ function Block2Section() {
                 image={service.image}
                 isOpen={activeIndex === i}
                 onToggle={() => setActiveIndex(activeIndex === i ? -1 : i)}
+                onMouseEnter={() => setActiveIndex(i)}
               />
             ))}
           </div>
@@ -195,8 +197,8 @@ function Block3Section() {
   }));
 
   return (
-    <section className="relative z-10 py-10 lg:py-16" id="ooh-consultation">
-      <div className="relative isolate z-10" ref={ref}>
+    <section className="relative z-10 py-10 lg:py-16" id="ooh-consultation" ref={ref}>
+      <div className="relative isolate z-10">
         <div className="container relative z-10 font-helvetica text-left">
           <h2 className={`mt-4 max-w-[600px] text-[40px] leading-[1.2] md:text-[50px] xl:text-[68px] transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
             <span className="text-accent">OOH</span> <span>Con</span><span className="font-ramillas italic font-normal text-accent">sultati</span>on
@@ -206,7 +208,7 @@ function Block3Section() {
           </p>
         </div>
       </div>
-      <div className="relative z-10 mt-10">
+      <div className={`relative z-10 mt-10 transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[5px]'}`}>
         <div className="container flex flex-col md:flex-row md:gap-x-8 xl:gap-x-20">
           <div className="w-full md:w-[40%] mb-6 md:mb-0">
             <div className="relative box-border w-full overflow-hidden rounded-2xl border border-border aspect-[4/3] md:aspect-[294/430] xl:aspect-[1/1]">
@@ -230,6 +232,7 @@ function Block3Section() {
                 image={service.image}
                 isOpen={activeIndex === i}
                 onToggle={() => setActiveIndex(activeIndex === i ? -1 : i)}
+                onMouseEnter={() => setActiveIndex(i)}
               />
             ))}
           </div>
@@ -253,8 +256,8 @@ function Block4Section() {
   }));
 
   return (
-    <section className="relative z-10 py-10 lg:py-16 bg-card/10" id="ooh-research">
-      <div className="relative isolate z-10" ref={ref}>
+    <section className="relative z-10 py-10 lg:py-16 bg-card/10" id="ooh-research" ref={ref}>
+      <div className="relative isolate z-10">
         <div className="container relative z-10 font-helvetica text-left md:text-right flex flex-col items-start md:items-end">
           <h2 className={`mt-4 max-w-[600px] text-[40px] leading-[1.2] md:text-[50px] xl:text-[68px] transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
             <span className="text-accent">OOH</span> <span>Re</span><span className="font-ramillas italic font-normal text-accent">searc</span>h
@@ -264,7 +267,7 @@ function Block4Section() {
           </p>
         </div>
       </div>
-      <div className="relative z-10 mt-10">
+      <div className={`relative z-10 mt-10 transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[5px]'}`}>
         <div className="container flex flex-col md:flex-row-reverse md:gap-x-8 xl:gap-x-20">
           <div className="w-full md:w-[40%] mb-6 md:mb-0">
             <div className="relative box-border w-full overflow-hidden rounded-2xl border border-border aspect-[4/3] md:aspect-[294/430] xl:aspect-[1/1]">
@@ -288,6 +291,7 @@ function Block4Section() {
                 image={service.image}
                 isOpen={activeIndex === i}
                 onToggle={() => setActiveIndex(activeIndex === i ? -1 : i)}
+                onMouseEnter={() => setActiveIndex(i)}
               />
             ))}
           </div>
@@ -297,9 +301,9 @@ function Block4Section() {
   );
 }
 
-function AccordionItem({ number, title, desc, image, isOpen, onToggle }) {
+function AccordionItem({ number, title, desc, image, isOpen, onToggle, onMouseEnter }) {
   return (
-    <div onClick={onToggle} className={`flex cursor-pointer items-start gap-x-1 border-b md:gap-x-2 pb-4 xl:pb-6 pt-6 xl:pt-10 transition-colors group ${isOpen ? 'border-accent' : 'border-border hover:border-accent'}`}>
+    <div onClick={onToggle} onMouseEnter={onMouseEnter} className={`flex cursor-pointer items-start gap-x-1 border-b md:gap-x-2 pb-4 xl:pb-6 pt-6 xl:pt-10 transition-colors group ${isOpen ? 'border-accent' : 'border-border hover:border-accent'}`}>
       <span className={`w-7 font-bold font-lato text-sm md:text-base mt-[4px] transition-colors ${isOpen ? 'text-primary' : 'text-accent group-hover:text-primary'}`}>
         {number}
       </span>

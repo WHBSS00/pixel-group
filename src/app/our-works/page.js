@@ -241,54 +241,57 @@ function PortfolioGrid() {
   const [portfolioItems, setPortfolioItems] = useState([]);
 
   useEffect(() => {
-    let stored = localStorage.getItem('custom_portfolio_works');
-    let needsReset = false;
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        if (
-          !Array.isArray(parsed) ||
-          parsed.length !== 11 ||
-          parsed.some((item) => item.title === 'Monas Design Signage') ||
-          !parsed.every((item) => item.objectPosition)
-        ) {
+    const timer = setTimeout(() => {
+      let stored = localStorage.getItem('custom_portfolio_works');
+      let needsReset = false;
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          if (
+            !Array.isArray(parsed) ||
+            parsed.length !== 11 ||
+            parsed.some((item) => item.title === 'Monas Design Signage') ||
+            !parsed.every((item) => item.objectPosition)
+          ) {
+            needsReset = true;
+          }
+        } catch (e) {
           needsReset = true;
         }
-      } catch (e) {
+      } else {
         needsReset = true;
       }
-    } else {
-      needsReset = true;
-    }
 
-    if (needsReset) {
-      const seedData = initialWorksData.map((item, idx) => ({
-        id: `seed-${idx}`,
-        title: item.title,
-        location: item.location,
-        image: item.image,
-        typeKey: item.typeKey,
-        customType: '',
-        size: item.size,
-        latitude: item.latitude || '',
-        longitude: item.longitude || '',
-        position: item.position || (idx + 1).toString(),
-        objectPosition: item.objectPosition || 'left',
-        isCustom: true
-      }));
-      localStorage.setItem('custom_portfolio_works', JSON.stringify(seedData));
-      setPortfolioItems(seedData.map(item => ({
-        ...item,
-        type: t(`ourWorks.items.types.${item.typeKey}`) || item.typeKey,
-      })).sort((a, b) => (parseInt(a.position) || 999) - (parseInt(b.position) || 999)));
-    } else {
-      const parsed = JSON.parse(stored);
-      setPortfolioItems(parsed.map(item => ({
-        ...item,
-        type: item.typeKey === 'other' ? item.customType : t(`ourWorks.items.types.${item.typeKey}`) || item.typeKey,
-        size: item.size || '',
-      })).sort((a, b) => (parseInt(a.position) || 999) - (parseInt(b.position) || 999)));
-    }
+      if (needsReset) {
+        const seedData = initialWorksData.map((item, idx) => ({
+          id: `seed-${idx}`,
+          title: item.title,
+          location: item.location,
+          image: item.image,
+          typeKey: item.typeKey,
+          customType: '',
+          size: item.size,
+          latitude: item.latitude || '',
+          longitude: item.longitude || '',
+          position: item.position || (idx + 1).toString(),
+          objectPosition: item.objectPosition || 'left',
+          isCustom: true
+        }));
+        localStorage.setItem('custom_portfolio_works', JSON.stringify(seedData));
+        setPortfolioItems(seedData.map(item => ({
+          ...item,
+          type: t(`ourWorks.items.types.${item.typeKey}`) || item.typeKey,
+        })).sort((a, b) => (parseInt(a.position) || 999) - (parseInt(b.position) || 999)));
+      } else {
+        const parsed = JSON.parse(stored);
+        setPortfolioItems(parsed.map(item => ({
+          ...item,
+          type: item.typeKey === 'other' ? item.customType : t(`ourWorks.items.types.${item.typeKey}`) || item.typeKey,
+          size: item.size || '',
+        })).sort((a, b) => (parseInt(a.position) || 999) - (parseInt(b.position) || 999)));
+      }
+    }, 0);
+    return () => clearTimeout(timer);
   }, [t]);
 
   return (

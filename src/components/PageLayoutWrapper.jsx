@@ -14,31 +14,45 @@ export default function PageLayoutWrapper({ children }) {
 
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [hasLoadedApp, setHasLoadedApp] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    try {
-      const hasLoaded = sessionStorage.getItem('hasLoaded');
-      // If already loaded in session, OR if not on home page, skip preloader
-      if (hasLoaded === 'true' || !isHomePage) {
-        setLoading(false);
-        sessionStorage.setItem('hasLoaded', 'true');
-      }
-    } catch (e) {
-      console.warn('sessionStorage is not available:', e);
+    const timer = setTimeout(() => {
+      setMounted(true);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    // If not on home page, skip preloader immediately
+    const timer = setTimeout(() => {
       if (!isHomePage) {
         setLoading(false);
+        setHasLoadedApp(true);
+      } else {
+        // If on home page, and we already loaded, skip it
+        if (hasLoadedApp) {
+          setLoading(false);
+        } else {
+          setLoading(true);
+        }
       }
-    }
-  }, [isHomePage]);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [isHomePage, hasLoadedApp]);
+
+  useEffect(() => {
+    const handleTrigger = () => {
+      setLoading(true);
+      setHasLoadedApp(false);
+    };
+    window.addEventListener('trigger-preloader', handleTrigger);
+    return () => window.removeEventListener('trigger-preloader', handleTrigger);
+  }, []);
 
   const handlePreloaderComplete = () => {
     setLoading(false);
-    try {
-      sessionStorage.setItem('hasLoaded', 'true');
-    } catch (e) {
-      console.warn('sessionStorage is not available:', e);
-    }
+    setHasLoadedApp(true);
   };
 
   useEffect(() => {

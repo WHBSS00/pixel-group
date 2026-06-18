@@ -155,7 +155,7 @@ function ContactSection({ formData, setFormData, handleSubmit, isSubmitting }) {
               </p>
 
               {/* Desktop Find Us Here */}
-              <div className="mt-12 max-w-[436px] md:max-w-[336px] hidden md:block">
+              <div className={`mt-12 max-w-[436px] md:max-w-[336px] hidden md:block transition-all duration-1000 delay-500 ${mounted ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
                 <h3 className="text-[24px] font-bold mb-4 leading-[24px] text-foreground">{t('contact.findUs')}</h3>
                 {settings.address && (
                   <a target="_blank" href={settings.mapsUrl || '#'} rel="noopener noreferrer">
@@ -270,7 +270,7 @@ function ContactSection({ formData, setFormData, handleSubmit, isSubmitting }) {
             </div>
 
             {/* Mobile Find Us Here */}
-            <div className="block md:hidden mt-12 text-foreground">
+            <div className={`block md:hidden mt-12 text-foreground transition-all duration-1000 delay-500 ${mounted ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
               <h3 className="text-[24px] font-bold mb-4 leading-[24px]">{t('contact.findUs')}</h3>
               {settings.address && (
                 <a target="_blank" href={settings.mapsUrl || '#'} rel="noopener noreferrer">

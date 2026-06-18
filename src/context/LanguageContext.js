@@ -13,7 +13,10 @@ export function LanguageProvider({ children }) {
     // Sync with localStorage if present to persist preference
     const storedLang = localStorage.getItem('lang');
     if (storedLang && (storedLang === 'ID' || storedLang === 'EN')) {
-      setLang(storedLang);
+      const timer = setTimeout(() => {
+        setLang(storedLang);
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, []);
 

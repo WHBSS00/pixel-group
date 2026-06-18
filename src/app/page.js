@@ -538,52 +538,55 @@ function PortfolioSection() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    let stored = localStorage.getItem('custom_portfolio_works');
-    let needsReset = false;
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        if (
-          !Array.isArray(parsed) ||
-          parsed.length !== 11 ||
-          parsed.some((item) => item.title === 'Monas Design Signage') ||
-          !parsed.every((item) => item.objectPosition)
-        ) {
+    const timer = setTimeout(() => {
+      setMounted(true);
+      let stored = localStorage.getItem('custom_portfolio_works');
+      let needsReset = false;
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          if (
+            !Array.isArray(parsed) ||
+            parsed.length !== 11 ||
+            parsed.some((item) => item.title === 'Monas Design Signage') ||
+            !parsed.every((item) => item.objectPosition)
+          ) {
+            needsReset = true;
+          }
+        } catch (e) {
           needsReset = true;
         }
-      } catch (e) {
+      } else {
         needsReset = true;
       }
-    } else {
-      needsReset = true;
-    }
 
-    if (needsReset) {
-      const seedData = initialWorksData.map((item, idx) => ({
-        id: `seed-${idx}`,
-        title: item.title,
-        location: item.location,
-        image: item.image,
-        typeKey: item.typeKey,
-        customType: '',
-        size: item.size,
-        latitude: item.latitude || '',
-        longitude: item.longitude || '',
-        position: item.position || (idx + 1).toString(),
-        objectPosition: item.objectPosition || 'left',
-        isCustom: true
-      }));
-      localStorage.setItem('custom_portfolio_works', JSON.stringify(seedData));
-      setPortfolioItems(seedData);
-    } else {
-      try {
-        const parsed = JSON.parse(stored);
-        setPortfolioItems(parsed.sort((a, b) => (parseInt(a.position) || 999) - (parseInt(b.position) || 999)));
-      } catch (e) {
-        console.error(e);
+      if (needsReset) {
+        const seedData = initialWorksData.map((item, idx) => ({
+          id: `seed-${idx}`,
+          title: item.title,
+          location: item.location,
+          image: item.image,
+          typeKey: item.typeKey,
+          customType: '',
+          size: item.size,
+          latitude: item.latitude || '',
+          longitude: item.longitude || '',
+          position: item.position || (idx + 1).toString(),
+          objectPosition: item.objectPosition || 'left',
+          isCustom: true
+        }));
+        localStorage.setItem('custom_portfolio_works', JSON.stringify(seedData));
+        setPortfolioItems(seedData);
+      } else {
+        try {
+          const parsed = JSON.parse(stored);
+          setPortfolioItems(parsed.sort((a, b) => (parseInt(a.position) || 999) - (parseInt(b.position) || 999)));
+        } catch (e) {
+          console.error(e);
+        }
       }
-    }
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -598,10 +601,13 @@ function PortfolioSection() {
 
   useEffect(() => {
     if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
+    const timer = setTimeout(() => {
+      setSelectedIndex(emblaApi.selectedScrollSnap());
+    }, 0);
     emblaApi.on('select', () => {
       setSelectedIndex(emblaApi.selectedScrollSnap());
     });
+    return () => clearTimeout(timer);
   }, [emblaApi]);
 
   useEffect(() => {
@@ -609,7 +615,10 @@ function PortfolioSection() {
       emblaApi.reInit({
         startIndex: portfolioItems.length - 1,
       });
-      setSelectedIndex(emblaApi.selectedScrollSnap());
+      const timer = setTimeout(() => {
+        setSelectedIndex(emblaApi.selectedScrollSnap());
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, [emblaApi, portfolioItems]);
 
@@ -933,53 +942,56 @@ function ProjectsSection() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    let customWorks = [];
-    if (typeof window !== 'undefined') {
-      let stored = localStorage.getItem('custom_portfolio_works');
-      let needsReset = false;
-      if (stored) {
-        try {
-          const parsed = JSON.parse(stored);
-          if (
-            !Array.isArray(parsed) ||
-            parsed.length !== 11 ||
-            parsed.some((item) => item.title === 'Monas Design Signage') ||
-            !parsed.every((item) => item.objectPosition)
-          ) {
+    const timer = setTimeout(() => {
+      setMounted(true);
+      let customWorks = [];
+      if (typeof window !== 'undefined') {
+        let stored = localStorage.getItem('custom_portfolio_works');
+        let needsReset = false;
+        if (stored) {
+          try {
+            const parsed = JSON.parse(stored);
+            if (
+              !Array.isArray(parsed) ||
+              parsed.length !== 11 ||
+              parsed.some((item) => item.title === 'Monas Design Signage') ||
+              !parsed.every((item) => item.objectPosition)
+            ) {
+              needsReset = true;
+            }
+          } catch (e) {
             needsReset = true;
           }
-        } catch (e) {
+        } else {
           needsReset = true;
         }
-      } else {
-        needsReset = true;
-      }
 
-      if (needsReset) {
-        const seedData = initialWorksData.map((item, idx) => ({
-          id: `seed-${idx}`,
-          title: item.title,
-          location: item.location,
-          image: item.image,
-          typeKey: item.typeKey,
-          customType: '',
-          size: item.size,
-          latitude: item.latitude || '',
-          longitude: item.longitude || '',
-          objectPosition: item.objectPosition || 'left',
-          isCustom: true
-        }));
-        localStorage.setItem('custom_portfolio_works', JSON.stringify(seedData));
-        customWorks = seedData;
-      } else {
-        customWorks = JSON.parse(stored);
-      }
+        if (needsReset) {
+          const seedData = initialWorksData.map((item, idx) => ({
+            id: `seed-${idx}`,
+            title: item.title,
+            location: item.location,
+            image: item.image,
+            typeKey: item.typeKey,
+            customType: '',
+            size: item.size,
+            latitude: item.latitude || '',
+            longitude: item.longitude || '',
+            objectPosition: item.objectPosition || 'left',
+            isCustom: true
+          }));
+          localStorage.setItem('custom_portfolio_works', JSON.stringify(seedData));
+          customWorks = seedData;
+        } else {
+          customWorks = JSON.parse(stored);
+        }
 
-      // Shuffle and pick exactly 8 random items for display
-      const shuffled = [...customWorks].sort(() => 0.5 - Math.random());
-      setDisplayProjects(shuffled.slice(0, 8));
-    }
+        // Shuffle and pick exactly 8 random items for display
+        const shuffled = [...customWorks].sort(() => 0.5 - Math.random());
+        setDisplayProjects(shuffled.slice(0, 8));
+      }
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const activeProjects = displayProjects && displayProjects.length > 0
