@@ -1,5 +1,5 @@
 export default async function sitemap() {
-  const baseUrl = 'https://ideakreasimedia.co.id';
+  const baseUrl = 'https://ideakreasi.vercel.app';
 
   const routes = [
     '',

@@ -38,7 +38,7 @@ export const metadata = {
   openGraph: {
     title: 'PT. Idea Kreasi Media | OOH Media Specialist & Production House',
     description: 'IDEA KREASI MEDIA adalah perusahaan Media Out Of Home yang menyajikan kampanye Iklan & Branding efektif untuk menjangkau Target Pasar Klien dan menghasilkan Konversi.',
-    url: 'https://ideakreasimedia.co.id',
+    url: 'https://ideakreasi.vercel.app',
     siteName: 'PT. Idea Kreasi Media',
     type: 'website',
   },
@@ -56,8 +56,8 @@ export default function RootLayout({ children }) {
     '@type': 'Organization',
     'name': 'PT. Idea Kreasi Media',
     'alternateName': 'Idea Kreasi Media',
-    'url': 'https://ideakreasimedia.co.id',
-    'logo': 'https://ideakreasimedia.co.id/logo-idea.png',
+    'url': 'https://ideakreasi.vercel.app',
+    'logo': 'https://ideakreasi.vercel.app/logo-idea.png',
     'description': 'PT. IDEA KREASI MEDIA adalah perusahaan Media Out Of Home (OOH) terkemuka di Indonesia yang menyajikan kampanye Iklan & Branding efektif.',
     'address': {
       '@type': 'PostalAddress',
@@ -84,7 +84,7 @@ export default function RootLayout({ children }) {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     'name': 'PT. Idea Kreasi Media',
-    'url': 'https://ideakreasimedia.co.id'
+    'url': 'https://ideakreasi.vercel.app'
   };
 
   return (
