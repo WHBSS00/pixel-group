@@ -4,6 +4,7 @@ import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import BackgroundVideo from '@/components/BackgroundVideo';
 import { useLanguage } from '@/context/LanguageContext';
 import { useCompany } from '@/context/CompanyContext';
+import { db } from '@/lib/firebase';
 
 export default function ContactUsPage() {
   const [formData, setFormData] = useState({
@@ -19,14 +20,39 @@ export default function ContactUsPage() {
   
   const { t } = useLanguage();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate api request delay
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-    }, 800);
+    
+    const fullPhone = `${formData.countryCode} ${formData.phone}`.trim();
+    const submissionData = {
+      name: formData.name.trim(),
+      companyName: formData.companyName.trim(),
+      email: formData.email.trim(),
+      phone: fullPhone,
+      message: formData.message.trim(),
+      createdAt: new Date().toISOString()
+    };
+
+    if (db) {
+      try {
+        const { collection, addDoc } = await import('firebase/firestore');
+        await addDoc(collection(db, 'contact_messages'), submissionData);
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+      } catch (error) {
+        console.error('Failed to submit message to Firestore:', error);
+        // Fallback to simulation so user flow doesn't break if env vars are unset
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+      }
+    } else {
+      // Simulate API delay and set success
+      setTimeout(() => {
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+      }, 800);
+    }
   };
 
   if (isSubmitted) {

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import { useCompany } from '@/context/CompanyContext';
 import { getDirectDriveLink } from '@/utils/drive';
+import { db } from '@/lib/firebase';
 
 const BASE = 'https://pixelgroup.id';
 
@@ -185,6 +186,11 @@ export default function GeneralAdminPortal() {
   const [deleteConfirmId, setDeleteConfirmId] = useState(null);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
+  // Contact Messages States
+  const [contactMessages, setContactMessages] = useState([]);
+  const [loadingMessages, setLoadingMessages] = useState(false);
+  const [deleteMessageConfirmId, setDeleteMessageConfirmId] = useState(null);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setMounted(true);
@@ -196,52 +202,100 @@ export default function GeneralAdminPortal() {
       const collapsed = localStorage.getItem('admin_sidebar_collapsed') === 'true';
       setSidebarCollapsed(collapsed);
 
-      // Retrieve works
-      const stored = localStorage.getItem('custom_portfolio_works');
-      let needsReset = false;
-      if (stored) {
-        try {
-          const parsed = JSON.parse(stored);
-          if (
-            !Array.isArray(parsed) ||
-            parsed.length !== 11 ||
-            parsed.some((item) => item.title === 'Monas Design Signage') ||
-            !parsed.every((item) => item.objectPosition)
-          ) {
+      // Function to load from local storage
+      const loadFromLocalStorage = () => {
+        const stored = localStorage.getItem('custom_portfolio_works');
+        let needsReset = false;
+        if (stored) {
+          try {
+            const parsed = JSON.parse(stored);
+            if (
+              !Array.isArray(parsed) ||
+              parsed.length !== 11 ||
+              parsed.some((item) => item.title === 'Monas Design Signage') ||
+              !parsed.every((item) => item.objectPosition)
+            ) {
+              needsReset = true;
+            }
+          } catch (e) {
             needsReset = true;
           }
-        } catch (e) {
+        } else {
           needsReset = true;
         }
-      } else {
-        needsReset = true;
-      }
 
-      if (needsReset) {
-        // Seed standard items in localStorage so they can be fully managed
-        const seedData = initialWorksData.map((item, idx) => ({
-          id: `seed-${idx}`,
-          title: item.title,
-          location: item.location,
-          image: item.image,
-          typeKey: item.typeKey,
-          customType: '',
-          size: item.size,
-          latitude: item.latitude || '',
-          longitude: item.longitude || '',
-          position: item.position || (idx + 1).toString(),
-          objectPosition: item.objectPosition || 'left',
-          isCustom: true
-        }));
-        localStorage.setItem('custom_portfolio_works', JSON.stringify(seedData));
-        setCustomWorks(seedData);
-      } else {
-        try {
-          const parsed = JSON.parse(stored);
-          setCustomWorks(parsed.sort((a, b) => (parseInt(a.position) || 999) - (parseInt(b.position) || 999)));
-        } catch (e) {
-          console.error(e);
+        if (needsReset) {
+          const seedData = initialWorksData.map((item, idx) => ({
+            id: `seed-${idx}`,
+            title: item.title,
+            location: item.location,
+            image: item.image,
+            typeKey: item.typeKey,
+            customType: '',
+            size: item.size,
+            latitude: item.latitude || '',
+            longitude: item.longitude || '',
+            position: item.position || (idx + 1).toString(),
+            objectPosition: item.objectPosition || 'left',
+            isCustom: true
+          }));
+          localStorage.setItem('custom_portfolio_works', JSON.stringify(seedData));
+          setCustomWorks(seedData);
+        } else {
+          try {
+            const parsed = JSON.parse(stored);
+            setCustomWorks(parsed.sort((a, b) => (parseInt(a.position) || 999) - (parseInt(b.position) || 999)));
+          } catch (e) {
+            console.error(e);
+          }
         }
+      };
+
+      // Retrieve works
+      if (db) {
+        const loadFromFirestore = async () => {
+          try {
+            const { collection, getDocs } = await import('firebase/firestore');
+            const querySnapshot = await getDocs(collection(db, 'portfolio_works'));
+            const items = [];
+            querySnapshot.forEach((doc) => {
+              items.push(doc.data());
+            });
+            if (items.length > 0) {
+              const sortedItems = items.sort((a, b) => (parseInt(a.position) || 999) - (parseInt(b.position) || 999));
+              setCustomWorks(sortedItems);
+              localStorage.setItem('custom_portfolio_works', JSON.stringify(sortedItems));
+            } else {
+              // Seeding empty Firestore
+              const seedData = initialWorksData.map((item, idx) => ({
+                id: `seed-${idx}`,
+                title: item.title,
+                location: item.location,
+                image: item.image,
+                typeKey: item.typeKey,
+                customType: '',
+                size: item.size,
+                latitude: item.latitude || '',
+                longitude: item.longitude || '',
+                position: item.position || (idx + 1).toString(),
+                objectPosition: item.objectPosition || 'left',
+                isCustom: true
+              }));
+              const { doc, setDoc } = await import('firebase/firestore');
+              for (const s of seedData) {
+                await setDoc(doc(db, 'portfolio_works', s.id), s);
+              }
+              localStorage.setItem('custom_portfolio_works', JSON.stringify(seedData));
+              setCustomWorks(seedData);
+            }
+          } catch (err) {
+            console.error('Error loading/seeding Firestore:', err);
+            loadFromLocalStorage();
+          }
+        };
+        loadFromFirestore();
+      } else {
+        loadFromLocalStorage();
       }
     }, 0);
     return () => clearTimeout(timer);
@@ -442,6 +496,21 @@ export default function GeneralAdminPortal() {
 
     setCustomWorks(finalizedList);
     localStorage.setItem('custom_portfolio_works', JSON.stringify(finalizedList));
+
+    if (db) {
+      const saveToFirestore = async () => {
+        try {
+          const { doc, setDoc } = await import('firebase/firestore');
+          for (const s of finalizedList) {
+            await setDoc(doc(db, 'portfolio_works', s.id), s);
+          }
+        } catch (err) {
+          console.error('Error saving to Firestore:', err);
+        }
+      };
+      saveToFirestore();
+    }
+
     resetForm();
 
     setMessage({
@@ -472,6 +541,20 @@ export default function GeneralAdminPortal() {
     
     setCustomWorks(reordered);
     localStorage.setItem('custom_portfolio_works', JSON.stringify(reordered));
+
+    if (db) {
+      const saveOrderToFirestore = async () => {
+        try {
+          const { doc, setDoc } = await import('firebase/firestore');
+          for (const s of reordered) {
+            await setDoc(doc(db, 'portfolio_works', s.id), s);
+          }
+        } catch (err) {
+          console.error('Error saving order to Firestore:', err);
+        }
+      };
+      saveOrderToFirestore();
+    }
   };
 
   const handleEditWork = (item) => {
@@ -507,12 +590,102 @@ export default function GeneralAdminPortal() {
     const updated = customWorks.filter(item => item.id !== id);
     setCustomWorks(updated);
     localStorage.setItem('custom_portfolio_works', JSON.stringify(updated));
+
+    if (db) {
+      const deleteFromFirestore = async () => {
+        try {
+          const { doc, deleteDoc, setDoc } = await import('firebase/firestore');
+          await deleteDoc(doc(db, 'portfolio_works', id));
+          // Re-save re-indexed positions for remaining items
+          const reordered = updated.map((item, idx) => ({
+            ...item,
+            position: (idx + 1).toString()
+          }));
+          for (const s of reordered) {
+            await setDoc(doc(db, 'portfolio_works', s.id), s);
+          }
+        } catch (err) {
+          console.error('Error deleting from Firestore:', err);
+        }
+      };
+      deleteFromFirestore();
+    }
+
     setDeleteConfirmId(null);
     setMessage({
       text: lang === 'ID' ? 'Item berhasil dihapus' : 'Item deleted successfully',
       type: 'success'
     });
     setTimeout(() => setMessage({ text: '', type: '' }), 3000);
+  };
+
+  // Load contact messages when Messages tab is active
+  useEffect(() => {
+    if (activeTab === 'messages') {
+      if (db) {
+        const loadMessages = async () => {
+          setLoadingMessages(true);
+          try {
+            const { collection, getDocs } = await import('firebase/firestore');
+            const querySnapshot = await getDocs(collection(db, 'contact_messages'));
+            const msgs = [];
+            querySnapshot.forEach((doc) => {
+              msgs.push({ id: doc.id, ...doc.data() });
+            });
+            // Sort by createdAt descending
+            msgs.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+            setContactMessages(msgs);
+          } catch (error) {
+            console.error('Failed to load contact messages:', error);
+          } finally {
+            setLoadingMessages(false);
+          }
+        };
+        loadMessages();
+      } else {
+        // Fallback or offline simulation
+        const stored = localStorage.getItem('custom_contact_messages');
+        if (stored) {
+          try {
+            setContactMessages(JSON.parse(stored));
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      }
+    }
+  }, [activeTab]);
+
+  const executeDeleteMessage = async (id) => {
+    if (db) {
+      try {
+        const { doc, deleteDoc } = await import('firebase/firestore');
+        await deleteDoc(doc(db, 'contact_messages', id));
+        setContactMessages((prev) => prev.filter((msg) => msg.id !== id));
+        setMessage({
+          text: lang === 'ID' ? 'Pesan berhasil dihapus' : 'Message deleted successfully',
+          type: 'success',
+        });
+        setTimeout(() => setMessage({ text: '', type: '' }), 3000);
+      } catch (err) {
+        console.error('Error deleting message:', err);
+        setMessage({
+          text: lang === 'ID' ? 'Gagal menghapus pesan' : 'Failed to delete message',
+          type: 'error',
+        });
+        setTimeout(() => setMessage({ text: '', type: '' }), 3000);
+      }
+    } else {
+      const updated = contactMessages.filter((msg) => msg.id !== id);
+      setContactMessages(updated);
+      localStorage.setItem('custom_contact_messages', JSON.stringify(updated));
+      setMessage({
+        text: lang === 'ID' ? 'Pesan berhasil dihapus (lokal)' : 'Message deleted successfully (local)',
+        type: 'success',
+      });
+      setTimeout(() => setMessage({ text: '', type: '' }), 3000);
+    }
+    setDeleteMessageConfirmId(null);
   };
 
   if (!mounted) return null;
@@ -674,6 +847,41 @@ export default function GeneralAdminPortal() {
         </div>
       )}
 
+      {/* ── Custom Delete Message Confirmation Modal ── */}
+      {deleteMessageConfirmId && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#1E3447]/30 backdrop-blur-sm px-4">
+          <div className="bg-white border border-border p-6 md:p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-red-500/10 text-red-500 mb-4">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-bold text-[#1E3447] mb-2">
+              {lang === 'ID' ? 'Hapus Pesan Masuk?' : 'Delete Inbox Message?'}
+            </h3>
+            <p className="text-sm font-lato text-foreground/75 mb-6">
+              {lang === 'ID' 
+                ? 'Tindakan ini permanen dan akan menghapus pesan ini dari database Firestore.' 
+                : 'This action is permanent and will remove this message from the Firestore database.'}
+            </p>
+            <div className="flex gap-3 justify-center">
+              <button
+                onClick={() => setDeleteMessageConfirmId(null)}
+                className="flex-1 px-4 py-2.5 rounded-xl border border-border text-foreground hover:bg-card-hover font-semibold text-sm cursor-pointer transition-colors"
+              >
+                {lang === 'ID' ? 'Batal' : 'Cancel'}
+              </button>
+              <button
+                onClick={() => executeDeleteMessage(deleteMessageConfirmId)}
+                className="flex-1 px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold text-sm cursor-pointer transition-colors"
+              >
+                {lang === 'ID' ? 'Hapus' : 'Delete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ── Custom Logout Confirmation Modal ── */}
       {showLogoutConfirm && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#1E3447]/30 backdrop-blur-sm px-4">
@@ -794,6 +1002,21 @@ export default function GeneralAdminPortal() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
               {(!sidebarCollapsed || mobileSidebarOpen) && <span>{lang === 'ID' ? 'Identitas Perusahaan' : 'Company Identity'}</span>}
+            </button>
+
+            <button
+              onClick={() => { setActiveTab('messages'); setMobileSidebarOpen(false); }}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-sm font-semibold transition-all duration-200 cursor-pointer ${
+                activeTab === 'messages'
+                  ? 'bg-accent text-white shadow-md'
+                  : 'text-white/70 hover:bg-white/5 hover:text-white'
+              } ${sidebarCollapsed ? 'md:justify-center' : ''}`}
+              title={lang === 'ID' ? 'Pesan Masuk' : 'Inbox Messages'}
+            >
+              <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 00-2 2z" />
+              </svg>
+              {(!sidebarCollapsed || mobileSidebarOpen) && <span>{lang === 'ID' ? 'Pesan Masuk' : 'Inbox'}</span>}
             </button>
           </nav>
         </div>
@@ -1447,8 +1670,138 @@ export default function GeneralAdminPortal() {
           </div>
         )}
 
+        {/* Tab Content: MESSAGES (Pesan Masuk) */}
+        {activeTab === 'messages' && (
+          <div className="relative z-10 font-helvetica animate-fadeIn">
+            {/* Header Banner */}
+            <header className="pt-8 pb-6 border-b border-border mb-8">
+              <div>
+                <h1 className="font-bold text-3xl text-[#1E3447]">
+                  {lang === 'ID' ? 'Pesan Masuk' : 'Inbox Messages'}
+                </h1>
+                <p className="text-foreground/60 mt-1 font-lato text-sm">
+                  {lang === 'ID'
+                    ? 'Kelola pesan dan permohonan kemitraan dari formulir kontak pelanggan.'
+                    : 'Manage messages and partnership inquiries submitted from the customer contact form.'}
+                </p>
+              </div>
+            </header>
+
+            {message.text && (
+              <div className={`p-4 rounded-xl mb-6 font-lato text-sm border ${
+                message.type === 'success' 
+                  ? 'bg-green-500/10 border-green-500/30 text-green-700' 
+                  : 'bg-red-500/10 border-red-500/30 text-red-700'
+              }`}>
+                {message.text}
+              </div>
+            )}
+
+            {/* List Action Bar / Status */}
+            <div className="flex justify-between items-center bg-card/45 border border-border px-5 py-4 rounded-2xl mb-8">
+              <div className="flex items-center gap-3">
+                <h2 className="text-lg font-bold text-[#1E3447]">
+                  {lang === 'ID' ? 'Daftar Pesan' : 'Message List'}
+                </h2>
+                <span className="text-xs font-semibold bg-accent/15 text-accent px-3 py-1 rounded-full font-lato">
+                  {contactMessages.length} Total
+                </span>
+              </div>
+            </div>
+
+            {/* Loading Indicator */}
+            {loadingMessages ? (
+              <div className="flex flex-col items-center justify-center py-20 bg-card/45 border border-border border-dashed rounded-3xl">
+                <div className="w-10 h-10 border-4 border-accent border-t-transparent rounded-full animate-spin mb-4" />
+                <p className="text-sm font-lato text-foreground/50">
+                  {lang === 'ID' ? 'Memuat pesan dari database...' : 'Loading messages from database...'}
+                </p>
+              </div>
+            ) : contactMessages.length === 0 ? (
+              /* Empty State */
+              <div className="flex flex-col items-center justify-center py-20 bg-card/45 border border-border border-dashed rounded-3xl text-center px-4">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-accent/10 text-accent mb-4">
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 00-2 2z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-bold text-[#1E3447] mb-1">
+                  {lang === 'ID' ? 'Tidak Ada Pesan' : 'No Messages Found'}
+                </h3>
+                <p className="text-sm font-lato text-foreground/50 max-w-sm">
+                  {lang === 'ID'
+                    ? 'Saat ini belum ada pesan masuk yang dikirim melalui formulir kontak.'
+                    : 'Currently there are no incoming messages sent via the contact form.'}
+                </p>
+              </div>
+            ) : (
+              /* Messages Grid */
+              <div className="grid grid-cols-1 gap-6">
+                {contactMessages.map((msg) => (
+                  <div 
+                    key={msg.id} 
+                    className="bg-card/75 backdrop-blur-md border border-border p-6 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 relative border-l-4 border-l-accent"
+                  >
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-border/50 pb-4 mb-4">
+                      <div>
+                        <h3 className="font-bold text-lg text-primary">{msg.name}</h3>
+                        {msg.companyName && (
+                          <p className="text-xs font-semibold text-accent uppercase tracking-wider mt-0.5">
+                            {msg.companyName}
+                          </p>
+                        )}
+                      </div>
+                      
+                      {/* Meta info & Delete button */}
+                      <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end">
+                        <span className="text-xs text-foreground/40 font-lato">
+                          {msg.createdAt ? new Date(msg.createdAt).toLocaleString(lang === 'ID' ? 'id-ID' : 'en-US', {
+                            dateStyle: 'medium',
+                            timeStyle: 'short'
+                          }) : '-'}
+                        </span>
+                        
+                        <button
+                          onClick={() => setDeleteMessageConfirmId(msg.id)}
+                          className="p-2 rounded-xl bg-red-500/10 border border-red-500/20 text-red-600 hover:bg-red-500 hover:text-white transition-all cursor-pointer"
+                          title={lang === 'ID' ? 'Hapus Pesan' : 'Delete Message'}
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Contact Details Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 text-xs font-lato text-foreground/70">
+                      <div className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-foreground/40 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 00-2 2z" />
+                        </svg>
+                        <a href={`mailto:${msg.email}`} className="hover:text-accent hover:underline transition-colors">{msg.email}</a>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-foreground/40 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        </svg>
+                        <span>{msg.phone}</span>
+                      </div>
+                    </div>
+
+                    {/* Message Body */}
+                    <div className="bg-background/80 rounded-2xl p-4 border border-border/50 text-sm font-lato text-foreground/80 leading-relaxed whitespace-pre-wrap">
+                      {msg.message}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Coming Soon Placeholders */}
-        {activeTab !== 'works' && activeTab !== 'company' && (
+        {activeTab !== 'works' && activeTab !== 'company' && activeTab !== 'messages' && (
           <div className="h-[calc(100vh-4rem)] flex items-center justify-center text-center px-4 relative z-10">
             <div className="bg-card/75 backdrop-blur-md p-8 md:p-12 border border-border rounded-3xl shadow-xl max-w-md">
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-accent/10 text-accent mb-6">

@@ -5,6 +5,7 @@ import CTASection from '@/components/CTASection';
 import BackgroundVideo from '@/components/BackgroundVideo';
 import { useLanguage } from '@/context/LanguageContext';
 import { getDirectDriveLink } from '@/utils/drive';
+import { db } from '@/lib/firebase';
 
 const initialWorksData = [
   {
@@ -237,53 +238,84 @@ function PortfolioGrid() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      let stored = localStorage.getItem('custom_portfolio_works');
-      let needsReset = false;
-      if (stored) {
-        try {
-          const parsed = JSON.parse(stored);
-          if (
-            !Array.isArray(parsed) ||
-            parsed.length !== 11 ||
-            parsed.some((item) => item.title === 'Monas Design Signage') ||
-            !parsed.every((item) => item.objectPosition)
-          ) {
+      const loadFromLocalStorage = () => {
+        let stored = localStorage.getItem('custom_portfolio_works');
+        let needsReset = false;
+        if (stored) {
+          try {
+            const parsed = JSON.parse(stored);
+            if (
+              !Array.isArray(parsed) ||
+              parsed.length !== 11 ||
+              parsed.some((item) => item.title === 'Monas Design Signage') ||
+              !parsed.every((item) => item.objectPosition)
+            ) {
+              needsReset = true;
+            }
+          } catch (e) {
             needsReset = true;
           }
-        } catch (e) {
+        } else {
           needsReset = true;
         }
-      } else {
-        needsReset = true;
-      }
 
-      if (needsReset) {
-        const seedData = initialWorksData.map((item, idx) => ({
-          id: `seed-${idx}`,
-          title: item.title,
-          location: item.location,
-          image: item.image,
-          typeKey: item.typeKey,
-          customType: '',
-          size: item.size,
-          latitude: item.latitude || '',
-          longitude: item.longitude || '',
-          position: item.position || (idx + 1).toString(),
-          objectPosition: item.objectPosition || 'left',
-          isCustom: true
-        }));
-        localStorage.setItem('custom_portfolio_works', JSON.stringify(seedData));
-        setPortfolioItems(seedData.map(item => ({
-          ...item,
-          type: t(`ourWorks.items.types.${item.typeKey}`) || item.typeKey,
-        })).sort((a, b) => (parseInt(a.position) || 999) - (parseInt(b.position) || 999)));
+        if (needsReset) {
+          const seedData = initialWorksData.map((item, idx) => ({
+            id: `seed-${idx}`,
+            title: item.title,
+            location: item.location,
+            image: item.image,
+            typeKey: item.typeKey,
+            customType: '',
+            size: item.size,
+            latitude: item.latitude || '',
+            longitude: item.longitude || '',
+            position: item.position || (idx + 1).toString(),
+            objectPosition: item.objectPosition || 'left',
+            isCustom: true
+          }));
+          localStorage.setItem('custom_portfolio_works', JSON.stringify(seedData));
+          setPortfolioItems(seedData.map(item => ({
+            ...item,
+            type: t(`ourWorks.items.types.${item.typeKey}`) || item.typeKey,
+          })).sort((a, b) => (parseInt(a.position) || 999) - (parseInt(b.position) || 999)));
+        } else {
+          const parsed = JSON.parse(stored);
+          setPortfolioItems(parsed.map(item => ({
+            ...item,
+            type: item.typeKey === 'other' ? item.customType : t(`ourWorks.items.types.${item.typeKey}`) || item.typeKey,
+            size: item.size || '',
+          })).sort((a, b) => (parseInt(a.position) || 999) - (parseInt(b.position) || 999)));
+        }
+      };
+
+      if (db) {
+        const loadFromFirestore = async () => {
+          try {
+            const { collection, getDocs } = await import('firebase/firestore');
+            const querySnapshot = await getDocs(collection(db, 'portfolio_works'));
+            const items = [];
+            querySnapshot.forEach((doc) => {
+              items.push(doc.data());
+            });
+            if (items.length > 0) {
+              setPortfolioItems(items.map(item => ({
+                ...item,
+                type: item.typeKey === 'other' ? item.customType : t(`ourWorks.items.types.${item.typeKey}`) || item.typeKey,
+                size: item.size || '',
+              })).sort((a, b) => (parseInt(a.position) || 999) - (parseInt(b.position) || 999)));
+              localStorage.setItem('custom_portfolio_works', JSON.stringify(items));
+            } else {
+              loadFromLocalStorage();
+            }
+          } catch (err) {
+            console.error('Error fetching Firestore in our-works/page.js:', err);
+            loadFromLocalStorage();
+          }
+        };
+        loadFromFirestore();
       } else {
-        const parsed = JSON.parse(stored);
-        setPortfolioItems(parsed.map(item => ({
-          ...item,
-          type: item.typeKey === 'other' ? item.customType : t(`ourWorks.items.types.${item.typeKey}`) || item.typeKey,
-          size: item.size || '',
-        })).sort((a, b) => (parseInt(a.position) || 999) - (parseInt(b.position) || 999)));
+        loadFromLocalStorage();
       }
     }, 0);
     return () => clearTimeout(timer);

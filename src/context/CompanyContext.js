@@ -1,5 +1,6 @@
 'use client';
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { db } from '@/lib/firebase';
 
 const CompanyContext = createContext();
 
@@ -20,8 +21,9 @@ export function CompanyProvider({ children }) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem('idea_company_settings');
-    const timer = setTimeout(() => {
+    const loadSettings = async () => {
+      // First try to load from localStorage for instant loading representation
+      const stored = localStorage.getItem('idea_company_settings');
       if (stored) {
         try {
           const parsed = JSON.parse(stored);
@@ -30,15 +32,46 @@ export function CompanyProvider({ children }) {
           console.error('Failed to parse company settings from localStorage', e);
         }
       }
+
+      // Then retrieve fresh configuration from Firestore if available
+      if (db) {
+        try {
+          const { doc, getDoc, setDoc } = await import('firebase/firestore');
+          const docRef = doc(db, 'company_settings', 'default');
+          const docSnap = await getDoc(docRef);
+          
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            setSettings({ ...DEFAULT_COMPANY_SETTINGS, ...data });
+            localStorage.setItem('idea_company_settings', JSON.stringify(data));
+          } else {
+            // Seed the Firestore document if it's empty/new
+            await setDoc(docRef, DEFAULT_COMPANY_SETTINGS);
+          }
+        } catch (error) {
+          console.error('Failed to load company settings from Firestore:', error);
+        }
+      }
       setIsLoaded(true);
-    }, 0);
-    return () => clearTimeout(timer);
+    };
+
+    loadSettings();
   }, []);
 
-  const updateSettings = (newSettings) => {
+  const updateSettings = async (newSettings) => {
     const updated = { ...settings, ...newSettings };
     setSettings(updated);
     localStorage.setItem('idea_company_settings', JSON.stringify(updated));
+
+    if (db) {
+      try {
+        const { doc, setDoc } = await import('firebase/firestore');
+        const docRef = doc(db, 'company_settings', 'default');
+        await setDoc(docRef, updated, { merge: true });
+      } catch (error) {
+        console.error('Failed to save company settings to Firestore:', error);
+      }
+    }
   };
 
   return (
@@ -55,3 +88,4 @@ export function useCompany() {
   }
   return context;
 }
+

@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { getDirectDriveLink } from '@/utils/drive';
+import { db } from '@/lib/firebase';
 
 const BASE = 'https://pixelgroup.id';
 
@@ -534,50 +535,79 @@ function PortfolioSection() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setMounted(true);
-      let stored = localStorage.getItem('custom_portfolio_works');
-      let needsReset = false;
-      if (stored) {
-        try {
-          const parsed = JSON.parse(stored);
-          if (
-            !Array.isArray(parsed) ||
-            parsed.length !== 11 ||
-            parsed.some((item) => item.title === 'Monas Design Signage') ||
-            !parsed.every((item) => item.objectPosition)
-          ) {
+
+      const loadFromLocalStorage = () => {
+        let stored = localStorage.getItem('custom_portfolio_works');
+        let needsReset = false;
+        if (stored) {
+          try {
+            const parsed = JSON.parse(stored);
+            if (
+              !Array.isArray(parsed) ||
+              parsed.length !== 11 ||
+              parsed.some((item) => item.title === 'Monas Design Signage') ||
+              !parsed.every((item) => item.objectPosition)
+            ) {
+              needsReset = true;
+            }
+          } catch (e) {
             needsReset = true;
           }
-        } catch (e) {
+        } else {
           needsReset = true;
         }
-      } else {
-        needsReset = true;
-      }
 
-      if (needsReset) {
-        const seedData = initialWorksData.map((item, idx) => ({
-          id: `seed-${idx}`,
-          title: item.title,
-          location: item.location,
-          image: item.image,
-          typeKey: item.typeKey,
-          customType: '',
-          size: item.size,
-          latitude: item.latitude || '',
-          longitude: item.longitude || '',
-          position: item.position || (idx + 1).toString(),
-          objectPosition: item.objectPosition || 'left',
-          isCustom: true
-        }));
-        localStorage.setItem('custom_portfolio_works', JSON.stringify(seedData));
-        setPortfolioItems(seedData);
-      } else {
-        try {
-          const parsed = JSON.parse(stored);
-          setPortfolioItems(parsed.sort((a, b) => (parseInt(a.position) || 999) - (parseInt(b.position) || 999)));
-        } catch (e) {
-          console.error(e);
+        if (needsReset) {
+          const seedData = initialWorksData.map((item, idx) => ({
+            id: `seed-${idx}`,
+            title: item.title,
+            location: item.location,
+            image: item.image,
+            typeKey: item.typeKey,
+            customType: '',
+            size: item.size,
+            latitude: item.latitude || '',
+            longitude: item.longitude || '',
+            position: item.position || (idx + 1).toString(),
+            objectPosition: item.objectPosition || 'left',
+            isCustom: true
+          }));
+          localStorage.setItem('custom_portfolio_works', JSON.stringify(seedData));
+          setPortfolioItems(seedData);
+        } else {
+          try {
+            const parsed = JSON.parse(stored);
+            setPortfolioItems(parsed.sort((a, b) => (parseInt(a.position) || 999) - (parseInt(b.position) || 999)));
+          } catch (e) {
+            console.error(e);
+          }
         }
+      };
+
+      if (db) {
+        const loadFromFirestore = async () => {
+          try {
+            const { collection, getDocs } = await import('firebase/firestore');
+            const querySnapshot = await getDocs(collection(db, 'portfolio_works'));
+            const items = [];
+            querySnapshot.forEach((doc) => {
+              items.push(doc.data());
+            });
+            if (items.length > 0) {
+              const sortedItems = items.sort((a, b) => (parseInt(a.position) || 999) - (parseInt(b.position) || 999));
+              setPortfolioItems(sortedItems);
+              localStorage.setItem('custom_portfolio_works', JSON.stringify(sortedItems));
+            } else {
+              loadFromLocalStorage();
+            }
+          } catch (err) {
+            console.error('Error fetching Firestore in PortfolioSection:', err);
+            loadFromLocalStorage();
+          }
+        };
+        loadFromFirestore();
+      } else {
+        loadFromLocalStorage();
       }
     }, 0);
     return () => clearTimeout(timer);
@@ -944,8 +974,9 @@ function ProjectsSection() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setMounted(true);
-      let customWorks = [];
-      if (typeof window !== 'undefined') {
+
+      const loadFromLocalStorage = () => {
+        let customWorks = [];
         let stored = localStorage.getItem('custom_portfolio_works');
         let needsReset = false;
         if (stored) {
@@ -983,12 +1014,43 @@ function ProjectsSection() {
           localStorage.setItem('custom_portfolio_works', JSON.stringify(seedData));
           customWorks = seedData;
         } else {
-          customWorks = JSON.parse(stored);
+          try {
+            customWorks = JSON.parse(stored);
+          } catch (e) {
+            console.error(e);
+          }
         }
 
         // Shuffle and pick exactly 8 random items for display
         const shuffled = [...customWorks].sort(() => 0.5 - Math.random());
         setDisplayProjects(shuffled.slice(0, 8));
+      };
+
+      if (db) {
+        const loadFromFirestore = async () => {
+          try {
+            const { collection, getDocs } = await import('firebase/firestore');
+            const querySnapshot = await getDocs(collection(db, 'portfolio_works'));
+            const items = [];
+            querySnapshot.forEach((doc) => {
+              items.push(doc.data());
+            });
+            if (items.length > 0) {
+              // Shuffle and pick exactly 8 random items for display
+              const shuffled = [...items].sort(() => 0.5 - Math.random());
+              setDisplayProjects(shuffled.slice(0, 8));
+              localStorage.setItem('custom_portfolio_works', JSON.stringify(items));
+            } else {
+              loadFromLocalStorage();
+            }
+          } catch (err) {
+            console.error('Error fetching Firestore in ProjectsSection:', err);
+            loadFromLocalStorage();
+          }
+        };
+        loadFromFirestore();
+      } else {
+        loadFromLocalStorage();
       }
     }, 0);
     return () => clearTimeout(timer);
