@@ -3,6 +3,7 @@ import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import AnimatedButton from '@/components/AnimatedButton';
 import MarqueeRow from '@/components/MarqueeRow';
 import CTASection from '@/components/CTASection';
+import BackgroundVideo from '@/components/BackgroundVideo';
 import { useState, useEffect } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useLanguage } from '@/context/LanguageContext';
@@ -286,10 +287,7 @@ function OurServiceSection() {
     <section className="relative isolate bg-surface text-foreground py-20 snap-start overflow-hidden border-b border-border">
       {/* Background visual graphics */}
       <div className="absolute inset-0 z-0">
-        <div className="blue-dot-grid">
-          <div className="dot-layer dot-layer-1" />
-          <div className="dot-layer dot-layer-2" />
-        </div>
+        <BackgroundVideo opacity={0.3} />
         <div className="blue-glow-top opacity-50" />
         <div className="blue-glow-bottom opacity-50" />
       </div>
@@ -421,11 +419,7 @@ function OurSolutionSection() {
     <section ref={ref} className="our-services relative isolate bg-background text-foreground snap-start">
       <h2 className="sr-only">Our Services</h2>
       <div className="absolute inset-x-0 top-0 z-0 h-[120%] overflow-hidden bg-background">
-        <div className="blue-dot-grid opacity-30">
-          <div className="dot-layer dot-layer-1" />
-          <div className="dot-layer dot-layer-2" />
-          <div className="dot-layer dot-layer-3" />
-        </div>
+        <BackgroundVideo opacity={0.3} />
         <div className="blue-glow-top opacity-40" />
         <div className="blue-glow-bottom opacity-30" />
       </div>
@@ -782,11 +776,7 @@ function AboutSection() {
   return (
     <section className="relative min-h-screen snap-start">
       <div className="absolute inset-0 w-full h-full bg-surface">
-        <div className="blue-dot-grid">
-          <div className="dot-layer dot-layer-1" />
-          <div className="dot-layer dot-layer-2" />
-          <div className="dot-layer dot-layer-3" />
-        </div>
+        <BackgroundVideo opacity={0.3} />
         <div className="blue-glow-top" />
         <div className="blue-glow-bottom" />
       </div>

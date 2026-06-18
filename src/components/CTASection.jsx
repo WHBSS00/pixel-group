@@ -1,6 +1,7 @@
 'use client';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import Link from 'next/link';
+import BackgroundVideo from '@/components/BackgroundVideo';
 import { useLanguage } from '@/context/LanguageContext';
 
 export default function CTASection() {
@@ -10,11 +11,7 @@ export default function CTASection() {
   return (
     <section className="relative z-10 flex h-svh min-h-[580px] md:min-h-[680px] flex-col items-stretch justify-center bg-gradient-to-br from-surface to-card md:overflow-hidden snap-start">
       <div aria-hidden="true" className="absolute inset-0 overflow-hidden z-0">
-        <div className="blue-dot-grid opacity-40">
-          <div className="dot-layer dot-layer-1" />
-          <div className="dot-layer dot-layer-2" />
-          <div className="dot-layer dot-layer-3" />
-        </div>
+        <BackgroundVideo opacity={0.4} />
         <div className="blue-glow-top opacity-60" />
         <div className="blue-glow-bottom opacity-40" />
         <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-background to-background/0" />

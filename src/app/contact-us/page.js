@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import BackgroundVideo from '@/components/BackgroundVideo';
 import { useLanguage } from '@/context/LanguageContext';
 import { useCompany } from '@/context/CompanyContext';
 
@@ -38,11 +39,7 @@ export default function ContactUsPage() {
           <section className="pt-4 relative z-10">
             <div className="relative z-10 isolate min-h-[600px] flex items-center justify-center">
               <div aria-hidden="true" className="absolute inset-x-0 bg-background top-[-20%] h-full md:h-[150%] overflow-hidden z-0">
-                <div className="blue-dot-grid opacity-30">
-                  <div className="dot-layer dot-layer-1" />
-                  <div className="dot-layer dot-layer-2" />
-                  <div className="dot-layer dot-layer-3" />
-                </div>
+                <BackgroundVideo opacity={0.3} />
                 <div className="blue-glow-top opacity-50" />
                 <div className="h-1/3 absolute bottom-0 inset-x-0 bg-gradient-to-t from-background to-background/0" />
                 <div className="h-1/3 absolute top-0 inset-x-0 bg-gradient-to-b from-background to-background/0" />
@@ -110,11 +107,7 @@ function ContactSection({ formData, setFormData, handleSubmit, isSubmitting }) {
     <section className="pt-4 relative z-10">
       <div className="relative z-10 isolate min-h-[600px]">
         <div aria-hidden="true" className="absolute inset-x-0 bg-background top-[-20%] h-full md:h-[150%] overflow-hidden z-0">
-          <div className="blue-dot-grid opacity-30">
-            <div className="dot-layer dot-layer-1" />
-            <div className="dot-layer dot-layer-2" />
-            <div className="dot-layer dot-layer-3" />
-          </div>
+          <BackgroundVideo opacity={0.3} />
           <div className="blue-glow-top opacity-50" />
           <div className="h-1/3 absolute bottom-0 inset-x-0 bg-gradient-to-t from-background to-background/0" />
           <div className="h-1/3 absolute top-0 inset-x-0 bg-gradient-to-b from-background to-background/0" />

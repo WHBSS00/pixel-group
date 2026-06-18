@@ -2,6 +2,7 @@
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { useState, useEffect } from 'react';
 import CTASection from '@/components/CTASection';
+import BackgroundVideo from '@/components/BackgroundVideo';
 import { useLanguage } from '@/context/LanguageContext';
 
 const BASE = 'https://pixelgroup.id';
@@ -77,11 +78,7 @@ function HeroSection() {
     <section className="relative isolate z-10 flex items-center pt-16 md:pt-20">
       <div className="relative isolate z-10 w-full">
         <div aria-hidden="true" className="absolute inset-x-0 top-[-10%] z-0 h-[120%] overflow-hidden bg-background">
-          <div className="blue-dot-grid opacity-30">
-            <div className="dot-layer dot-layer-1" />
-            <div className="dot-layer dot-layer-2" />
-            <div className="dot-layer dot-layer-3" />
-          </div>
+          <BackgroundVideo opacity={0.3} />
           <div className="blue-glow-top opacity-50" />
           <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-background to-background/0" />
           <div className="absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-background to-background/0" />
