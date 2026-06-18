@@ -51,8 +51,54 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const organizationJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    'name': 'PT. Idea Kreasi Media',
+    'alternateName': 'Idea Kreasi Media',
+    'url': 'https://ideakreasimedia.co.id',
+    'logo': 'https://ideakreasimedia.co.id/logo-idea.png',
+    'description': 'PT. IDEA KREASI MEDIA adalah perusahaan Media Out Of Home (OOH) terkemuka di Indonesia yang menyajikan kampanye Iklan & Branding efektif.',
+    'address': {
+      '@type': 'PostalAddress',
+      'streetAddress': 'Jl. Panjang Cidodol No. 83, Kebayoran Lama',
+      'addressLocality': 'Jakarta Selatan',
+      'addressRegion': 'DKI Jakarta',
+      'postalCode': '12220',
+      'addressCountry': 'ID'
+    },
+    'contactPoint': {
+      '@type': 'ContactPoint',
+      'telephone': '+62-21-2942-8555',
+      'contactType': 'customer service',
+      'areaServed': 'ID',
+      'availableLanguage': ['Indonesian', 'English']
+    },
+    'sameAs': [
+      'https://www.instagram.com',
+      'https://www.linkedin.com'
+    ]
+  };
+
+  const websiteJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    'name': 'PT. Idea Kreasi Media',
+    'url': 'https://ideakreasimedia.co.id'
+  };
+
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
+      </head>
       <body
         className={`${inter.variable} ${lato.variable} ${playfair.variable} flex min-h-screen flex-col`}
         suppressHydrationWarning
