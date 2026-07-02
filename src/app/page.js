@@ -207,11 +207,11 @@ function HeroSection() {
       <div className="container relative z-10 h-screen">
         <div className="flex flex-col justify-end items-center md:items-end h-full overflow-hidden pb-10 md:pb-0">
           <div className="relative pb-10 text w-fit text-center md:text-right flex flex-col items-center md:items-end">
-            <h2 className={`font-helvetica text-foreground text-[58px] md:text-[76px] lg:text-[120px] leading-[1.2] text-center md:text-right transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
+            <h2 className={`font-helvetica text-foreground text-[40px] sm:text-[58px] md:text-[76px] lg:text-[120px] leading-[1.1] text-center md:text-right transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
               {t('home.hero.part1')}<span className="font-helvetica-italic">{t('home.hero.part2')}</span>
             </h2>
             <div className={`flex flex-col md:flex-row-reverse items-center md:items-center md:gap-x-8 lg:gap-x-20 mt-2 transition-all duration-1000 delay-200 ${mounted ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
-              <h2 className="font-tt-ramillas text-accent text-[58px] md:text-[76px] lg:text-[120px] leading-[1.2]">
+              <h2 className="font-tt-ramillas text-accent text-[40px] sm:text-[58px] md:text-[76px] lg:text-[120px] leading-[1.1]">
                 {t('home.hero.ooh')}
               </h2>
               <div className="relative px-6 lg:px-8 py-4 h-fit">
@@ -436,7 +436,7 @@ function OurSolutionSection() {
                 {lang === 'ID' ? 'Solusi Kami' : 'Our Solution'}
               </p>
             </div>
-            <div className="step flex flex-1 flex-nowrap items-end gap-x-2 sm:gap-x-4 md:gap-x-6 text-xs sm:text-sm md:text-base xl:text-xl">
+            <div className="step flex flex-1 flex-nowrap items-end gap-x-1 sm:gap-x-4 md:gap-x-6 text-[11px] sm:text-sm md:text-base xl:text-xl overflow-x-auto">
               {services.map((s, i) => (
                 <button
                   key={i}
@@ -454,7 +454,7 @@ function OurSolutionSection() {
       </div>
 
       {/* Slider container */}
-      <div className="h-screen min-h-[600px] overflow-hidden md:h-[90svh] xl:h-screen relative z-10">
+      <div className="h-screen min-h-[500px] overflow-hidden md:h-[90svh] xl:h-screen relative z-10 landscape:h-[80svh] landscape:min-h-[400px]">
         <div
           className="flex w-fit justify-start transition-transform ease-in"
           style={{ transform: `translateX(-${activeSlide * 100}svw)`, transitionDuration: '400ms' }}
@@ -464,7 +464,7 @@ function OurSolutionSection() {
             <div className="container px-6">
               <div className={`pt-[128px] xl:pt-[100px] transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[45px] blur-[10px]'}`}>
                 {lang === 'ID' ? (
-                  <p className="max-w-[1113px] font-helvetica text-[48px] sm:text-[58px] leading-[1.1] md:text-[76px] xl:text-[120px] [&>span]:inline-block">
+                  <p className="max-w-[1113px] font-helvetica text-[36px] sm:text-[48px] leading-[1.1] md:text-[76px] xl:text-[120px] [&>span]:inline-block">
                     <span className="mr-[0.25em]">
                       Domi<span className="italic font-ramillas ml-[0.02em] pr-[0.02em]">nasi</span>
                     </span>
@@ -475,7 +475,7 @@ function OurSolutionSection() {
                     <span className="font-bold text-accent tracking-wide">Megapolitan</span>
                   </p>
                 ) : (
-                  <p className="max-w-[1113px] font-helvetica text-[48px] sm:text-[58px] leading-[1.1] md:text-[76px] xl:text-[120px] [&>span]:inline-block">
+                  <p className="max-w-[1113px] font-helvetica text-[36px] sm:text-[48px] leading-[1.1] md:text-[76px] xl:text-[120px] [&>span]:inline-block">
                     <span className="mr-[0.25em]">
                       Abso<span className="italic font-ramillas ml-[0.02em] pr-[0.02em]">lute</span>
                     </span>
@@ -663,7 +663,7 @@ function PortfolioSection() {
           className={`overflow-visible xl:w-[800px] xl:h-screen relative flex xl:block justify-center pt-[2vh] md:pt-14 xl:pt-0 snap-start transition-all duration-1000 ${carouselVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[50px] blur-[5px]'}`}
         >
           {mounted && portfolioItems.length > 0 && (
-            <div className="flex justify-center px-5 w-full md:w-[1200px] xl:w-[800px] relative xl:h-full">
+            <div className="flex justify-center px-5 w-full md:w-full xl:w-[800px] relative xl:h-full">
               <div className="relative h-[60vh] min-h-[450px] xl:h-full w-full xl:w-full flex items-center">
                 <div className="overflow-hidden w-full" ref={emblaRef}>
                   <div className="flex -mx-2 select-none">
@@ -686,10 +686,10 @@ function PortfolioSection() {
                           <div className="w-fit relative xl:h-[610px] flex flex-col items-center">
                             <div
                               className={`ring-1 ring-neutral-300 box-border rounded-lg relative overflow-clip h-[50vh] min-h-[350px] max-h-[400px] md:max-h-[unset] xl:h-[540px] ${isActive
-                                  ? 'scale-100 z-10 shadow-[0_0_25px_rgba(26,83,208,0.25)]'
-                                  : isNext || isPrev
-                                    ? 'scale-[0.8] translate-x-[0%] z-0'
-                                    : 'scale-[0.6] translate-x-[20%] z-0'
+                                ? 'scale-100 z-10 shadow-[0_0_25px_rgba(26,83,208,0.25)]'
+                                : isNext || isPrev
+                                  ? 'scale-[0.8] translate-x-[0%] z-0'
+                                  : 'scale-[0.6] translate-x-[20%] z-0'
                                 }`}
                               style={{
                                 aspectRatio: '2/3',
@@ -758,7 +758,7 @@ function PortfolioSection() {
         <div className="flex bg-transparent relative z-10 flex-1 snap-start" ref={portfolioRef}>
           <div className="flex-1 text-right xl:max-w-[471px] ml-auto flex flex-col items-end justify-center">
             {lang === 'ID' ? (
-              <h2 className={`text-[40px] md:text-[50px] xl:text-[68px] text-foreground leading-[1.2] max-w-[442px] xl:max-w-none font-helvetica [&_span]:inline-block transition-all duration-1000 ${portfolioVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
+              <h2 className={`text-[32px] sm:text-[40px] md:text-[50px] xl:text-[68px] text-foreground leading-[1.2] max-w-[442px] xl:max-w-none font-helvetica [&_span]:inline-block transition-all duration-1000 ${portfolioVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
                 <span>Sim</span>
                 <span className="italic font-ramillas">bol</span>{' '}
                 <span>Prestise</span>{' '}
@@ -768,7 +768,7 @@ function PortfolioSection() {
                 <span className="font-semibold text-accent">Kota</span>
               </h2>
             ) : (
-              <h2 className={`text-[40px] md:text-[50px] xl:text-[68px] text-foreground leading-[1.2] max-w-[442px] xl:max-w-none font-helvetica [&_span]:inline-block transition-all duration-1000 ${portfolioVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
+              <h2 className={`text-[32px] sm:text-[40px] md:text-[50px] xl:text-[68px] text-foreground leading-[1.2] max-w-[442px] xl:max-w-none font-helvetica [&_span]:inline-block transition-all duration-1000 ${portfolioVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
                 <span>Sym</span>
                 <span className="italic font-ramillas">bol</span>{' '}
                 <span>of</span>{' '}
@@ -781,7 +781,7 @@ function PortfolioSection() {
                 <span className="font-semibold text-accent">Modernization</span>
               </h2>
             )}
-            <p className={`text-xl md:text-2xl font-medium mt-[1vh] xl:mt-10 max-w-[664px] xl:max-w-none text-foreground/60 transition-all duration-1000 delay-200 ${portfolioVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
+            <p className={`text-lg sm:text-xl md:text-2xl font-medium mt-[1vh] xl:mt-10 max-w-[664px] xl:max-w-none text-foreground/60 transition-all duration-1000 delay-200 ${portfolioVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
               {t('home.portfolio.desc')}
             </p>
             {/* Nav buttons for desktop */}
@@ -827,7 +827,7 @@ function AboutSection() {
         className="z-10 container min-h-screen py-16 relative font-helvetica flex flex-col justify-start md:justify-between text-foreground"
       >
         <div>
-          <h2 className={`text-[48px] md:text-[62px] xl:text-[90px] transition-all duration-1000 ${aboutVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
+          <h2 className={`text-[36px] sm:text-[48px] md:text-[62px] xl:text-[90px] transition-all duration-1000 ${aboutVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
             {lang === 'ID' ? (
               <>
                 <span className="inline-block whitespace-nowrap">
@@ -848,7 +848,7 @@ function AboutSection() {
               </>
             )}
           </h2>
-          <span className={`text-[28px] md:text-[32px] xl:text-[52px] leading-tight block mt-2 transition-all duration-1000 delay-200 text-primary ${aboutVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`} style={{ letterSpacing: '0.15px' }}>
+          <span className={`text-[22px] sm:text-[28px] md:text-[32px] xl:text-[52px] leading-tight block mt-2 transition-all duration-1000 delay-200 text-primary ${aboutVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`} style={{ letterSpacing: '0.15px' }}>
             {lang === 'ID' ? (
               <>
                 <span className="inline-block">
@@ -877,6 +877,13 @@ function AboutSection() {
           </span>
         </div>
         <div className="md:self-end">
+          {/* Mobile description */}
+          <div className={`block md:hidden mb-4 transition-all duration-1000 delay-300 ${aboutVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[5px]'}`}>
+            <p className="text-base leading-relaxed text-foreground/70">
+              {t('home.about.desc')}
+            </p>
+          </div>
+          {/* Desktop description */}
           <div className={`relative hidden md:block transition-all duration-1000 delay-300 ${aboutVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[5px]'}`}>
             <div className="h-auto md:w-[586px] xl:w-[700px] py-4 px-8 bg-card/70 backdrop-blur-md rounded-2xl border border-border">
               <p className="md:text-lg xl:text-xl leading-relaxed text-foreground/70">
@@ -900,13 +907,13 @@ function ClientsSection() {
   const { lang, t } = useLanguage();
 
   return (
-    <section ref={clientsRef} className={`flex flex-col py-[158px] bg-transparent snap-start transition-all duration-1000 ${clientsVisible ? 'opacity-100' : 'opacity-0'}`}>
+    <section ref={clientsRef} className={`flex flex-col py-16 md:py-[100px] xl:py-[158px] bg-transparent snap-start transition-all duration-1000 ${clientsVisible ? 'opacity-100' : 'opacity-0'}`}>
       <div className={`order-1 w-full overflow-hidden transition-all duration-1000 delay-100 ${clientsVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[-30px] blur-[5px]'}`}>
         <MarqueeRow images={clientLogosRow1} duration="40s" reverse />
       </div>
 
-      <div className={`container order-2 my-24 flex flex-col items-center justify-between gap-y-8 text-center md:my-[128px] md:flex-row md:gap-x-[100px] md:text-left xl:my-40 xl:items-end xl:gap-x-[198px] transition-all duration-1000 delay-200 ${clientsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[35px]'}`}>
-        <h2 className="text-[48px] leading-[1.1] md:text-[62px] xl:text-[90px] font-helvetica">
+      <div className={`container order-2 my-12 sm:my-16 md:my-[128px] flex flex-col items-center justify-between gap-y-6 text-center md:flex-row md:gap-x-[60px] md:text-left xl:my-40 xl:items-end xl:gap-x-[198px] transition-all duration-1000 delay-200 ${clientsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[35px]'}`}>
+        <h2 className="text-[36px] sm:text-[48px] leading-[1.1] md:text-[62px] xl:text-[90px] font-helvetica">
           {lang === 'ID' ? (
             <>
               <span className="text-accent italic">Klien</span>{' '}
@@ -919,7 +926,7 @@ function ClientsSection() {
             </>
           )}
         </h2>
-        <p className="text-[28px] leading-[1.1] md:text-[32px] xl:text-[40px] whitespace-pre-line font-helvetica text-foreground/60">
+        <p className="text-[20px] sm:text-[28px] leading-[1.1] md:text-[32px] xl:text-[40px] whitespace-pre-line font-helvetica text-foreground/60">
           {lang === 'ID' ? (
             <>
               <span className="inline-block">Jaringan</span>{' '}
@@ -1064,7 +1071,7 @@ function ProjectsSection() {
     <section ref={ref} className="snap-start bg-transparent min-h-screen py-16">
       <div className="container pb-4 text-foreground">
         <div className={`snap-start pt-8 pb-6 md:pt-16 md:pb-7 xl:pb-10 transition-all duration-1000 delay-100 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[5px]'}`}>
-          <h2 className="flex-1 text-accent whitespace-pre-line text-[32px] sm:text-[48px] md:text-[62px] xl:text-[90px] font-helvetica">
+          <h2 className="flex-1 text-accent whitespace-pre-line text-[28px] sm:text-[48px] md:text-[62px] xl:text-[90px] font-helvetica">
             {lang === 'ID' ? (
               <>Proyek <span className="italic">K</span>ami</>
             ) : (
@@ -1072,7 +1079,7 @@ function ProjectsSection() {
             )}
           </h2>
           <div className="flex flex-col md:flex-row md:justify-between mt-4 xl:mt-10 gap-6">
-            <span className="whitespace-pre-line text-[20px] sm:text-[28px] md:text-[32px] xl:text-[40px] font-helvetica leading-tight text-primary">
+            <span className="whitespace-pre-line text-[18px] sm:text-[28px] md:text-[32px] xl:text-[40px] font-helvetica leading-tight text-primary">
               {lang === 'ID' ? (
                 <>
                   Mengubah<span className="italic"> Ruang Publik</span>

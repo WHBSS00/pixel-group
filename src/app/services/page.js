@@ -82,7 +82,7 @@ function Block1Section() {
     <section className="relative z-10 py-10 lg:py-16" id="ooh-production-house" ref={ref}>
       <div className="relative isolate z-10">
         <div className="container relative z-10 font-helvetica text-left">
-          <h2 className={`mt-4 max-w-[600px] text-[40px] leading-[1.2] md:text-[50px] xl:text-[68px] transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
+          <h2 className={`mt-4 max-w-[600px] text-[32px] sm:text-[40px] leading-[1.2] md:text-[50px] xl:text-[68px] transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
             <span className="text-accent">OOH</span> <span>Pro</span><span className="font-ramillas italic font-normal text-accent">ductio</span>n <span className="font-bold">House</span>
           </h2>
           <p className={`mt-4 max-w-[640px] text-base font-lato md:text-lg xl:text-xl transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
@@ -141,7 +141,7 @@ function Block2Section() {
     <section className="relative z-10 py-10 lg:py-16 bg-card/10" id="ooh-media-specialist" ref={ref}>
       <div className="relative isolate z-10">
         <div className="container relative z-10 font-helvetica text-left md:text-right flex flex-col items-start md:items-end">
-          <h2 className={`mt-4 max-w-[600px] text-[40px] leading-[1.2] md:text-[50px] xl:text-[68px] transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
+          <h2 className={`mt-4 max-w-[600px] text-[32px] sm:text-[40px] leading-[1.2] md:text-[50px] xl:text-[68px] transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
             <span className="text-accent">OOH</span> <span>M</span><span className="font-ramillas italic font-normal text-accent">edia</span> <span className="font-bold">Specialist</span>
           </h2>
           <p className={`mt-4 max-w-[640px] text-base font-lato md:text-lg xl:text-xl transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px] text-left md:text-right'}`}>
@@ -200,7 +200,7 @@ function Block3Section() {
     <section className="relative z-10 py-10 lg:py-16" id="ooh-consultation" ref={ref}>
       <div className="relative isolate z-10">
         <div className="container relative z-10 font-helvetica text-left">
-          <h2 className={`mt-4 max-w-[600px] text-[40px] leading-[1.2] md:text-[50px] xl:text-[68px] transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
+          <h2 className={`mt-4 max-w-[600px] text-[32px] sm:text-[40px] leading-[1.2] md:text-[50px] xl:text-[68px] transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
             <span className="text-accent">OOH</span> <span>Con</span><span className="font-ramillas italic font-normal text-accent">sultati</span>on
           </h2>
           <p className={`mt-4 max-w-[640px] text-base font-lato md:text-lg xl:text-xl transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
@@ -259,7 +259,7 @@ function Block4Section() {
     <section className="relative z-10 py-10 lg:py-16 bg-card/10" id="ooh-research" ref={ref}>
       <div className="relative isolate z-10">
         <div className="container relative z-10 font-helvetica text-left md:text-right flex flex-col items-start md:items-end">
-          <h2 className={`mt-4 max-w-[600px] text-[40px] leading-[1.2] md:text-[50px] xl:text-[68px] transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
+          <h2 className={`mt-4 max-w-[600px] text-[32px] sm:text-[40px] leading-[1.2] md:text-[50px] xl:text-[68px] transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
             <span className="text-accent">OOH</span> <span>Re</span><span className="font-ramillas italic font-normal text-accent">searc</span>h
           </h2>
           <p className={`mt-4 max-w-[640px] text-base font-lato md:text-lg xl:text-xl transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px] text-left md:text-right'}`}>

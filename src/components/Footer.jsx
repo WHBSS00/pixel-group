@@ -10,7 +10,7 @@ export default function Footer() {
 
   return (
     <footer>
-      <div className="relative isolate z-10 flex h-svh min-h-[580px] md:min-h-[626px] w-full items-end bg-transparent pt-20 text-foreground xl:pt-32">
+      <div className="relative isolate z-10 flex h-svh min-h-[500px] md:min-h-[626px] w-full items-end bg-transparent pt-16 text-foreground md:pt-20 xl:pt-32">
         <div aria-hidden="true" className="absolute inset-0 z-0 overflow-hidden">
           <div className="blue-dot-grid opacity-15">
             <div className="dot-layer dot-layer-1" />
@@ -22,7 +22,7 @@ export default function Footer() {
           <div className="flex flex-col justify-start">
             <div className="relative w-full md:w-fit">
               <h2
-                className={`font-helvetica text-[42px] sm:text-[58px] text-primary leading-normal xl:text-[120px] transition-all duration-1000 ${
+                className={`font-helvetica text-[32px] sm:text-[42px] md:text-[58px] text-primary leading-normal lg:text-[90px] xl:text-[120px] transition-all duration-1000 ${
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                 }`}
               >
@@ -34,7 +34,7 @@ export default function Footer() {
               </h2>
               <div className="flex flex-wrap items-center md:flex-row-reverse md:gap-x-10 xl:gap-x-20">
                 <h2
-                  className={`w-full text-left font-ramillas text-[42px] sm:text-[58px] text-accent leading-[1.2] md:w-fit md:text-[76px] xl:text-[120px] transition-all duration-1000 delay-200 ${
+                  className={`w-full text-left font-ramillas text-[32px] sm:text-[42px] md:text-[58px] text-accent leading-[1.2] md:w-fit md:text-[76px] lg:text-[90px] xl:text-[120px] transition-all duration-1000 delay-200 ${
                     isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                   }`}
                 >
@@ -55,7 +55,7 @@ export default function Footer() {
             </div>
           </div>
  
-          <div className="mt-14 flex w-full flex-col items-end space-y-2 self-end text-right font-lato text-base md:mt-8 md:text-lg xl:mt-0 xl:text-xl">
+          <div className="mt-10 flex w-full flex-col items-end space-y-2 self-end text-right font-lato text-sm sm:text-base md:mt-8 md:text-lg xl:mt-0 xl:text-xl">
             <h2 className="font-bold font-helvetica text-[28px] leading-[1.1] md:text-[32px] xl:text-[40px] text-accent">{settings.name}</h2>
             {settings.address && (
               <a target="_blank" href={settings.mapsUrl || '#'} rel="noopener noreferrer">

@@ -149,7 +149,7 @@ function HeroSection() {
   return (
     <>
       <section className="relative z-10 mt-24 pt-4 pb-4 font-helvetica md:pb-20">
-        <div className="relative isolate z-10 h-[390px] md:h-[490px]">
+        <div className="relative isolate z-10 h-[340px] sm:h-[390px] md:h-[490px] lg:h-[540px]">
           <div aria-hidden="true" className="absolute inset-x-0 top-[-30%] z-0 h-[120%] overflow-hidden bg-transparent md:h-[150%]">
             <BackgroundVideo opacity={0.3} />
             <div className="blue-glow-top opacity-50" />
@@ -166,7 +166,7 @@ function HeroSection() {
             </h1>
             
             <h2
-              className={`mt-4 max-w-[640px] text-[40px] leading-[120%] md:text-[50px] lg:text-[68px] tracking-[-0.25px] transition-all duration-1000 delay-200 ${
+              className={`mt-4 max-w-[640px] text-[32px] sm:text-[40px] leading-[120%] md:text-[50px] lg:text-[68px] tracking-[-0.25px] transition-all duration-1000 delay-200 ${
                 mounted ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'
               }`}
             >
@@ -185,7 +185,7 @@ function HeroSection() {
               )}
             </h2>
             <p
-              className={`mt-4 text-[20px] lg:pl-[40%] transition-all duration-1000 delay-400 ${
+              className={`mt-4 text-base sm:text-[20px] md:pl-[20%] lg:pl-[40%] transition-all duration-1000 delay-400 ${
                 mounted ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'
               }`}
             >
@@ -199,7 +199,7 @@ function HeroSection() {
         <div className="container font-helvetica">
           <div className="flex justify-center md:justify-end">
             <h3
-              className={`max-w-[664px] text-center md:text-right text-[40px] leading-[120%] md:text-[50px] lg:text-[68px] transition-all duration-1000 ${
+              className={`max-w-[664px] text-center md:text-right text-[32px] sm:text-[40px] leading-[120%] md:text-[50px] lg:text-[68px] transition-all duration-1000 ${
                 secVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'
               }`}
             >
@@ -217,7 +217,7 @@ function HeroSection() {
             </h3>
           </div>
           <p
-            className={`mt-4 max-w-[640px] mx-auto md:mx-0 text-center md:text-left text-[20px] leading-[130%] tracking-[0.15px] transition-all duration-1000 delay-200 ${
+            className={`mt-4 max-w-[640px] mx-auto md:mx-0 text-center md:text-left text-base sm:text-[20px] leading-[130%] tracking-[0.15px] transition-all duration-1000 delay-200 ${
               secVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'
             }`}
           >

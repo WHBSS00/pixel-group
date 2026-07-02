@@ -20,9 +20,9 @@ export default function CTASection() {
       <div className="relative z-10 mx-auto w-full px-5 lg:max-w-[1122px] lg:px-4">
         <div className="w-full" ref={ref}>
           <h2
-            className={`inline-block whitespace-pre-wrap break-words text-center text-foreground text-[42px] sm:text-[58px] leading-[1.2] md:leading-[165px] tracking-[-0.5px] font-helvetica transition-all duration-1000 ${
+            className={`inline-block whitespace-pre-wrap break-words text-center text-foreground text-[34px] sm:text-[42px] leading-[1.15] tracking-[-0.5px] font-helvetica transition-all duration-1000 ${
               isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[20px] blur-[10px]'
-            } md:text-[76px] xl:text-[120px]`}
+            } md:text-[76px] md:leading-[1.3] xl:text-[120px] xl:leading-[1.35]`}
           >
             {lang === 'ID' ? (
               <>Jawa<i className="font-ramillas italic ml-[0.02em] mr-[0.08em] pr-[0.02em]">ban</i>nya</>
@@ -32,7 +32,7 @@ export default function CTASection() {
           </h2>
           <div className="flex flex-wrap items-end justify-between">
             <p
-              className={`text-[24px] sm:text-[32px] text-foreground/80 md:text-[40px] xl:text-[52px] font-helvetica whitespace-pre-line transition-all duration-1000 delay-200 ${
+              className={`text-[20px] sm:text-[28px] text-foreground/80 md:text-[40px] xl:text-[52px] font-helvetica whitespace-pre-line transition-all duration-1000 delay-200 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[20px]'
               }`}
             >

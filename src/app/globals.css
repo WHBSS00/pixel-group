@@ -309,13 +309,28 @@
   max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
 }
 
 @media (min-width: 1536px) {
   .container {
     max-width: 1400px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .container {
+    max-width: 1600px;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 }
 
@@ -332,6 +347,15 @@
 
 .mobile-menu.open {
   transform: translateX(0);
+}
+
+/* Landscape orientation adjustments */
+@media (orientation: landscape) and (max-height: 500px) {
+  .mobile-menu .flex.flex-col {
+    gap: 1.5rem;
+    padding-top: 5rem;
+    padding-bottom: 2rem;
+  }
 }
 
 /* Accordion */

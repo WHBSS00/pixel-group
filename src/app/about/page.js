@@ -91,7 +91,7 @@ function HeroSection() {
                 {t('about.hero.title')}
               </h1>
               
-              <h2 className={`mt-4 text-[40px] leading-tight md:text-[50px] md:leading-[81.6px] lg:text-[68px] whitespace-pre-line transition-all duration-1000 delay-200 ${mounted ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
+              <h2 className={`mt-4 text-[32px] leading-tight sm:text-[40px] md:text-[50px] md:leading-[81.6px] lg:text-[68px] whitespace-pre-line transition-all duration-1000 delay-200 ${mounted ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
                 {lang === 'ID' ? (
                   <>
                     <span className="inline-block whitespace-nowrap">
@@ -186,11 +186,11 @@ function VisionMissionSection() {
           <div className={`lg:col-span-8 order-last lg:order-first transition-all duration-1000 delay-300 ${visVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
             
             {/* Tab Switcher */}
-            <div className="relative w-[304px] mx-auto flex gap-12 border-b border-border pb-3 mb-8">
+            <div className="relative w-full max-w-[304px] mx-auto flex gap-8 sm:gap-12 border-b border-border pb-3 mb-8">
               <button
                 onMouseEnter={() => setActiveTab('visi')}
                 onClick={() => setActiveTab('visi')}
-                className={`w-32 text-center text-2xl md:text-3xl font-bold font-helvetica tracking-wide pb-1 cursor-pointer transition-colors duration-300 ${
+                className={`w-28 sm:w-32 text-center text-xl sm:text-2xl md:text-3xl font-bold font-helvetica tracking-wide pb-1 cursor-pointer transition-colors duration-300 ${
                   activeTab === 'visi' ? 'text-accent' : 'text-foreground/50 hover:text-foreground'
                 }`}
               >
@@ -199,7 +199,7 @@ function VisionMissionSection() {
               <button
                 onMouseEnter={() => setActiveTab('misi')}
                 onClick={() => setActiveTab('misi')}
-                className={`w-32 text-center text-2xl md:text-3xl font-bold font-helvetica tracking-wide pb-1 cursor-pointer transition-colors duration-300 ${
+                className={`w-28 sm:w-32 text-center text-xl sm:text-2xl md:text-3xl font-bold font-helvetica tracking-wide pb-1 cursor-pointer transition-colors duration-300 ${
                   activeTab === 'misi' ? 'text-accent' : 'text-foreground/50 hover:text-foreground'
                 }`}
               >
@@ -297,7 +297,7 @@ function VisionMissionSection() {
           {/* Right Column: Heading & Overall Description (order-first lg:order-last) */}
           <div className={`lg:col-span-4 order-first lg:order-last font-helvetica lg:self-center text-center lg:text-right transition-all duration-1000 delay-200 ${visVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
             <div className="flex justify-center lg:justify-end mb-6">
-              <h3 className="text-[40px] md:text-[50px] lg:text-[60px] xl:text-[68px] leading-tight md:leading-[81.6px]">
+              <h3 className="text-[32px] sm:text-[40px] md:text-[50px] lg:text-[60px] xl:text-[68px] leading-tight md:leading-[81.6px]">
                 {lang === 'ID' ? (
                   <>
                     <span className="inline-block whitespace-nowrap">
@@ -340,7 +340,7 @@ function WhyUsSection() {
     <section className="relative z-10 flex flex-col justify-center py-10 lg:py-20">
       <div className="container relative z-10 px-4 md:px-6" ref={whyRef}>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center py-8 font-helvetica md:py-16">
-          <h3 className={`lg:col-span-5 text-[40px] md:text-[50px] lg:text-[68px] leading-tight md:leading-[81.6px] whitespace-pre-line transition-all duration-1000 ${whyVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
+          <h3 className={`lg:col-span-5 text-[32px] sm:text-[40px] md:text-[50px] lg:text-[68px] leading-tight md:leading-[81.6px] whitespace-pre-line transition-all duration-1000 ${whyVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
             {lang === 'ID' ? (
               <>
                 <span className="inline-block whitespace-nowrap">
@@ -375,7 +375,7 @@ function WhyUsSection() {
                   key={i}
                   onClick={() => setActiveItem(isActive ? null : i)}
                   onMouseEnter={() => setActiveItem(i)}
-                  className={`relative rounded-2xl shadow-md overflow-hidden border border-border cursor-pointer transition-all duration-700 ease-in-out min-h-[250px] ${
+                  className={`relative rounded-2xl shadow-md overflow-hidden border border-border cursor-pointer transition-all duration-700 ease-in-out min-h-[200px] sm:min-h-[250px] ${
                     isActive ? 'lg:flex-[3] flex-[1.5]' : 'lg:flex-[1] flex-[1]'
                   }`}
                 >
@@ -542,7 +542,7 @@ function HistoryTimelineSection() {
                 >
                   <div className="relative overflow-hidden bg-card/60 backdrop-blur-md border border-border p-8 md:p-10 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 text-center">
                     {/* Faint Year Watermark */}
-                    <div className="absolute right-10 bottom-0 text-[100px] md:text-[150px] font-bold font-helvetica text-accent/[0.02] select-none pointer-events-none translate-y-6">
+                    <div className="absolute right-10 bottom-0 text-[80px] md:text-[150px] font-bold font-helvetica text-accent/[0.02] select-none pointer-events-none translate-y-6">
                       {item.year}
                     </div>
                     

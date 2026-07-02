@@ -206,10 +206,10 @@ function ContactSection({ formData, setFormData, handleSubmit, isSubmitting }) {
             {t('contact.hero.title')}
           </h1>
 
-          <div className="flex flex-col md:flex-row items-start gap-20 md:gap-0 lg:gap-36 min-h-max">
+          <div className="flex flex-col md:flex-row items-start gap-10 md:gap-10 lg:gap-36 min-h-max">
             {/* Left Side: Contact Info */}
             <div className="w-full h-full flex flex-col justify-center">
-              <h2 className={`mt-4 text-[40px] md:text-[50px] lg:text-[68px] max-w-[500px] leading-[120%] transition-all duration-1000 delay-200 ${mounted ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
+              <h2 className={`mt-4 text-[32px] sm:text-[40px] md:text-[50px] lg:text-[68px] max-w-[500px] leading-[120%] transition-all duration-1000 delay-200 ${mounted ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
                 {lang === 'ID' ? (
                   <>
                     <span className="text-accent inline-block">Inisiasi</span>
@@ -258,8 +258,8 @@ function ContactSection({ formData, setFormData, handleSubmit, isSubmitting }) {
 
             {/* Right Side: Form Card */}
             <div className={`flex justify-center w-full transition-all duration-1000 delay-300 ${mounted ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[10px]'}`}>
-              <div className="rounded-3xl p-8 border border-white/50 bg-white/75 backdrop-blur-md shadow-2xl shadow-primary/5 w-full max-w-[350px] lg:max-w-[533px]">
-                <h3 className="mb-2 text-[32px] md:text-[40px] lg:text-[52px]">
+              <div className="rounded-3xl p-6 sm:p-8 border border-white/50 bg-white/75 backdrop-blur-md shadow-2xl shadow-primary/5 w-full max-w-[533px] md:max-w-[450px] lg:max-w-[533px]">
+                <h3 className="mb-2 text-[28px] sm:text-[32px] md:text-[40px] lg:text-[52px]">
                   <span className="text-accent"><strong className="font-bold">{t('contact.form.title')}</strong></span>
                   <span className="text-foreground"><strong className="font-bold">{t('contact.form.titleSuffix')}</strong></span>
                 </h3>

@@ -84,10 +84,9 @@ export default function PageLayoutWrapper({ children }) {
         <Preloader onComplete={handlePreloaderComplete} />
       )}
       {!isAdminPage && <Navbar />}
-      <div 
-        className={`flex min-h-screen flex-col transition-all duration-1000 ${
-          loading && !isAdminPage ? 'opacity-0 translate-y-[20px] pointer-events-none' : 'opacity-100 translate-y-0'
-        }`}
+      <div
+        className={`flex min-h-screen flex-col transition-all duration-1000 ${loading && !isAdminPage ? 'opacity-0 translate-y-[20px] pointer-events-none' : 'opacity-100 translate-y-0'
+          }`}
       >
         <main className="flex-1" id="page-scroll-container">
           {children}
