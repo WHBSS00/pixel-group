@@ -9,6 +9,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { getDirectDriveLink } from '@/utils/drive';
 import { db } from '@/lib/firebase';
+import { useCompany } from '@/context/CompanyContext';
 
 const BASE = 'https://pixelgroup.id';
 
@@ -187,6 +188,7 @@ export default function HomePage() {
 function HeroSection() {
   const [mounted, setMounted] = useState(false);
   const { t } = useLanguage();
+  const { images } = useCompany();
   useEffect(() => { const timer = setTimeout(() => setMounted(true), 100); return () => clearTimeout(timer); }, []);
 
   return (
@@ -194,9 +196,9 @@ function HeroSection() {
       <div className="absolute inset-x-0 h-screen overflow-hidden hero-image-container">
         <div className="inset-0 absolute z-0">
           <picture>
-            <source media="(min-width:768px)" srcSet="/hero.png" />
+            <source media="(min-width:768px)" srcSet={getDirectDriveLink(images?.hero_img || "/hero.png")} />
             <img
-              src="/hero.png"
+              src={getDirectDriveLink(images?.hero_img || "/hero.png")}
               alt="Hero Image"
               className="w-full h-full object-cover object-center"
             />
@@ -381,34 +383,35 @@ function OurSolutionSection() {
   const [activeSlide, setActiveSlide] = useState(0);
   const { lang, t } = useLanguage();
   const [ref, isVisible] = useScrollAnimation({ threshold: 0.05 });
+  const { images } = useCompany();
 
   const services = [
     {
       title: 'OOH Production House',
       heading: t('home.services.production.heading'),
       desc: t('home.services.production.desc'),
-      image: `/images/services/production_1.png`,
+      image: images?.solution_prod_img || `/images/services/production_1.png`,
       link: '/services#ooh-production-house',
     },
     {
       title: 'OOH Media Specialist',
       heading: t('home.services.specialist.heading'),
       desc: t('home.services.specialist.desc'),
-      image: `/images/services/specialist_1.png`,
+      image: images?.solution_spec_img || `/images/services/specialist_1.png`,
       link: '/services#ooh-media-specialist',
     },
     {
       title: 'OOH Consultation',
       heading: t('home.services.consultation.heading'),
       desc: t('home.services.consultation.desc'),
-      image: `/images/services/consultation_1.png`,
+      image: images?.solution_cons_img || `/images/services/consultation_1.png`,
       link: '/services#ooh-consultation',
     },
     {
       title: 'OOH Research',
       heading: t('home.services.research.heading'),
       desc: t('home.services.research.desc'),
-      image: `/images/services/research_1.png`,
+      image: images?.solution_rese_img || `/images/services/research_1.png`,
       link: '/services#ooh-research',
     },
   ];
@@ -499,7 +502,7 @@ function OurSolutionSection() {
               <div className="container flex flex-col gap-4 px-6 pt-[5rem] md:pt-24 xl:flex-row xl:gap-10">
                 <div className={`relative aspect-[350/252] flex-1 overflow-hidden rounded-2xl border border-neutral-300 md:aspect-[782/357] xl:aspect-[644/503] transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[5px]'}`}>
                   <img
-                    src={service.image}
+                    src={getDirectDriveLink(service.image)}
                     alt={service.heading}
                     className="h-full w-full object-cover"
                     loading="lazy"

@@ -135,15 +135,17 @@ const initialWorksData = [
 
 export default function GeneralAdminPortal() {
   const { lang, t } = useLanguage();
-  const { settings, updateSettings } = useCompany();
+  const { settings, updateSettings, images, updateImages } = useCompany();
   const [mounted, setMounted] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [activeTab, setActiveTab] = useState('works'); // 'works', 'company', 'homepage', 'services', 'about'
+  const [activeTab, setActiveTab] = useState('messages'); // 'messages', 'works', 'photos', 'company'
+  const [activeSubTab, setActiveSubTab] = useState('homepage'); // 'homepage', 'about', 'services'
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   // Company Settings Form State
   const [compName, setCompName] = useState('');
+  const [compLogo, setCompLogo] = useState('');
   const [compPhone, setCompPhone] = useState('');
   const [compWhatsapp, setCompWhatsapp] = useState('');
   const [compWhatsappUrl, setCompWhatsappUrl] = useState('');
@@ -305,6 +307,7 @@ export default function GeneralAdminPortal() {
     if (settings) {
       const timer = setTimeout(() => {
         setCompName(settings.name || '');
+        setCompLogo(settings.logo || '/logo.png');
         setCompPhone(settings.phone || '');
         setCompWhatsapp(settings.whatsapp || '');
         setCompWhatsappUrl(settings.whatsappUrl || '');
@@ -326,6 +329,7 @@ export default function GeneralAdminPortal() {
     }
     updateSettings({
       name: compName.trim(),
+      logo: compLogo,
       phone: compPhone.trim(),
       whatsapp: compWhatsapp.trim(),
       whatsappUrl: compWhatsappUrl.trim(),
@@ -922,7 +926,7 @@ export default function GeneralAdminPortal() {
       )}
 
       {/* Sidebar navigation */}
-      <aside className={`bg-[#1E3447] text-white flex flex-col justify-between shrink-0 shadow-xl border-r border-[#1E3447]/20 fixed md:sticky top-0 bottom-0 left-0 h-screen z-50 md:z-20 transition-all duration-300 ${
+      <aside className={`bg-[#1E3447] text-white flex flex-col justify-between shrink-0 shadow-lg shadow-slate-900/15 border-r border-[#C8D8E5]/15 fixed md:sticky top-0 bottom-0 left-0 h-screen z-50 md:z-20 transition-all duration-300 ${
         sidebarCollapsed ? 'md:w-20' : 'w-64 md:w-72'
       } ${
         mobileSidebarOpen ? 'translate-x-0 w-64' : '-translate-x-full md:translate-x-0'
@@ -931,13 +935,18 @@ export default function GeneralAdminPortal() {
           {/* Brand header */}
           <div className="p-6 border-b border-white/10 flex items-center justify-between gap-2">
             <div className="flex items-center gap-3 overflow-hidden">
-              <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center font-bold text-lg text-white shadow-md shrink-0">
-                I
+              {/* Dynamic brand logo with drop shadow */}
+              <div className="w-9 h-9 rounded-xl bg-white/10 border border-white/5 overflow-hidden flex items-center justify-center p-1.5 shrink-0 shadow-md">
+                <img
+                  src={getDirectDriveLink(settings.logo || '/logo.png')}
+                  alt="Logo"
+                  className="max-h-full max-w-full object-contain filter drop-shadow-[0_2px_4px_rgba(255,255,255,0.15)]"
+                />
               </div>
               {(!sidebarCollapsed || mobileSidebarOpen) && (
                 <div className="truncate transition-opacity duration-300">
-                  <h2 className="font-bold text-sm leading-tight tracking-wide">{settings.name}</h2>
-                  <span className="text-[10px] text-white/50 font-lato tracking-wider uppercase">Admin Portal</span>
+                  <h2 className="font-bold text-sm leading-tight tracking-wide text-[#F0F6FA]">{settings.name}</h2>
+                  <span className="text-[10px] text-white/50 font-lato tracking-wider uppercase font-semibold">Admin Portal</span>
                 </div>
               )}
             </div>
@@ -946,7 +955,7 @@ export default function GeneralAdminPortal() {
             <div className="flex items-center gap-1">
               <button
                 onClick={() => setMobileSidebarOpen(false)}
-                className="p-1 rounded hover:bg-white/10 transition-colors text-white/70 hover:text-white cursor-pointer md:hidden"
+                className="p-1.5 rounded-lg hover:bg-white/10 transition-colors text-white/70 hover:text-white cursor-pointer md:hidden"
                 title="Close Sidebar"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -956,7 +965,7 @@ export default function GeneralAdminPortal() {
               
               <button
                 onClick={toggleSidebar}
-                className="p-1 rounded hover:bg-white/10 transition-colors text-white/70 hover:text-white cursor-pointer hidden md:block"
+                className="p-1.5 rounded-lg hover:bg-white/10 transition-colors text-white/70 hover:text-white cursor-pointer hidden md:block"
                 title={sidebarCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
               >
                 {sidebarCollapsed ? (
@@ -973,13 +982,30 @@ export default function GeneralAdminPortal() {
           </div>
 
           {/* Navigation Links */}
-          <nav className="p-4 space-y-1">
+          <nav className="p-4 space-y-1.5">
+            {/* 1. Inbox (First / Awal) */}
+            <button
+              onClick={() => { setActiveTab('messages'); setMobileSidebarOpen(false); }}
+              className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-left text-sm font-semibold transition-all duration-300 cursor-pointer ${
+                activeTab === 'messages'
+                  ? 'bg-accent text-white shadow-md shadow-accent/25 border-l-4 border-l-white font-bold'
+                  : 'text-[#DCE7F0]/70 hover:bg-white/5 hover:text-white'
+              } ${sidebarCollapsed ? 'md:justify-center' : ''}`}
+              title={lang === 'ID' ? 'Pesan Masuk' : 'Inbox Messages'}
+            >
+              <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 00-2 2z" />
+              </svg>
+              {(!sidebarCollapsed || mobileSidebarOpen) && <span>{lang === 'ID' ? 'Pesan Masuk' : 'Inbox'}</span>}
+            </button>
+
+            {/* 2. Portfolio (Middle) */}
             <button
               onClick={() => { setActiveTab('works'); setMobileSidebarOpen(false); }}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-sm font-semibold transition-all duration-200 cursor-pointer ${
+              className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-left text-sm font-semibold transition-all duration-300 cursor-pointer ${
                 activeTab === 'works'
-                  ? 'bg-accent text-white shadow-md'
-                  : 'text-white/70 hover:bg-white/5 hover:text-white'
+                  ? 'bg-accent text-white shadow-md shadow-accent/25 border-l-4 border-l-white font-bold'
+                  : 'text-[#DCE7F0]/70 hover:bg-white/5 hover:text-white'
               } ${sidebarCollapsed ? 'md:justify-center' : ''}`}
               title={lang === 'ID' ? 'Portofolio' : 'Portfolio'}
             >
@@ -989,12 +1015,30 @@ export default function GeneralAdminPortal() {
               {(!sidebarCollapsed || mobileSidebarOpen) && <span>{lang === 'ID' ? 'Portofolio' : 'Portfolio'}</span>}
             </button>
 
+            {/* 3. Website Photos (Middle - Consolidated Camera Icon) */}
+            <button
+              onClick={() => { setActiveTab('photos'); setMobileSidebarOpen(false); }}
+              className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-left text-sm font-semibold transition-all duration-300 cursor-pointer ${
+                activeTab === 'photos'
+                  ? 'bg-accent text-white shadow-md shadow-accent/25 border-l-4 border-l-white font-bold'
+                  : 'text-[#DCE7F0]/70 hover:bg-white/5 hover:text-white'
+              } ${sidebarCollapsed ? 'md:justify-center' : ''}`}
+              title={lang === 'ID' ? 'Foto Website' : 'Website Photos'}
+            >
+              <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              {(!sidebarCollapsed || mobileSidebarOpen) && <span>{lang === 'ID' ? 'Foto Website' : 'Website Photos'}</span>}
+            </button>
+
+            {/* 4. Company Identity (Last / Paling Bawah) */}
             <button
               onClick={() => { setActiveTab('company'); setMobileSidebarOpen(false); }}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-sm font-semibold transition-all duration-200 cursor-pointer ${
+              className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-left text-sm font-semibold transition-all duration-300 cursor-pointer ${
                 activeTab === 'company'
-                  ? 'bg-accent text-white shadow-md'
-                  : 'text-white/70 hover:bg-white/5 hover:text-white'
+                  ? 'bg-accent text-white shadow-md shadow-accent/25 border-l-4 border-l-white font-bold'
+                  : 'text-[#DCE7F0]/70 hover:bg-white/5 hover:text-white'
               } ${sidebarCollapsed ? 'md:justify-center' : ''}`}
               title={lang === 'ID' ? 'Identitas Perusahaan' : 'Company Identity'}
             >
@@ -1002,21 +1046,6 @@ export default function GeneralAdminPortal() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
               {(!sidebarCollapsed || mobileSidebarOpen) && <span>{lang === 'ID' ? 'Identitas Perusahaan' : 'Company Identity'}</span>}
-            </button>
-
-            <button
-              onClick={() => { setActiveTab('messages'); setMobileSidebarOpen(false); }}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-sm font-semibold transition-all duration-200 cursor-pointer ${
-                activeTab === 'messages'
-                  ? 'bg-accent text-white shadow-md'
-                  : 'text-white/70 hover:bg-white/5 hover:text-white'
-              } ${sidebarCollapsed ? 'md:justify-center' : ''}`}
-              title={lang === 'ID' ? 'Pesan Masuk' : 'Inbox Messages'}
-            >
-              <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 00-2 2z" />
-              </svg>
-              {(!sidebarCollapsed || mobileSidebarOpen) && <span>{lang === 'ID' ? 'Pesan Masuk' : 'Inbox'}</span>}
             </button>
           </nav>
         </div>
@@ -1525,6 +1554,74 @@ export default function GeneralAdminPortal() {
             <div className="bg-card/75 backdrop-blur-md border border-border p-6 md:p-8 rounded-3xl shadow-xl max-w-4xl">
               <form onSubmit={handleSaveCompanySettings} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {/* Company Logo */}
+                  <div className="flex flex-col gap-1.5 col-span-1 md:col-span-2 bg-background/40 backdrop-blur-sm border border-border p-5 rounded-2xl font-lato">
+                    <label className="text-sm font-semibold text-[#1E3447] font-helvetica">
+                      {lang === 'ID' ? 'Logo Perusahaan' : 'Company Logo'}
+                    </label>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-center mt-2">
+                      <div className="flex flex-col gap-3 md:col-span-2">
+                        {/* Use URL Input */}
+                        <div className="flex flex-col gap-1">
+                          <span className="text-[10px] font-bold text-foreground/50 uppercase tracking-wide">
+                            {lang === 'ID' ? 'Tautan URL Logo' : 'Logo URL Link'}
+                          </span>
+                          <input
+                            type="text"
+                            value={compLogo}
+                            onChange={(e) => setCompLogo(e.target.value)}
+                            placeholder="/logo.png"
+                            className="w-full px-4 py-2.5 rounded-xl border border-border bg-background focus:outline-none focus:border-accent text-xs font-mono"
+                          />
+                        </div>
+
+                        {/* File Upload Selector */}
+                        <div className="flex items-center gap-2 mt-1">
+                          <label 
+                            htmlFor="logo-file-upload"
+                            className="px-4 py-2 border border-border rounded-xl cursor-pointer bg-background hover:bg-card-hover transition-all text-xs font-semibold text-foreground/75 shadow-sm"
+                          >
+                            {lang === 'ID' ? 'Pilih Berkas Logo' : 'Choose Logo File'}
+                          </label>
+                          <input
+                            id="logo-file-upload"
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                              const file = e.target.files[0];
+                              if (!file) return;
+                              if (!file.type.startsWith('image/')) return;
+                              const reader = new FileReader();
+                              reader.onloadend = () => {
+                                setCompLogo(reader.result);
+                              };
+                              reader.readAsDataURL(file);
+                            }}
+                            className="hidden"
+                          />
+                          {compLogo && compLogo.startsWith('data:') && (
+                            <span className="text-[10px] text-green-600 font-bold font-helvetica flex items-center gap-1 animate-pulse">
+                              ✓ {lang === 'ID' ? 'Logo Terunggah' : 'Logo Uploaded'}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Preview Box */}
+                      <div className="border border-border/70 rounded-2xl overflow-hidden bg-background h-24 flex items-center justify-center p-3 relative shadow-inner">
+                        {compLogo ? (
+                          <img
+                            src={getDirectDriveLink(compLogo)}
+                            alt="Company Logo Preview"
+                            className="max-h-full max-w-full object-contain filter drop-shadow-[0_2px_8px_rgba(26,83,208,0.1)]"
+                          />
+                        ) : (
+                          <span className="text-[10px] text-foreground/30 font-semibold">{lang === 'ID' ? 'Tidak Ada Logo' : 'No Logo'}</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Company Name */}
                   <div className="flex flex-col gap-1.5 col-span-1 md:col-span-2">
                     <label className="text-sm font-semibold text-foreground/80">
@@ -1800,35 +1897,488 @@ export default function GeneralAdminPortal() {
           </div>
         )}
 
-        {/* Coming Soon Placeholders */}
-        {activeTab !== 'works' && activeTab !== 'company' && activeTab !== 'messages' && (
-          <div className="h-[calc(100vh-4rem)] flex items-center justify-center text-center px-4 relative z-10">
-            <div className="bg-card/75 backdrop-blur-md p-8 md:p-12 border border-border rounded-3xl shadow-xl max-w-md">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-accent/10 text-accent mb-6">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                </svg>
+        {/* Tab Content: WEBSITE PHOTOS (Consolidated) */}
+        {activeTab === 'photos' && (
+          <div className="relative z-10 font-helvetica animate-fadeIn">
+            {/* Header Banner */}
+            <header className="pt-8 pb-6 border-b border-border mb-8">
+              <div>
+                <h1 className="font-bold text-3xl text-[#1E3447]">
+                  {lang === 'ID' ? 'Kelola Foto Website' : 'Manage Website Photos'}
+                </h1>
+                <p className="text-foreground/60 mt-1 font-lato text-sm">
+                  {lang === 'ID'
+                    ? 'Ubah foto statis di seluruh halaman website (Beranda, Tentang Kami, Layanan).'
+                    : 'Change static photos across the entire website (Homepage, About Us, Services).'}
+                </p>
               </div>
-              <h2 className="text-2xl font-bold text-primary mb-3">
-                {activeTab === 'homepage' && (lang === 'ID' ? 'Pengaturan Beranda' : 'Homepage Settings')}
-                {activeTab === 'services' && (lang === 'ID' ? 'Pengaturan Layanan' : 'Services Settings')}
-                {activeTab === 'about' && (lang === 'ID' ? 'Pengaturan Tentang Kami' : 'About Settings')}
-              </h2>
-              <p className="text-foreground/60 text-sm font-lato mb-6 leading-relaxed">
-                {lang === 'ID'
-                  ? 'Bagian pengaturan ini sedang dalam tahap pengembangan dan akan segera hadir untuk memudahkan Anda mengelola konten halaman web.'
-                  : 'This settings section is currently under development and will be available soon to help you easily manage page contents.'}
-              </p>
+            </header>
+
+            {/* Nested Sub-tabs Selector */}
+            <div className="flex gap-2 bg-card/45 border border-border p-1.5 rounded-2xl mb-8 max-w-md">
               <button
-                onClick={() => setActiveTab('works')}
-                className="bg-accent hover:bg-accent/90 text-white font-semibold px-6 py-2.5 rounded-xl shadow transition-all duration-300 cursor-pointer text-sm"
+                type="button"
+                onClick={() => setActiveSubTab('homepage')}
+                className={`flex-1 py-2.5 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
+                  activeSubTab === 'homepage'
+                    ? 'bg-accent text-white shadow'
+                    : 'text-foreground/60 hover:text-foreground hover:bg-card/25'
+                }`}
               >
-                {lang === 'ID' ? 'Kembali ke Kelola Portofolio' : 'Back to Portfolio Manager'}
+                {lang === 'ID' ? 'Beranda' : 'Homepage'}
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveSubTab('about')}
+                className={`flex-1 py-2.5 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
+                  activeSubTab === 'about'
+                    ? 'bg-accent text-white shadow'
+                    : 'text-foreground/60 hover:text-foreground hover:bg-card/25'
+                }`}
+              >
+                {lang === 'ID' ? 'Tentang Kami' : 'About Us'}
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveSubTab('services')}
+                className={`flex-1 py-2.5 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
+                  activeSubTab === 'services'
+                    ? 'bg-accent text-white shadow'
+                    : 'text-foreground/60 hover:text-foreground hover:bg-card/25'
+                }`}
+              >
+                {lang === 'ID' ? 'Layanan' : 'Services'}
               </button>
             </div>
+
+            {/* Sub-tab 1: Homepage Images */}
+            {activeSubTab === 'homepage' && (
+              <div className="space-y-10 animate-fadeIn">
+                {/* Section: Hero */}
+                <section className="space-y-4">
+                  <h2 className="text-lg font-bold text-accent border-b border-border pb-2 flex items-center gap-2">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span>{lang === 'ID' ? 'Bagian Hero' : 'Hero Section'}</span>
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <ImageFieldEditor
+                      label={lang === 'ID' ? 'Latar Belakang Hero' : 'Hero Background'}
+                      imageKey="hero_img"
+                      currentValue={images.hero_img}
+                      onSave={(newUrl) => updateImages({ hero_img: newUrl })}
+                      lang={lang}
+                    />
+                  </div>
+                </section>
+
+                {/* Section: Our Solution */}
+                <section className="space-y-4 pt-4">
+                  <h2 className="text-lg font-bold text-accent border-b border-border pb-2 flex items-center gap-2">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                    </svg>
+                    <span>{lang === 'ID' ? 'Bagian Layanan (Solusi Kami)' : 'Our Solution Section'}</span>
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <ImageFieldEditor
+                      label="OOH Production House"
+                      imageKey="solution_prod_img"
+                      currentValue={images.solution_prod_img}
+                      onSave={(newUrl) => updateImages({ solution_prod_img: newUrl })}
+                      lang={lang}
+                    />
+                    <ImageFieldEditor
+                      label="OOH Media Specialist"
+                      imageKey="solution_spec_img"
+                      currentValue={images.solution_spec_img}
+                      onSave={(newUrl) => updateImages({ solution_spec_img: newUrl })}
+                      lang={lang}
+                    />
+                    <ImageFieldEditor
+                      label="OOH Consultation"
+                      imageKey="solution_cons_img"
+                      currentValue={images.solution_cons_img}
+                      onSave={(newUrl) => updateImages({ solution_cons_img: newUrl })}
+                      lang={lang}
+                    />
+                    <ImageFieldEditor
+                      label="OOH Research"
+                      imageKey="solution_rese_img"
+                      currentValue={images.solution_rese_img}
+                      onSave={(newUrl) => updateImages({ solution_rese_img: newUrl })}
+                      lang={lang}
+                    />
+                  </div>
+                </section>
+              </div>
+            )}
+
+            {/* Sub-tab 2: About Us Images */}
+            {activeSubTab === 'about' && (
+              <div className="space-y-10 animate-fadeIn">
+                <section className="space-y-4">
+                  <h2 className="text-lg font-bold text-accent border-b border-border pb-2 flex items-center gap-2">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>{lang === 'ID' ? 'Galeri Mengapa Kami' : 'Why Us Gallery'}</span>
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <ImageFieldEditor
+                      label="Why Us Item 1"
+                      imageKey="whyus_img_1"
+                      currentValue={images.whyus_img_1}
+                      onSave={(newUrl) => updateImages({ whyus_img_1: newUrl })}
+                      lang={lang}
+                    />
+                    <ImageFieldEditor
+                      label="Why Us Item 2"
+                      imageKey="whyus_img_2"
+                      currentValue={images.whyus_img_2}
+                      onSave={(newUrl) => updateImages({ whyus_img_2: newUrl })}
+                      lang={lang}
+                    />
+                    <ImageFieldEditor
+                      label="Why Us Item 3"
+                      imageKey="whyus_img_3"
+                      currentValue={images.whyus_img_3}
+                      onSave={(newUrl) => updateImages({ whyus_img_3: newUrl })}
+                      lang={lang}
+                    />
+                    <ImageFieldEditor
+                      label="Why Us Item 4"
+                      imageKey="whyus_img_4"
+                      currentValue={images.whyus_img_4}
+                      onSave={(newUrl) => updateImages({ whyus_img_4: newUrl })}
+                      lang={lang}
+                    />
+                    <ImageFieldEditor
+                      label="Why Us Item 5"
+                      imageKey="whyus_img_5"
+                      currentValue={images.whyus_img_5}
+                      onSave={(newUrl) => updateImages({ whyus_img_5: newUrl })}
+                      lang={lang}
+                    />
+                  </div>
+                </section>
+              </div>
+            )}
+
+            {/* Sub-tab 3: Services Images */}
+            {activeSubTab === 'services' && (
+              <div className="space-y-10 animate-fadeIn">
+                {/* Block 1 */}
+                <section className="space-y-4">
+                  <h2 className="text-lg font-bold text-accent border-b border-border pb-2 flex items-center gap-2">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                    <span>OOH Production House Gallery</span>
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <ImageFieldEditor
+                      label="Image 1"
+                      imageKey="service_prod_1"
+                      currentValue={images.service_prod_1}
+                      onSave={(newUrl) => updateImages({ service_prod_1: newUrl })}
+                      lang={lang}
+                    />
+                    <ImageFieldEditor
+                      label="Image 2"
+                      imageKey="service_prod_2"
+                      currentValue={images.service_prod_2}
+                      onSave={(newUrl) => updateImages({ service_prod_2: newUrl })}
+                      lang={lang}
+                    />
+                    <ImageFieldEditor
+                      label="Image 3"
+                      imageKey="service_prod_3"
+                      currentValue={images.service_prod_3}
+                      onSave={(newUrl) => updateImages({ service_prod_3: newUrl })}
+                      lang={lang}
+                    />
+                  </div>
+                </section>
+
+                {/* Block 2 */}
+                <section className="space-y-4 pt-4">
+                  <h2 className="text-lg font-bold text-accent border-b border-border pb-2 flex items-center gap-2">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span>OOH Media Specialist Gallery</span>
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <ImageFieldEditor
+                      label="Image 1"
+                      imageKey="service_spec_1"
+                      currentValue={images.service_spec_1}
+                      onSave={(newUrl) => updateImages({ service_spec_1: newUrl })}
+                      lang={lang}
+                    />
+                    <ImageFieldEditor
+                      label="Image 2"
+                      imageKey="service_spec_2"
+                      currentValue={images.service_spec_2}
+                      onSave={(newUrl) => updateImages({ service_spec_2: newUrl })}
+                      lang={lang}
+                    />
+                    <ImageFieldEditor
+                      label="Image 3"
+                      imageKey="service_spec_3"
+                      currentValue={images.service_spec_3}
+                      onSave={(newUrl) => updateImages({ service_spec_3: newUrl })}
+                      lang={lang}
+                    />
+                  </div>
+                </section>
+
+                {/* Block 3 */}
+                <section className="space-y-4 pt-4">
+                  <h2 className="text-lg font-bold text-accent border-b border-border pb-2 flex items-center gap-2">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                    <span>OOH Consultation Gallery</span>
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <ImageFieldEditor
+                      label="Image 1"
+                      imageKey="service_cons_1"
+                      currentValue={images.service_cons_1}
+                      onSave={(newUrl) => updateImages({ service_cons_1: newUrl })}
+                      lang={lang}
+                    />
+                    <ImageFieldEditor
+                      label="Image 2"
+                      imageKey="service_cons_2"
+                      currentValue={images.service_cons_2}
+                      onSave={(newUrl) => updateImages({ service_cons_2: newUrl })}
+                      lang={lang}
+                    />
+                    <ImageFieldEditor
+                      label="Image 3"
+                      imageKey="service_cons_3"
+                      currentValue={images.service_cons_3}
+                      onSave={(newUrl) => updateImages({ service_cons_3: newUrl })}
+                      lang={lang}
+                    />
+                  </div>
+                </section>
+
+                {/* Block 4 */}
+                <section className="space-y-4 pt-4">
+                  <h2 className="text-lg font-bold text-accent border-b border-border pb-2 flex items-center gap-2">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z" />
+                    </svg>
+                    <span>OOH Research Gallery</span>
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <ImageFieldEditor
+                      label="Image 1"
+                      imageKey="service_rese_1"
+                      currentValue={images.service_rese_1}
+                      onSave={(newUrl) => updateImages({ service_rese_1: newUrl })}
+                      lang={lang}
+                    />
+                    <ImageFieldEditor
+                      label="Image 2"
+                      imageKey="service_rese_2"
+                      currentValue={images.service_rese_2}
+                      onSave={(newUrl) => updateImages({ service_rese_2: newUrl })}
+                      lang={lang}
+                    />
+                    <ImageFieldEditor
+                      label="Image 3"
+                      imageKey="service_rese_3"
+                      currentValue={images.service_rese_3}
+                      onSave={(newUrl) => updateImages({ service_rese_3: newUrl })}
+                      lang={lang}
+                    />
+                  </div>
+                </section>
+              </div>
+            )}
           </div>
         )}
       </main>
+    </div>
+  );
+}
+
+// ── Helper Component for Managing Website Images (Tidied UI/UX aligned with global styling) ──
+function ImageFieldEditor({ label, imageKey, currentValue, onSave, lang }) {
+  const [imageType, setImageType] = useState('url'); // 'url' or 'upload'
+  const [imageUrl, setImageUrl] = useState(currentValue || '');
+  const [fileName, setFileName] = useState('');
+  const [preview, setPreview] = useState(currentValue || '');
+  const [saving, setSaving] = useState(false);
+  const [statusMsg, setStatusMsg] = useState({ text: '', type: '' });
+
+  useEffect(() => {
+    setImageUrl(currentValue || '');
+    setPreview(currentValue || '');
+    const isBase64 = currentValue && currentValue.startsWith('data:');
+    if (isBase64) {
+      setImageType('upload');
+      setFileName(lang === 'ID' ? 'File Terunggah' : 'Uploaded File');
+    } else {
+      setImageType('url');
+      setFileName('');
+    }
+  }, [currentValue, lang]);
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      setStatusMsg({ text: lang === 'ID' ? 'File harus berupa gambar' : 'File must be an image', type: 'error' });
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setStatusMsg({ text: lang === 'ID' ? 'Ukuran gambar maksimal 5MB' : 'Max image size is 5MB', type: 'error' });
+      return;
+    }
+
+    setFileName(file.name);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreview(reader.result);
+      setStatusMsg({ text: '', type: '' });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSave = async (e) => {
+    e.preventDefault();
+    setSaving(true);
+    try {
+      const finalSrc = imageType === 'url' ? imageUrl.trim() : preview;
+      if (!finalSrc) {
+        setStatusMsg({ text: lang === 'ID' ? 'Gambar tidak boleh kosong' : 'Image source cannot be empty', type: 'error' });
+        setSaving(false);
+        return;
+      }
+      await onSave(finalSrc);
+      setStatusMsg({ text: lang === 'ID' ? 'Berhasil menyimpan gambar!' : 'Successfully saved image!', type: 'success' });
+      setTimeout(() => setStatusMsg({ text: '', type: '' }), 3000);
+    } catch (err) {
+      console.error(err);
+      setStatusMsg({ text: lang === 'ID' ? 'Gagal menyimpan gambar' : 'Failed to save image', type: 'error' });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="group flex flex-col bg-card border border-border rounded-2xl overflow-hidden p-4 shadow hover:shadow-md transition-all duration-300 relative border-l-4 border-l-accent font-lato">
+      
+      {/* 1. Large Image Preview on Top (just like Portfolio card) */}
+      <div className="relative overflow-hidden rounded-xl border border-border aspect-[3/2] w-full bg-background/50 flex items-center justify-center">
+        {preview ? (
+          <img
+            src={getDirectDriveLink(preview)}
+            alt={label}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+            onError={() => setPreview('')}
+          />
+        ) : (
+          <div className="flex flex-col items-center gap-1.5 text-foreground/35">
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span className="text-xs font-semibold">{lang === 'ID' ? 'Tidak Ada Gambar' : 'No Image'}</span>
+          </div>
+        )}
+      </div>
+
+      {/* 2. Title & Key info */}
+      <div className="mt-3 font-helvetica">
+        <h4 className="font-bold text-base text-primary leading-tight truncate" title={label}>{label}</h4>
+        <span className="text-[10px] text-foreground/45 font-mono block mt-0.5">Key: {imageKey}</span>
+      </div>
+
+      {/* 3. Selector & Inputs */}
+      <div className="mt-4 flex-1 flex flex-col justify-end gap-3">
+        {/* Selector */}
+        <div className="flex gap-1.5 bg-background/50 p-1 rounded-xl border border-border w-full">
+          <button
+            type="button"
+            onClick={() => setImageType('url')}
+            className={`flex-1 py-1.5 text-[10px] font-bold rounded-lg transition-all cursor-pointer ${
+              imageType === 'url' 
+                ? 'bg-accent text-white shadow-sm' 
+                : 'text-foreground/60 hover:text-foreground hover:bg-background/25'
+            }`}
+          >
+            {lang === 'ID' ? 'URL Link' : 'URL Link'}
+          </button>
+          <button
+            type="button"
+            onClick={() => setImageType('upload')}
+            className={`flex-1 py-1.5 text-[10px] font-bold rounded-lg transition-all cursor-pointer ${
+              imageType === 'upload' 
+                ? 'bg-accent text-white shadow-sm' 
+                : 'text-foreground/60 hover:text-foreground hover:bg-background/25'
+            }`}
+          >
+            {lang === 'ID' ? 'Unggah File' : 'Upload File'}
+          </button>
+        </div>
+
+        {/* Inputs */}
+        {imageType === 'url' ? (
+          <input
+            type="url"
+            value={imageUrl}
+            onChange={(e) => { setImageUrl(e.target.value); setPreview(e.target.value); }}
+            placeholder="https://example.com/image.jpg"
+            className="w-full px-3 py-2.5 rounded-xl border border-border bg-background focus:outline-none focus:border-accent text-xs font-mono text-foreground/80 shadow-inner"
+          />
+        ) : (
+          <div className="relative">
+            <label 
+              htmlFor={`file-${imageKey}`}
+              className="flex items-center justify-center w-full h-10 px-3 border border-border rounded-xl cursor-pointer bg-background hover:bg-card-hover hover:border-accent/30 transition-all text-center text-xs text-foreground/70 font-semibold truncate"
+            >
+              {fileName || (lang === 'ID' ? 'Pilih Gambar Lokal' : 'Choose Local Image')}
+            </label>
+            <input
+              id={`file-${imageKey}`}
+              type="file"
+              accept="image/*"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
+          </div>
+        )}
+      </div>
+
+      {/* 4. Status Message */}
+      {statusMsg.text && (
+        <div className={`text-[11px] font-semibold flex items-center gap-1 mt-2 ${statusMsg.type === 'success' ? 'text-green-600' : 'text-red-500'}`}>
+          <span>{statusMsg.type === 'success' ? '✓' : '✗'}</span>
+          <span>{statusMsg.text}</span>
+        </div>
+      )}
+
+      {/* 5. Save Button */}
+      <div className="flex gap-2 mt-4 pt-3 border-t border-border/50">
+        <button
+          type="button"
+          onClick={handleSave}
+          disabled={saving}
+          className="w-full bg-accent hover:bg-accent/90 text-white font-semibold py-2.5 rounded-xl text-xs transition-all shadow-sm hover:shadow-md cursor-pointer disabled:opacity-50 flex items-center justify-center gap-1.5"
+        >
+          {saving ? (lang === 'ID' ? 'Menyimpan...' : 'Saving...') : (lang === 'ID' ? 'Simpan Gambar' : 'Save Image')}
+        </button>
+      </div>
     </div>
   );
 }

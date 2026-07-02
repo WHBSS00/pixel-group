@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import CTASection from '@/components/CTASection';
 import { useLanguage } from '@/context/LanguageContext';
+import { useCompany } from '@/context/CompanyContext';
+import { getDirectDriveLink } from '@/utils/drive';
 
 const BASE = 'https://pixelgroup.id';
 
@@ -71,8 +73,15 @@ function Block1Section() {
   const resolvedActiveIndex = activeIndex === -1 ? 0 : activeIndex;
   const [ref, isVisible] = useScrollAnimation({ threshold: 0.1, rootMargin: '0px 0px -5% 0px' });
   const { t } = useLanguage();
+  const { images } = useCompany();
 
-  const services = block1Images.map((img, i) => ({
+  const block1ImagesDynamic = [
+    images?.service_prod_1 || block1Images[0],
+    images?.service_prod_2 || block1Images[1],
+    images?.service_prod_3 || block1Images[2],
+  ];
+
+  const services = block1ImagesDynamic.map((img, i) => ({
     image: img,
     title: t(`services.block1.items.${i}.title`),
     desc: t(`services.block1.items.${i}.desc`),
@@ -97,7 +106,7 @@ function Block1Section() {
               {services.map((service, i) => (
                 <img
                   key={i}
-                  src={service.image}
+                  src={getDirectDriveLink(service.image)}
                   alt={service.title}
                   className={`absolute inset-0 h-full w-full object-cover transition-all duration-700 ${resolvedActiveIndex === i ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
                 />
@@ -130,8 +139,15 @@ function Block2Section() {
   const resolvedActiveIndex = activeIndex === -1 ? 0 : activeIndex;
   const [ref, isVisible] = useScrollAnimation({ threshold: 0.1 });
   const { t } = useLanguage();
+  const { images } = useCompany();
 
-  const services = block2Images.map((img, i) => ({
+  const block2ImagesDynamic = [
+    images?.service_spec_1 || block2Images[0],
+    images?.service_spec_2 || block2Images[1],
+    images?.service_spec_3 || block2Images[2],
+  ];
+
+  const services = block2ImagesDynamic.map((img, i) => ({
     image: img,
     title: t(`services.block2.items.${i}.title`),
     desc: t(`services.block2.items.${i}.desc`),
@@ -156,7 +172,7 @@ function Block2Section() {
               {services.map((service, i) => (
                 <img
                   key={i}
-                  src={service.image}
+                  src={getDirectDriveLink(service.image)}
                   alt={service.title}
                   className={`absolute inset-0 h-full w-full object-cover transition-all duration-700 ${resolvedActiveIndex === i ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
                 />
@@ -189,8 +205,15 @@ function Block3Section() {
   const resolvedActiveIndex = activeIndex === -1 ? 0 : activeIndex;
   const [ref, isVisible] = useScrollAnimation({ threshold: 0.1 });
   const { t } = useLanguage();
+  const { images } = useCompany();
 
-  const services = block3Images.map((img, i) => ({
+  const block3ImagesDynamic = [
+    images?.service_cons_1 || block3Images[0],
+    images?.service_cons_2 || block3Images[1],
+    images?.service_cons_3 || block3Images[2],
+  ];
+
+  const services = block3ImagesDynamic.map((img, i) => ({
     image: img,
     title: t(`services.block3.items.${i}.title`),
     desc: t(`services.block3.items.${i}.desc`),
@@ -215,7 +238,7 @@ function Block3Section() {
               {services.map((service, i) => (
                 <img
                   key={i}
-                  src={service.image}
+                  src={getDirectDriveLink(service.image)}
                   alt={service.title}
                   className={`absolute inset-0 h-full w-full object-cover transition-all duration-700 ${resolvedActiveIndex === i ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
                 />
@@ -248,8 +271,15 @@ function Block4Section() {
   const resolvedActiveIndex = activeIndex === -1 ? 0 : activeIndex;
   const [ref, isVisible] = useScrollAnimation({ threshold: 0.1 });
   const { t } = useLanguage();
+  const { images } = useCompany();
 
-  const services = block4Images.map((img, i) => ({
+  const block4ImagesDynamic = [
+    images?.service_rese_1 || block4Images[0],
+    images?.service_rese_2 || block4Images[1],
+    images?.service_rese_3 || block4Images[2],
+  ];
+
+  const services = block4ImagesDynamic.map((img, i) => ({
     image: img,
     title: t(`services.block4.items.${i}.title`),
     desc: t(`services.block4.items.${i}.desc`),
@@ -274,7 +304,7 @@ function Block4Section() {
               {services.map((service, i) => (
                 <img
                   key={i}
-                  src={service.image}
+                  src={getDirectDriveLink(service.image)}
                   alt={service.title}
                   className={`absolute inset-0 h-full w-full object-cover transition-all duration-700 ${resolvedActiveIndex === i ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
                 />
@@ -322,7 +352,7 @@ function AccordionItem({ number, title, desc, image, isOpen, onToggle, onMouseEn
         {isOpen && (
           <div className="overflow-hidden">
             <div className="relative mb-4 box-border block aspect-[322/240] w-full overflow-hidden rounded-2xl border border-border md:hidden">
-              <img src={image} className="h-full w-full object-cover" alt={title} />
+              <img src={getDirectDriveLink(image)} className="h-full w-full object-cover" alt={title} />
             </div>
             <p className="font-lato text-[14px] leading-[1.4] md:text-base text-foreground/70">
               {desc}

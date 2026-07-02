@@ -33,7 +33,7 @@ export default function Preloader({ onComplete }) {
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          background-color: var(--color-background, #faf9f6);
+          background-color: #DCE7F0; /* Ice Blue matching background */
           overflow: hidden;
           z-index: 99999;
           transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1), opacity 0.8s cubic-bezier(0.7, 0, 0.3, 1);
@@ -115,6 +115,8 @@ export default function Preloader({ onComplete }) {
           flex-direction: column;
           align-items: center;
           justify-content: center;
+          width: 100%;
+          padding: 0 1.5rem;
         }
         .title-wrapper {
           display: flex;
@@ -123,15 +125,27 @@ export default function Preloader({ onComplete }) {
           font-family: var(--font-helvetica, 'Inter', sans-serif);
           font-weight: 900;
           text-transform: uppercase;
-          font-size: 2.2rem;
+          font-size: 1.25rem; /* Scaled down for mobile viewports */
           color: var(--color-primary, #1e3447);
           letter-spacing: -0.02em;
           line-height: 1.1;
-          margin-bottom: 1rem;
+          margin-bottom: 0.75rem;
+          white-space: nowrap;
+        }
+        @media (min-width: 360px) {
+          .title-wrapper {
+            font-size: 1.4rem;
+          }
+        }
+        @media (min-width: 480px) {
+          .title-wrapper {
+            font-size: 1.8rem;
+          }
         }
         @media (min-width: 768px) {
           .title-wrapper {
             font-size: 3.5rem;
+            margin-bottom: 1rem;
           }
         }
         .char-wrapper {
@@ -141,8 +155,8 @@ export default function Preloader({ onComplete }) {
         .char {
           display: inline-block;
           opacity: 0;
-          filter: blur(16px);
-          transform: translateY(20px) scale(0.9);
+          filter: blur(12px);
+          transform: translateY(15px) scale(0.95);
           animation: charReveal 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
         @keyframes charReveal {
@@ -154,12 +168,12 @@ export default function Preloader({ onComplete }) {
         }
         .dot {
           display: inline-block;
-          width: 8px;
-          height: 8px;
+          width: 5px; /* Smaller dot for mobile */
+          height: 5px;
           border-radius: 50%;
           background-color: var(--color-accent, #1a53d0);
           margin-left: 2px;
-          margin-bottom: 4px;
+          margin-bottom: 3px;
           transform: scale(0);
           animation: dotReveal 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 2.8s;
         }
@@ -177,15 +191,29 @@ export default function Preloader({ onComplete }) {
 
         .subtitle {
           font-family: var(--font-lato, 'Lato', sans-serif);
-          font-size: 0.7rem;
+          font-size: 0.52rem; /* Reduced to fit mobile */
           font-weight: 700;
-          letter-spacing: 0.4em;
+          letter-spacing: 0.22em; /* Reduced spacing on mobile to prevent overflow/wrap */
           text-transform: uppercase;
           color: var(--color-primary, #1e3447);
           opacity: 0;
-          transform: translateY(10px);
+          transform: translateY(8px);
           animation: subtitleReveal 0.8s ease forwards 3.2s;
           margin-top: 0.5rem;
+          white-space: nowrap;
+          text-align: center;
+        }
+        @media (min-width: 360px) {
+          .subtitle {
+            font-size: 0.58rem;
+            letter-spacing: 0.28em;
+          }
+        }
+        @media (min-width: 480px) {
+          .subtitle {
+            font-size: 0.65rem;
+            letter-spacing: 0.35em;
+          }
         }
         @media (min-width: 768px) {
           .subtitle {

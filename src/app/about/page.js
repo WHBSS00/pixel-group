@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import CTASection from '@/components/CTASection';
 import BackgroundVideo from '@/components/BackgroundVideo';
 import { useLanguage } from '@/context/LanguageContext';
+import { useCompany } from '@/context/CompanyContext';
+import { getDirectDriveLink } from '@/utils/drive';
 
 const BASE = 'https://pixelgroup.id';
 
@@ -73,6 +75,7 @@ function HeroSection() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => { const t = setTimeout(() => setMounted(true), 100); return () => clearTimeout(t); }, []);
   const { lang, t } = useLanguage();
+  const { settings } = useCompany();
 
   return (
     <section className="relative isolate z-10 flex items-center pt-16 md:pt-20">
@@ -141,7 +144,7 @@ function HeroSection() {
                 <div className="absolute -inset-4 rounded-full bg-gradient-to-tr from-accent/10 to-accent/5 blur-2xl opacity-60 group-hover:opacity-80 transition duration-700 pointer-events-none" />
                 
                 <img
-                  src="/logo.png"
+                  src={getDirectDriveLink(settings.logo || '/logo.png')}
                   alt="IDEA Logo"
                   className="relative z-10 w-full h-auto object-contain drop-shadow-[0_8px_24px_rgba(26,83,208,0.12)] transition-transform duration-700 group-hover:scale-[1.03]"
                   draggable="false"
@@ -329,9 +332,19 @@ function WhyUsSection() {
   const [whyRef, whyVisible] = useScrollAnimation({ threshold: 0.1 });
   const [activeItem, setActiveItem] = useState(null);
   const { lang, t } = useLanguage();
+  const { images } = useCompany();
+
+  const whyUsImages = [
+    images?.whyus_img_1 || whyUsStaticData[0].image,
+    images?.whyus_img_2 || whyUsStaticData[1].image,
+    images?.whyus_img_3 || whyUsStaticData[2].image,
+    images?.whyus_img_4 || whyUsStaticData[3].image,
+    images?.whyus_img_5 || whyUsStaticData[4].image,
+  ];
 
   const whyUsItems = whyUsStaticData.map((item, i) => ({
     ...item,
+    image: whyUsImages[i],
     title: t(`about.whyUs.items.${i}.title`),
     description: t(`about.whyUs.items.${i}.desc`),
   }));
@@ -380,7 +393,7 @@ function WhyUsSection() {
                   }`}
                 >
                   <div className="absolute inset-0 w-full h-full">
-                    <img src={card.image} alt={card.title} className="w-full h-full object-cover" loading="lazy" />
+                    <img src={getDirectDriveLink(card.image)} alt={card.title} className="w-full h-full object-cover" loading="lazy" />
                   </div>
                   <div className="absolute inset-0 flex flex-col justify-end">
                     <div className="bg-gradient-to-t from-black/85 via-black/40 to-transparent p-4 text-white">
