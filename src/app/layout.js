@@ -3,6 +3,7 @@ import './globals.css';
 import PageLayoutWrapper from '@/components/PageLayoutWrapper';
 import { LanguageProvider } from '@/context/LanguageContext';
 import { CompanyProvider } from '@/context/CompanyContext';
+import Script from 'next/script';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -90,6 +91,19 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-YXL9XMDZJT"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-YXL9XMDZJT');
+          `}
+        </Script>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
