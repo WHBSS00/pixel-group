@@ -49,7 +49,7 @@ export function getDirectDriveLink(url) {
   if (!url || typeof url !== 'string') return '';
 
   // Return immediately if it's already a local asset path
-  if (url.startsWith('/') || url.startsWith('http://localhost') || url.startsWith('https://pixelgroup.id') || url.startsWith('data:image')) {
+  if (url.startsWith('/') || url.startsWith('http://localhost') || url.startsWith('https://pixelgroup.id') || url.startsWith('https://ideakreasimedia.com') || url.startsWith('data:image')) {
     // Check if the URL contains a drive ID even if it is absolute or full URL
     const id = extractDriveId(url);
     if (id && driveMapping[id]) {

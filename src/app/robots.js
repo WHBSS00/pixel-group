@@ -7,6 +7,6 @@ export default function robots() {
         disallow: '/admin',
       },
     ],
-    sitemap: 'https://ideakreasi.vercel.app/sitemap.xml',
+    sitemap: 'https://ideakreasimedia.com/sitemap.xml',
   };
 }
