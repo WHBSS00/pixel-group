@@ -104,8 +104,7 @@ export const metadata = {
     },
   },
   verification: {
-    // Placeholder — replace with actual Google Search Console verification code
-    // google: 'your-google-verification-code',
+    google: 'pPlJ5cDP9zT_Hz38n2PyA3lanCFN1PujmZv_9igKUpk',
   },
   category: 'advertising',
 };
