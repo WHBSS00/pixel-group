@@ -41,12 +41,25 @@
   }
 
   body {
-    background: linear-gradient(180deg, #F0F6FA 0%, #DCE7F0 45%, #C9D9E6 100%);
-    background-attachment: fixed;
+    background-color: #F0F6FA;
     color: var(--color-foreground);
     font-family: var(--font-lato);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    position: relative;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, #F0F6FA 0%, #DCE7F0 45%, #C9D9E6 100%);
+    z-index: -1;
+    pointer-events: none;
+    transform: translate3d(0, 0, 0);
   }
 
   ::selection {
