@@ -6,6 +6,7 @@ import BackgroundVideo from '@/components/BackgroundVideo';
 import { useLanguage } from '@/context/LanguageContext';
 import { getDirectDriveLink } from '@/utils/drive';
 import { db } from '@/lib/firebase';
+import Image from 'next/image';
 
 const initialWorksData = [
   {
@@ -341,15 +342,16 @@ function PortfolioCard({ item, index }) {
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[40px]'
       } ${delayClass}`}
     >
-      <div className="relative w-full overflow-hidden rounded-xl border border-border group-hover:border-accent/70 shadow-md transition-colors duration-300">
-        <img
+      <div className="relative w-full overflow-hidden rounded-xl border border-border group-hover:border-accent/70 shadow-md transition-colors duration-300 aspect-[3/2]">
+        <Image
           src={getDirectDriveLink(item.image)}
           alt={item.title}
-          className="block aspect-[3/2] w-full object-cover"
-          style={{ height: 'auto', objectPosition: item.objectPosition || 'left' }}
-          loading="lazy"
+          fill
+          sizes="(max-width: 768px) 100vw, 33vw"
+          className="object-cover"
+          style={{ objectPosition: item.objectPosition || 'left' }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-accent/90 via-accent/35 to-transparent p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="absolute inset-0 bg-gradient-to-t from-accent/90 via-accent/35 to-transparent p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
           <span className="font-bold text-xs text-white uppercase tracking-wider">{item.type}</span>
           <span className="text-xs text-white mt-1">{item.size}</span>
         </div>

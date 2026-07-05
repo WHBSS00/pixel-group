@@ -6,6 +6,7 @@ import BackgroundVideo from '@/components/BackgroundVideo';
 import { useLanguage } from '@/context/LanguageContext';
 import { useCompany } from '@/context/CompanyContext';
 import { getDirectDriveLink } from '@/utils/drive';
+import Image from 'next/image';
 
 const BASE = 'https://pixelgroup.id';
 
@@ -143,9 +144,12 @@ function HeroSection() {
                 {/* Soft backdrop blur and glow behind logo */}
                 <div className="absolute -inset-4 rounded-full bg-gradient-to-tr from-accent/10 to-accent/5 blur-2xl opacity-60 group-hover:opacity-80 transition duration-700 pointer-events-none" />
                 
-                <img
+                <Image
                   src={getDirectDriveLink(settings.logo || '/logo.png')}
                   alt="IDEA Logo"
+                  width={380}
+                  height={150}
+                  priority
                   className="relative z-10 w-full h-auto object-contain drop-shadow-[0_8px_24px_rgba(26,83,208,0.12)] transition-transform duration-700 group-hover:scale-[1.03]"
                   draggable="false"
                 />
@@ -393,7 +397,7 @@ function WhyUsSection() {
                   }`}
                 >
                   <div className="absolute inset-0 w-full h-full">
-                    <img src={getDirectDriveLink(card.image)} alt={card.title} className="w-full h-full object-cover" loading="lazy" />
+                    <Image src={getDirectDriveLink(card.image)} alt={card.title} className="w-full h-full object-cover" fill sizes="(max-width: 768px) 100vw, 20vw" />
                   </div>
                   <div className="absolute inset-0 flex flex-col justify-end">
                     <div className="bg-gradient-to-t from-black/85 via-black/40 to-transparent p-4 text-white">

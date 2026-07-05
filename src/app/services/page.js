@@ -5,6 +5,7 @@ import CTASection from '@/components/CTASection';
 import { useLanguage } from '@/context/LanguageContext';
 import { useCompany } from '@/context/CompanyContext';
 import { getDirectDriveLink } from '@/utils/drive';
+import Image from 'next/image';
 
 const BASE = 'https://pixelgroup.id';
 
@@ -104,10 +105,12 @@ function Block1Section() {
           <div className="hidden md:block w-full md:w-[40%] mb-6 md:mb-0">
             <div className="relative box-border w-full overflow-hidden rounded-2xl border border-border aspect-[4/3] md:aspect-[294/430] xl:aspect-[1/1]">
               {services.map((service, i) => (
-                <img
+                <Image
                   key={i}
                   src={getDirectDriveLink(service.image)}
                   alt={service.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 40vw"
                   className={`absolute inset-0 h-full w-full object-cover transition-all duration-700 ${resolvedActiveIndex === i ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
                 />
               ))}
@@ -170,10 +173,12 @@ function Block2Section() {
           <div className="hidden md:block w-full md:w-[40%] mb-6 md:mb-0">
             <div className="relative box-border w-full overflow-hidden rounded-2xl border border-border aspect-[4/3] md:aspect-[294/430] xl:aspect-[1/1]">
               {services.map((service, i) => (
-                <img
+                <Image
                   key={i}
                   src={getDirectDriveLink(service.image)}
                   alt={service.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 40vw"
                   className={`absolute inset-0 h-full w-full object-cover transition-all duration-700 ${resolvedActiveIndex === i ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
                 />
               ))}
@@ -236,10 +241,12 @@ function Block3Section() {
           <div className="hidden md:block w-full md:w-[40%] mb-6 md:mb-0">
             <div className="relative box-border w-full overflow-hidden rounded-2xl border border-border aspect-[4/3] md:aspect-[294/430] xl:aspect-[1/1]">
               {services.map((service, i) => (
-                <img
+                <Image
                   key={i}
                   src={getDirectDriveLink(service.image)}
                   alt={service.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 40vw"
                   className={`absolute inset-0 h-full w-full object-cover transition-all duration-700 ${resolvedActiveIndex === i ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
                 />
               ))}
@@ -302,10 +309,12 @@ function Block4Section() {
           <div className="hidden md:block w-full md:w-[40%] mb-6 md:mb-0">
             <div className="relative box-border w-full overflow-hidden rounded-2xl border border-border aspect-[4/3] md:aspect-[294/430] xl:aspect-[1/1]">
               {services.map((service, i) => (
-                <img
+                <Image
                   key={i}
                   src={getDirectDriveLink(service.image)}
                   alt={service.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 40vw"
                   className={`absolute inset-0 h-full w-full object-cover transition-all duration-700 ${resolvedActiveIndex === i ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
                 />
               ))}
@@ -352,7 +361,7 @@ function AccordionItem({ number, title, desc, image, isOpen, onToggle, onMouseEn
         {isOpen && (
           <div className="overflow-hidden">
             <div className="relative mb-4 box-border block aspect-[322/240] w-full overflow-hidden rounded-2xl border border-border md:hidden">
-              <img src={getDirectDriveLink(image)} className="h-full w-full object-cover" alt={title} />
+              <Image src={getDirectDriveLink(image)} className="h-full w-full object-cover" alt={title} fill sizes="(max-width: 768px) 100vw, 10px" />
             </div>
             <p className="font-lato text-[14px] leading-[1.4] md:text-base text-foreground/70">
               {desc}

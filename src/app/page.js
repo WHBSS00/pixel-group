@@ -10,6 +10,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { getDirectDriveLink } from '@/utils/drive';
 import { db } from '@/lib/firebase';
 import { useCompany } from '@/context/CompanyContext';
+import Image from 'next/image';
 
 const BASE = 'https://pixelgroup.id';
 
@@ -195,14 +196,14 @@ function HeroSection() {
     <section className="min-h-screen hero relative isolate snap-start">
       <div className="absolute inset-x-0 h-screen overflow-hidden hero-image-container">
         <div className="inset-0 absolute z-0">
-          <picture>
-            <source media="(min-width:768px)" srcSet={getDirectDriveLink(images?.hero_img || "/hero.png")} />
-            <img
-              src={getDirectDriveLink(images?.hero_img || "/hero.png")}
-              alt="Hero Image"
-              className="w-full h-full object-cover object-center"
-            />
-          </picture>
+          <Image
+            src={getDirectDriveLink(images?.hero_img || "/hero.png")}
+            alt="Hero Image"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-white/30 to-transparent z-[1] pointer-events-none" />
       </div>
