@@ -316,13 +316,14 @@ function OurServiceSection() {
             >
               {/* Outer Circular Frame */}
               <div className="relative w-44 h-44 md:w-52 md:h-52 rounded-full border border-border overflow-hidden shadow-2xl transition-all duration-500 group-hover:border-accent group-hover:scale-105 bg-card/20 backdrop-blur-sm">
-                <img
+                <Image
                   src={item.image}
                   alt={item.title}
+                  fill
+                  sizes="(max-width: 768px) 176px, 208px"
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110 filter brightness-90 group-hover:brightness-100"
-                  loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity" />
+                <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity z-10" />
               </div>
 
               {/* Text underneath circle */}
@@ -356,13 +357,14 @@ function OurServiceSection() {
             >
               {/* Outer Circular Frame */}
               <div className="relative w-44 h-44 md:w-52 md:h-52 rounded-full border border-border overflow-hidden shadow-2xl transition-all duration-500 group-hover:border-accent group-hover:scale-105 bg-card/20 backdrop-blur-sm">
-                <img
+                <Image
                   src={item.image}
                   alt={item.title}
+                  fill
+                  sizes="(max-width: 768px) 176px, 208px"
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110 filter brightness-90 group-hover:brightness-100"
-                  loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity" />
+                <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity z-10" />
               </div>
 
               {/* Text underneath circle */}
@@ -502,12 +504,12 @@ function OurSolutionSection() {
             <div key={idx} className="w-[100svw]">
               <div className="container flex flex-col gap-4 px-6 pt-[5rem] md:pt-24 xl:flex-row xl:gap-10">
                 <div className={`relative aspect-[350/252] flex-1 overflow-hidden rounded-2xl border border-neutral-300 md:aspect-[782/357] xl:aspect-[644/503] transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[5px]'}`}>
-                  <img
+                  <Image
                     src={getDirectDriveLink(service.image)}
                     alt={service.heading}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     className="h-full w-full object-cover"
-                    loading="lazy"
-                    decoding="async"
                   />
                 </div>
                 <div className={`flex-1 transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[5px]'}`}>
@@ -700,20 +702,14 @@ function PortfolioSection() {
                                 transition: 'all .5s'
                               }}
                             >
-                              <img
+                              <Image
                                 src={getDirectDriveLink(item.image)}
                                 alt={item.title}
-                                loading="lazy"
-                                decoding="async"
+                                fill
+                                sizes="(max-width: 768px) 70vw, (max-width: 1024px) 33vw, 20vw"
                                 draggable="false"
-                                className="select-none touch-none border border-white rounded-lg pointer-events-none"
+                                className="select-none touch-none border border-white rounded-lg pointer-events-none object-cover"
                                 style={{
-                                  objectFit: 'cover',
-                                  width: '100%',
-                                  height: '100%',
-                                  position: 'absolute',
-                                  top: 0,
-                                  left: 0,
                                   objectPosition: item.objectPosition || 'left'
                                 }}
                               />
@@ -1118,13 +1114,14 @@ function ProjectsSection() {
               {/* Column 1: Tall Single Image */}
               {activeProjects[0] && (
                 <div className={`group relative overflow-hidden rounded-2xl border border-border h-64 sm:h-80 lg:h-[400px] xl:h-[448px] w-full bg-card shadow-sm hover:shadow-md transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[5px]'}`}>
-                  <img
+                  <Image
                     src={getDirectDriveLink(activeProjects[0].image)}
                     alt={activeProjects[0].title || 'Project'}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 25vw"
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1E3A8A]/90 via-[#1E3A8A]/45 to-transparent p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1E3A8A]/90 via-[#1E3A8A]/45 to-transparent p-5 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
                     <h3 className="font-bold text-base uppercase font-helvetica text-white">{activeProjects[0].title}</h3>
                     {activeProjects[0].size && (
                       <span className="text-xs text-white/85 mt-2 font-lato border-t border-white/20 pt-1">
@@ -1139,13 +1136,14 @@ function ProjectsSection() {
               <div className={`col-span-1 space-y-4 transition-all duration-1000 delay-350 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[5px]'}`}>
                 {activeProjects[1] && (
                   <div className="group relative overflow-hidden rounded-2xl border border-border h-32 sm:h-40 lg:h-[200px] xl:h-[216px] w-full bg-card shadow-sm hover:shadow-md transition-all duration-300">
-                    <img
+                    <Image
                       src={getDirectDriveLink(activeProjects[1].image)}
                       alt={activeProjects[1].title || 'Project'}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 25vw"
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#1E3A8A]/90 via-[#1E3A8A]/45 to-transparent p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#1E3A8A]/90 via-[#1E3A8A]/45 to-transparent p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
                       <h3 className="font-bold text-sm uppercase font-helvetica text-white">{activeProjects[1].title}</h3>
                       {activeProjects[1].size && (
                         <span className="text-xs text-white/85 mt-1 font-lato border-t border-white/20 pt-0.5">
@@ -1159,13 +1157,14 @@ function ProjectsSection() {
                 <div className="grid grid-cols-2 gap-4">
                   {activeProjects[2] && (
                     <div className="group relative overflow-hidden rounded-2xl border border-border h-28 sm:h-36 lg:h-[184px] xl:h-[216px] w-full bg-card shadow-sm hover:shadow-md transition-all duration-300">
-                      <img
+                      <Image
                         src={getDirectDriveLink(activeProjects[2].image)}
                         alt={activeProjects[2].title || 'Project'}
+                        fill
+                        sizes="(max-width: 768px) 50vw, 12vw"
                         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        loading="lazy"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#1E3A8A]/90 via-[#1E3A8A]/45 to-transparent p-3 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#1E3A8A]/90 via-[#1E3A8A]/45 to-transparent p-3 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
                         <h3 className="font-bold text-xs uppercase font-helvetica text-white line-clamp-2">{activeProjects[2].title}</h3>
                         {activeProjects[2].size && (
                           <span className="text-[10px] text-white/85 mt-1 font-lato border-t border-white/20 pt-0.5 block truncate">
@@ -1178,13 +1177,14 @@ function ProjectsSection() {
 
                   {activeProjects[3] && (
                     <div className="group relative overflow-hidden rounded-2xl border border-border h-28 sm:h-36 lg:h-[184px] xl:h-[216px] w-full bg-card shadow-sm hover:shadow-md transition-all duration-300">
-                      <img
+                      <Image
                         src={getDirectDriveLink(activeProjects[3].image)}
                         alt={activeProjects[3].title || 'Project'}
+                        fill
+                        sizes="(max-width: 768px) 50vw, 12vw"
                         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        loading="lazy"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#1E3A8A]/90 via-[#1E3A8A]/45 to-transparent p-3 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#1E3A8A]/90 via-[#1E3A8A]/45 to-transparent p-3 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
                         <h3 className="font-bold text-xs uppercase font-helvetica text-white line-clamp-2">{activeProjects[3].title}</h3>
                         {activeProjects[3].size && (
                           <span className="text-[10px] text-white/85 mt-1 font-lato border-t border-white/20 pt-0.5 block truncate">
@@ -1201,13 +1201,14 @@ function ProjectsSection() {
               <div className={`col-span-1 hidden space-y-4 sm:block transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[5px]'}`}>
                 {activeProjects[4] && (
                   <div className="group relative overflow-hidden rounded-2xl border border-border h-28 sm:h-32 lg:h-[168px] xl:h-[200px] w-full bg-card shadow-sm hover:shadow-md transition-all duration-300">
-                    <img
+                    <Image
                       src={getDirectDriveLink(activeProjects[4].image)}
                       alt={activeProjects[4].title || 'Project'}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 25vw"
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#1E3A8A]/90 via-[#1E3A8A]/45 to-transparent p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#1E3A8A]/90 via-[#1E3A8A]/45 to-transparent p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
                       <h3 className="font-bold text-sm uppercase font-helvetica text-white">{activeProjects[4].title}</h3>
                       {activeProjects[4].size && (
                         <span className="text-xs text-white/85 mt-1 font-lato border-t border-white/20 pt-0.5">
@@ -1220,13 +1221,14 @@ function ProjectsSection() {
 
                 {activeProjects[5] && (
                   <div className="group relative overflow-hidden rounded-2xl border border-border h-40 sm:h-44 lg:h-[216px] xl:h-[232px] w-full bg-card shadow-sm hover:shadow-md transition-all duration-300">
-                    <img
+                    <Image
                       src={getDirectDriveLink(activeProjects[5].image)}
                       alt={activeProjects[5].title || 'Project'}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 25vw"
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#1E3A8A]/90 via-[#1E3A8A]/45 to-transparent p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#1E3A8A]/90 via-[#1E3A8A]/45 to-transparent p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
                       <h3 className="font-bold text-sm uppercase font-helvetica text-white">{activeProjects[5].title}</h3>
                       {activeProjects[5].size && (
                         <span className="text-xs text-white/85 mt-1 font-lato border-t border-white/20 pt-0.5">
@@ -1242,13 +1244,14 @@ function ProjectsSection() {
               <div className={`col-span-1 hidden space-y-4 lg:block transition-all duration-1000 delay-650 ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[40px] blur-[5px]'}`}>
                 {activeProjects[6] && (
                   <div className="group relative overflow-hidden rounded-2xl border border-border h-32 sm:h-40 lg:h-[200px] xl:h-[216px] w-full bg-card shadow-sm hover:shadow-md transition-all duration-300">
-                    <img
+                    <Image
                       src={getDirectDriveLink(activeProjects[6].image)}
                       alt={activeProjects[6].title || 'Project'}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 25vw"
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#1E3A8A]/90 via-[#1E3A8A]/45 to-transparent p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#1E3A8A]/90 via-[#1E3A8A]/45 to-transparent p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
                       <h3 className="font-bold text-sm uppercase font-helvetica text-white">{activeProjects[6].title}</h3>
                       {activeProjects[6].size && (
                         <span className="text-xs text-white/85 mt-1 font-lato border-t border-white/20 pt-0.5">
@@ -1261,13 +1264,14 @@ function ProjectsSection() {
 
                 {activeProjects[7] && (
                   <div className="group relative overflow-hidden rounded-2xl border border-border h-28 sm:h-36 lg:h-[184px] xl:h-[216px] w-full bg-card shadow-sm hover:shadow-md transition-all duration-300">
-                    <img
+                    <Image
                       src={getDirectDriveLink(activeProjects[7].image)}
                       alt={activeProjects[7].title || 'Project'}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 25vw"
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#1E3A8A]/90 via-[#1E3A8A]/45 to-transparent p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#1E3A8A]/90 via-[#1E3A8A]/45 to-transparent p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
                       <h3 className="font-bold text-sm uppercase font-helvetica text-white">{activeProjects[7].title}</h3>
                       {activeProjects[7].size && (
                         <span className="text-xs text-white/85 mt-1 font-lato border-t border-white/20 pt-0.5">

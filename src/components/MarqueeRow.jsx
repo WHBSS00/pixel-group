@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 
 export default function MarqueeRow({ images, duration = '40s', reverse = false }) {
   const doubledImages = [...images, ...images];
@@ -22,16 +23,18 @@ export default function MarqueeRow({ images, duration = '40s', reverse = false }
             }}
           >
             {doubledImages.map((img, i) => (
-              <img
-                key={i}
-                className="mx-6 inline-block h-full w-auto md:mx-12 transition-opacity pointer-events-none select-none"
-                src={img.src}
-                alt={img.alt}
-                draggable="false"
-                loading="eager"
-                decoding="async"
-                style={{ transform: 'translateZ(0)', WebkitTransform: 'translateZ(0)' }}
-              />
+              <div key={i} className="relative h-10 w-24 md:h-12 md:w-32 mx-4 md:mx-8 transition-opacity pointer-events-none select-none shrink-0">
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  sizes="(max-width: 768px) 96px, 128px"
+                  className="object-contain"
+                  draggable="false"
+                  loading="eager"
+                  style={{ transform: 'translateZ(0)', WebkitTransform: 'translateZ(0)' }}
+                />
+              </div>
             ))}
           </div>
         ))}
