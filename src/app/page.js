@@ -12,41 +12,9 @@ import { db } from '@/lib/firebase';
 import { useCompany } from '@/context/CompanyContext';
 import Image from 'next/image';
 
-const BASE = 'https://pixelgroup.id';
-
-const clientLogosRow1 = [
-  { src: `${BASE}/images/home/our-clients/Eurokars-Group-logo.png`, alt: 'Eurokars Group' },
-  { src: `${BASE}/images/home/our-clients/Danamon%20logo.png`, alt: 'Danamon' },
-  { src: `${BASE}/images/home/our-clients/Djarum%20Logo.png`, alt: 'Djarum' },
-  { src: `${BASE}/images/home/our-clients/Emirates%20logo.png`, alt: 'Emirates' },
-  { src: `${BASE}/images/home/our-clients/DBS%20logo.png`, alt: 'DBS' },
-  { src: `${BASE}/images/home/our-clients/ERHA%20Dermatology%20Logo.png`, alt: 'ERHA' },
-  { src: `${BASE}/images/home/our-clients/Bli%20Bli%20logo%20baru.png`, alt: 'Bli Bli' },
-  { src: `${BASE}/images/home/our-clients/american-express-new.png`, alt: 'American Express' },
-  { src: `${BASE}/images/home/our-clients/bjb-logo.png`, alt: 'BJB' },
-  { src: `${BASE}/images/home/our-clients/BNI%20logo.png`, alt: 'BNI' },
-  { src: `${BASE}/images/home/our-clients/btn-new-logo.png`, alt: 'BTN' },
-  { src: `${BASE}/images/home/our-clients/BYD-Logo.png`, alt: 'BYD' },
-  { src: `${BASE}/images/home/our-clients/Gojek-Green-Logo-Vector.svg-.png`, alt: 'Gojek' },
-  { src: `${BASE}/images/home/our-clients/Grab%20logo.png`, alt: 'Grab' },
-];
-
-const clientLogosRow2 = [
-  { src: `${BASE}/images/home/our-clients/DFSK%20logo.png`, alt: 'DFSK' },
-  { src: `${BASE}/images/home/our-clients/Logo%20Bank%20BRI.png`, alt: 'BRI' },
-  { src: `${BASE}/images/home/our-clients/Astra_International-Logo.wine.png`, alt: 'Astra' },
-  { src: `${BASE}/images/home/our-clients/BRI%20Life%20logo.png`, alt: 'BRI Life' },
-  { src: `${BASE}/images/home/our-clients/Logo%20Citi%20Bank.png`, alt: 'Citi Bank' },
-  { src: `${BASE}/images/home/our-clients/american-standard-logo.png`, alt: 'American Standard' },
-  { src: `${BASE}/images/home/our-clients/Disney-Logo.png`, alt: 'Disney' },
-  { src: `${BASE}/images/home/our-clients/grohe-new.png`, alt: 'Grohe' },
-  { src: `${BASE}/images/home/our-clients/hsbc%20new.png`, alt: 'HSBC' },
-  { src: `${BASE}/images/home/our-clients/mandiri%20logo.png`, alt: 'Mandiri' },
-  { src: `${BASE}/images/home/our-clients/Mayora_logo%20new.png`, alt: 'Mayora' },
-  { src: `${BASE}/images/home/our-clients/toyota%20new.png`, alt: 'Toyota' },
-  { src: `${BASE}/images/home/our-clients/wings-new.png`, alt: 'Wings' },
-  { src: `${BASE}/images/home/our-clients/wuling%20new.png`, alt: 'Wuling' },
-];
+// Logo klien: default lokal dari /public, dapat ditimpa dari dashboard admin
+// (Firestore koleksi `client_logos`). Lihat src/data/clientLogos.js.
+import { DEFAULT_CLIENT_LOGOS, splitLogosByRow } from '@/data/clientLogos';
 
 const initialWorksData = [
   {
@@ -905,11 +873,36 @@ function AboutSection() {
 function ClientsSection() {
   const [clientsRef, clientsVisible] = useScrollAnimation({ threshold: 0.1 });
   const { lang, t } = useLanguage();
+  const [logoRows, setLogoRows] = useState(() => splitLogosByRow(DEFAULT_CLIENT_LOGOS));
+
+  // Muat logo klien dari Firestore bila dashboard admin sudah mengelolanya;
+  // selama koleksi kosong, logo bawaan lokal tetap dipakai.
+  useEffect(() => {
+    if (!db) return;
+    let cancelled = false;
+    const timer = setTimeout(async () => {
+      try {
+        const { collection, getDocs } = await import('firebase/firestore');
+        const snap = await getDocs(collection(db, 'client_logos'));
+        const items = [];
+        snap.forEach((docSnap) => items.push({ id: docSnap.id, ...docSnap.data() }));
+        if (!cancelled && items.length > 0) {
+          setLogoRows(splitLogosByRow(items));
+        }
+      } catch (err) {
+        console.error('Failed to load client logos from Firestore:', err);
+      }
+    }, 0);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, []);
 
   return (
     <section ref={clientsRef} className={`flex flex-col py-16 md:py-[100px] xl:py-[158px] bg-transparent snap-start transition-all duration-1000 ${clientsVisible ? 'opacity-100' : 'opacity-0'}`}>
       <div className={`order-1 w-full overflow-hidden transition-all duration-1000 delay-100 ${clientsVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[-30px] blur-[5px]'}`}>
-        <MarqueeRow images={clientLogosRow1} duration="40s" reverse />
+        <MarqueeRow images={logoRows.row1} duration="40s" reverse />
       </div>
 
       <div className={`container order-2 my-12 sm:my-16 md:my-[128px] flex flex-col items-center justify-between gap-y-6 text-center md:flex-row md:gap-x-[60px] md:text-left xl:my-40 xl:items-end xl:gap-x-[198px] transition-all duration-1000 delay-200 ${clientsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[35px]'}`}>
@@ -966,7 +959,7 @@ function ClientsSection() {
       </div>
 
       <div className={`order-3 w-full overflow-hidden transition-all duration-1000 delay-300 ${clientsVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-[30px] blur-[5px]'}`}>
-        <MarqueeRow images={clientLogosRow2} duration="35s" />
+        <MarqueeRow images={logoRows.row2} duration="35s" />
       </div>
     </section>
   );

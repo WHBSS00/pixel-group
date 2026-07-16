@@ -1,5 +1,6 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -11,11 +12,13 @@ const firebaseConfig = {
 };
 
 let db = null;
+let auth = null;
 
 if (firebaseConfig.projectId) {
   try {
     const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
     db = getFirestore(app);
+    auth = getAuth(app);
   } catch (error) {
     console.error('Failed to initialize Firebase:', error);
   }
@@ -23,4 +26,4 @@ if (firebaseConfig.projectId) {
   console.warn('Firebase environment variables are not set. Falling back to localStorage.');
 }
 
-export { db };
+export { db, auth };

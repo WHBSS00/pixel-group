@@ -23,18 +23,6 @@ export const DEFAULT_WEBSITE_IMAGES = {
   solution_spec_img: '/images/services/specialist_1.png',
   solution_cons_img: '/images/services/consultation_1.png',
   solution_rese_img: '/images/services/research_1.png',
-  about_carousel_1: '/images/our-works/works_1.png',
-  about_carousel_2: '/images/our-works/works_2.png',
-  about_carousel_3: '/images/our-works/works_3.png',
-  project_1: '/images/projects/project_1.png',
-  project_2: '/images/projects/project_2.png',
-  project_3: '/images/projects/project_3.png',
-  project_4: '/images/projects/project_4.png',
-  vision_img: '/images/about/vision_tmii.jpg',
-  mission_img_1: '/images/about/mission_1.jpg',
-  mission_img_2: '/images/about/mission_2.jpg',
-  mission_img_3: '/images/about/mission_3.jpg',
-  mission_img_4: '/images/about/mission_4.jpg',
   whyus_img_1: '/images/about/whyus_1.png',
   whyus_img_2: '/images/about/whyus_2.png',
   whyus_img_3: '/images/about/whyus_3.png',
@@ -54,6 +42,16 @@ export const DEFAULT_WEBSITE_IMAGES = {
   service_rese_3: '/images/services/research_3.png',
 };
 
+// localStorage bisa melempar QuotaExceededError saat menyimpan base64 besar —
+// cache lokal bersifat opsional, jadi kegagalan tidak boleh menghentikan alur.
+function safeSetItem(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch (e) {
+    console.warn(`Skipped caching "${key}" to localStorage:`, e?.name || e);
+  }
+}
+
 export function CompanyProvider({ children }) {
   const [settings, setSettings] = useState(DEFAULT_COMPANY_SETTINGS);
   const [images, setImages] = useState(DEFAULT_WEBSITE_IMAGES);
@@ -61,7 +59,7 @@ export function CompanyProvider({ children }) {
 
   useEffect(() => {
     const loadData = async () => {
-      // 1. Load Company settings
+      // 1. Load Company settings dari cache lokal
       const storedSettings = localStorage.getItem('idea_company_settings');
       if (storedSettings) {
         try {
@@ -72,7 +70,7 @@ export function CompanyProvider({ children }) {
         }
       }
 
-      // 2. Load Website Images settings
+      // 2. Load Website Images dari cache lokal
       const storedImages = localStorage.getItem('idea_website_images');
       if (storedImages) {
         try {
@@ -83,31 +81,38 @@ export function CompanyProvider({ children }) {
         }
       }
 
-      // Retrieve fresh configuration from Firestore if available
+      // 3. Ambil konfigurasi terbaru dari Firestore (read-only untuk pengunjung)
       if (db) {
         try {
-          const { doc, getDoc, setDoc } = await import('firebase/firestore');
-          
-          // Load company settings from Firestore
-          const settingsRef = doc(db, 'company_settings', 'default');
-          const settingsSnap = await getDoc(settingsRef);
+          const { doc, getDoc, collection, getDocs } = await import('firebase/firestore');
+
+          const settingsSnap = await getDoc(doc(db, 'company_settings', 'default'));
           if (settingsSnap.exists()) {
             const data = settingsSnap.data();
             setSettings({ ...DEFAULT_COMPANY_SETTINGS, ...data });
-            localStorage.setItem('idea_company_settings', JSON.stringify(data));
-          } else {
-            await setDoc(settingsRef, DEFAULT_COMPANY_SETTINGS);
+            safeSetItem('idea_company_settings', JSON.stringify(data));
           }
 
-          // Load website images settings from Firestore
-          const imagesRef = doc(db, 'website_images', 'default');
-          const imagesSnap = await getDoc(imagesRef);
-          if (imagesSnap.exists()) {
-            const data = imagesSnap.data();
-            setImages({ ...DEFAULT_WEBSITE_IMAGES, ...data });
-            localStorage.setItem('idea_website_images', JSON.stringify(data));
-          } else {
-            await setDoc(imagesRef, DEFAULT_WEBSITE_IMAGES);
+          // website_images: satu dokumen per gambar (doc.id = image key).
+          // Dokumen legacy 'default' (semua key dalam satu dokumen) tetap
+          // dibaca lebih dulu agar data lama tidak hilang.
+          const imagesSnap = await getDocs(collection(db, 'website_images'));
+          const legacy = {};
+          const perKey = {};
+          imagesSnap.forEach((snap) => {
+            if (snap.id === 'default') {
+              Object.assign(legacy, snap.data());
+            } else {
+              const data = snap.data();
+              if (data && typeof data.url === 'string' && data.url) {
+                perKey[snap.id] = data.url;
+              }
+            }
+          });
+          const merged = { ...legacy, ...perKey };
+          if (Object.keys(merged).length > 0) {
+            setImages({ ...DEFAULT_WEBSITE_IMAGES, ...merged });
+            safeSetItem('idea_website_images', JSON.stringify(merged));
           }
         } catch (error) {
           console.error('Failed to load settings/images from Firestore:', error);
@@ -122,31 +127,25 @@ export function CompanyProvider({ children }) {
   const updateSettings = async (newSettings) => {
     const updated = { ...settings, ...newSettings };
     setSettings(updated);
-    localStorage.setItem('idea_company_settings', JSON.stringify(updated));
+    safeSetItem('idea_company_settings', JSON.stringify(updated));
 
     if (db) {
-      try {
-        const { doc, setDoc } = await import('firebase/firestore');
-        const docRef = doc(db, 'company_settings', 'default');
-        await setDoc(docRef, updated, { merge: true });
-      } catch (error) {
-        console.error('Failed to save company settings to Firestore:', error);
-      }
+      const { doc, setDoc } = await import('firebase/firestore');
+      await setDoc(doc(db, 'company_settings', 'default'), updated, { merge: true });
     }
   };
 
   const updateImages = async (newImages) => {
     const updated = { ...images, ...newImages };
     setImages(updated);
-    localStorage.setItem('idea_website_images', JSON.stringify(updated));
+    safeSetItem('idea_website_images', JSON.stringify(updated));
 
     if (db) {
-      try {
-        const { doc, setDoc } = await import('firebase/firestore');
-        const docRef = doc(db, 'website_images', 'default');
-        await setDoc(docRef, updated, { merge: true });
-      } catch (error) {
-        console.error('Failed to save website images to Firestore:', error);
+      const { doc, setDoc } = await import('firebase/firestore');
+      // Simpan per key agar tiap gambar punya dokumen sendiri
+      // (menghindari batas 1MB per dokumen Firestore).
+      for (const [key, url] of Object.entries(newImages)) {
+        await setDoc(doc(db, 'website_images', key), { url }, { merge: true });
       }
     }
   };
@@ -165,4 +164,3 @@ export function useCompany() {
   }
   return context;
 }
-

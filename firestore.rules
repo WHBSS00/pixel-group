@@ -1,0 +1,57 @@
+rules_version = '2';
+
+// Aturan keamanan Firestore untuk website + dashboard admin.
+//
+// Cara menerapkan (pilih salah satu):
+//   A. Firebase Console → Firestore Database → Rules → salin-tempel isi file
+//      ini → Publish.
+//   B. Firebase CLI: `firebase deploy --only firestore:rules`
+//      (butuh `firebase login` dan project sudah dipilih via `firebase use`).
+//
+// Catatan: operasi tulis & baca pesan masuk membutuhkan login Firebase
+// Authentication (Email/Password). Aktifkan di Console → Authentication →
+// Sign-in method → Email/Password, lalu buat 1 user admin di tab Users.
+// Email user tersebut diisi ke NEXT_PUBLIC_ADMIN_EMAIL di .env.local/Vercel.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Identitas perusahaan: publik boleh baca (dipakai halaman website),
+    // hanya admin login yang boleh mengubah.
+    match /company_settings/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Foto website: publik boleh baca, hanya admin yang boleh mengubah.
+    match /website_images/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Portofolio: publik boleh baca (halaman Our Works), admin yang mengelola.
+    match /portfolio_works/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Logo klien (section "Klien Kami" di beranda): publik boleh baca,
+    // admin yang mengelola.
+    match /client_logos/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Pesan kontak: siapa pun boleh mengirim (create) dari formulir kontak,
+    // tetapi hanya admin login yang boleh membaca/menghapus.
+    match /contact_messages/{docId} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
+
+    // Selain koleksi di atas: tolak semua akses.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -84,9 +84,17 @@ export default function PageLayoutWrapper({ children }) {
         <Preloader onComplete={handlePreloaderComplete} />
       )}
       {!isAdminPage && <Navbar />}
+      {/* Catatan: class transform (translate-y-*) tidak boleh dipasang di halaman
+          admin — transform pada ancestor membuat position:fixed sidebar admin
+          ikut ter-scroll karena containing block-nya berpindah. */}
       <div
-        className={`flex min-h-screen flex-col transition-all duration-1000 ${loading && !isAdminPage ? 'opacity-0 translate-y-[20px] pointer-events-none' : 'opacity-100 translate-y-0'
-          }`}
+        className={
+          isAdminPage
+            ? 'flex min-h-screen flex-col'
+            : `flex min-h-screen flex-col transition-all duration-1000 ${
+                loading ? 'opacity-0 translate-y-[20px] pointer-events-none' : 'opacity-100 translate-y-0'
+              }`
+        }
       >
         <main className="flex-1" id="page-scroll-container">
           {children}
