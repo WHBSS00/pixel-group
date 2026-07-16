@@ -8,129 +8,8 @@ import { getDirectDriveLink } from '@/utils/drive';
 import { db } from '@/lib/firebase';
 import Image from 'next/image';
 
-const initialWorksData = [
-  {
-    title: 'Street Signage Jl. Imam Bonjol',
-    location: 'Jl. Imam Bonjol, Jakarta',
-    image: 'https://drive.google.com/file/d/1Na-af_ODOf-RBkk2ZbY2TyOK8w82JCcn/view?usp=sharing',
-    typeKey: 'street',
-    size: 'Double Sided - 120cm x 80cm',
-    latitude: '-6.199407',
-    longitude: '106.829107',
-    position: '1',
-    objectPosition: 'left',
-  },
-  {
-    title: 'Street Signage Jl. Metro Pondok Indah',
-    location: 'Jl. Metro Pondok Indah, Jakarta',
-    image: 'https://drive.google.com/file/d/1eNUEwM23lG7GTRQ9jaIznbfNFB9125v6/view?usp=sharing',
-    typeKey: 'street',
-    size: 'Double Sided - 120cm x 80cm',
-    latitude: '-6.269781',
-    longitude: '106.782436',
-    position: '2',
-    objectPosition: 'left',
-  },
-  {
-    title: 'Street Signage Jl. Prof. Dr. Satrio',
-    location: 'Jl. Prof. Dr. Satrio, Jakarta',
-    image: 'https://drive.google.com/file/d/10BcOyEhxbRJwBVIYvN_zlalXfs5dp-ks/view?usp=sharing',
-    typeKey: 'street',
-    size: 'Double Sided - 120cm x 80cm',
-    latitude: '-6.224431',
-    longitude: '106.822839',
-    position: '3',
-    objectPosition: 'left',
-  },
-  {
-    title: 'Street Signage Jl. Panglima Polim',
-    location: 'Jl. Panglima Polim, Jakarta',
-    image: 'https://drive.google.com/file/d/1fjTvz0Q5_gxR2BedoJeCZL-TL5iDUpBz/view?usp=sharing',
-    typeKey: 'street',
-    size: 'Double Sided - 120cm x 80cm',
-    latitude: '-6.252636',
-    longitude: '106.801579',
-    position: '4',
-    objectPosition: 'left',
-  },
-  {
-    title: 'Street Signage Jl. H.R. Rasuna Said',
-    location: 'Jl. H.R. Rasuna Said, Jakarta',
-    image: 'https://drive.google.com/file/d/1Usqafu4pD7jGGiTsaOQdnv8TsgDyr4KT/view?usp=sharing',
-    typeKey: 'street',
-    size: 'Double Sided - 120cm x 80cm',
-    latitude: '-6.222718',
-    longitude: '106.829462',
-    position: '5',
-    objectPosition: 'left',
-  },
-  {
-    title: 'Street Signage Jl. Menteng Raya',
-    location: 'Jl. Menteng Raya, Jakarta',
-    image: 'https://drive.google.com/file/d/16637rP0GFkg31w9q4QDxlD0WZnyASGjv/view?usp=sharing',
-    typeKey: 'street',
-    size: 'Double Sided - 120cm x 80cm',
-    latitude: '-6.185202',
-    longitude: '106.832789',
-    position: '6',
-    objectPosition: 'left',
-  },
-  {
-    title: 'Street Signage Jl. KH. Wahid Hasyim',
-    location: 'Jl. KH. Wahid Hasyim, Jakarta',
-    image: 'https://drive.google.com/file/d/1uklOrk9gvlLYifqhwNifCcALiv4xlhCE/view?usp=sharing',
-    typeKey: 'street',
-    size: 'Double Sided - 120cm x 80cm',
-    latitude: '-6.188448',
-    longitude: '106.827361',
-    position: '7',
-    objectPosition: 'left',
-  },
-  {
-    title: 'Street Signage Jl. R.A. Kartini',
-    location: 'Jl. R.A. Kartini, Jakarta',
-    image: 'https://drive.google.com/file/d/1eT1q0OhQsPEpgIDEU5HP8EqHSkVFOEhG/view?usp=sharing',
-    typeKey: 'street',
-    size: 'Double Sided - 120cm x 80cm',
-    latitude: '-6.291733',
-    longitude: '106.772922',
-    position: '8',
-    objectPosition: 'left',
-  },
-  {
-    title: 'Street Signage Jl. H.R. Rasuna Said (VinFast)',
-    location: 'Jl. H.R. Rasuna Said, Jakarta',
-    image: 'https://drive.google.com/file/d/1K1R6PlqvCihiqzkH3UvVm_79I061INZh/view?usp=sharing',
-    typeKey: 'street',
-    size: 'Double Sided - 120cm x 80cm',
-    latitude: '-6.220500',
-    longitude: '106.828500',
-    position: '9',
-    objectPosition: 'left',
-  },
-  {
-    title: 'Street Signage Jl. Pintu Satu Senayan',
-    location: 'Jl. Pintu Satu Senayan, Jakarta',
-    image: 'https://drive.google.com/file/d/18Fr6_QvW78wXBXnPg2UdNyWL6TD5vmyZ/view?usp=sharing',
-    typeKey: 'street',
-    size: 'Double Sided - 120cm x 80cm',
-    latitude: '-6.222534',
-    longitude: '106.802319',
-    position: '10',
-    objectPosition: 'left',
-  },
-  {
-    title: 'Street Signage Jl. Adityawarman',
-    location: 'Jl. Adityawarman, Jakarta',
-    image: 'https://drive.google.com/file/d/1dfr_xsBXRKAx6SJdGrSjdzo4ySKRnD9e/view?usp=sharing',
-    typeKey: 'street',
-    size: 'Double Sided - 120cm x 80cm',
-    latitude: '-6.242318',
-    longitude: '106.801625',
-    position: '11',
-    objectPosition: 'left',
-  },
-];
+import { initialWorksData } from '@/data/portfolioSeeds';
+
 
 export default function OurWorksPage() {
   return (
@@ -241,26 +120,19 @@ function PortfolioGrid() {
     const timer = setTimeout(() => {
       const loadFromLocalStorage = () => {
         let stored = localStorage.getItem('custom_portfolio_works');
-        let needsReset = false;
+        let parsed = null;
         if (stored) {
           try {
-            const parsed = JSON.parse(stored);
-            if (
-              !Array.isArray(parsed) ||
-              parsed.length !== 11 ||
-              parsed.some((item) => item.title === 'Monas Design Signage') ||
-              !parsed.every((item) => item.objectPosition)
-            ) {
-              needsReset = true;
+            const data = JSON.parse(stored);
+            if (Array.isArray(data) && data.length > 0 && data.every(item => item.id)) {
+              parsed = data;
             }
           } catch (e) {
-            needsReset = true;
+            console.error('Failed to parse cached portfolio works:', e);
           }
-        } else {
-          needsReset = true;
         }
 
-        if (needsReset) {
+        if (!parsed) {
           const seedData = initialWorksData.map((item, idx) => ({
             id: `seed-${idx}`,
             title: item.title,
@@ -276,18 +148,14 @@ function PortfolioGrid() {
             isCustom: true
           }));
           localStorage.setItem('custom_portfolio_works', JSON.stringify(seedData));
-          setPortfolioItems(seedData.map(item => ({
-            ...item,
-            type: t(`ourWorks.items.types.${item.typeKey}`) || item.typeKey,
-          })).sort((a, b) => (parseInt(a.position) || 999) - (parseInt(b.position) || 999)));
-        } else {
-          const parsed = JSON.parse(stored);
-          setPortfolioItems(parsed.map(item => ({
-            ...item,
-            type: item.typeKey === 'other' ? item.customType : t(`ourWorks.items.types.${item.typeKey}`) || item.typeKey,
-            size: item.size || '',
-          })).sort((a, b) => (parseInt(a.position) || 999) - (parseInt(b.position) || 999)));
+          parsed = seedData;
         }
+
+        setPortfolioItems(parsed.map(item => ({
+          ...item,
+          type: item.typeKey === 'other' ? item.customType : t(`ourWorks.items.types.${item.typeKey}`) || item.typeKey,
+          size: item.size || '',
+        })).sort((a, b) => (parseInt(a.position) || 999) - (parseInt(b.position) || 999)));
       };
 
       if (db) {

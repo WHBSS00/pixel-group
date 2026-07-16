@@ -8,9 +8,6 @@ import { useCompany } from '@/context/CompanyContext';
 import { getDirectDriveLink } from '@/utils/drive';
 import Image from 'next/image';
 
-const BASE = 'https://pixelgroup.id';
-
-
 
 const whyUsStaticData = [
   {

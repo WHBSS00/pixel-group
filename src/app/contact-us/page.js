@@ -66,29 +66,23 @@ export default function ContactUsPage() {
       createdAt: new Date().toISOString()
     };
 
-    const proceedWithRedirects = () => {
+    const proceedWithSuccess = () => {
       setIsSubmitting(false);
       setIsSubmitted(true);
-      // Trigger WhatsApp tab
-      handleWhatsAppRedirect();
-      // Trigger Email client with slight delay to avoid popup blockers
-      setTimeout(() => {
-        handleEmailRedirect();
-      }, 600);
     };
 
     if (db) {
       try {
         const { collection, addDoc } = await import('firebase/firestore');
         await addDoc(collection(db, 'contact_messages'), submissionData);
-        proceedWithRedirects();
+        proceedWithSuccess();
       } catch (error) {
         console.error('Failed to submit message to Firestore:', error);
-        proceedWithRedirects();
+        proceedWithSuccess();
       }
     } else {
       setTimeout(() => {
-        proceedWithRedirects();
+        proceedWithSuccess();
       }, 800);
     }
   };

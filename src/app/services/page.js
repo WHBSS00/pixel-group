@@ -7,8 +7,6 @@ import { useCompany } from '@/context/CompanyContext';
 import { getDirectDriveLink } from '@/utils/drive';
 import Image from 'next/image';
 
-const BASE = 'https://pixelgroup.id';
-
 const block1Images = [
   `/images/services/production_1.png`,
   `/images/services/production_2.png`,
